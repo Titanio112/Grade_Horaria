@@ -42,6 +42,10 @@ CREATE TABLE subjects (
     corequisites UUID[] DEFAULT '{}',
     schedule JSONB DEFAULT '{}',
     description TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
 
 CREATE TRIGGER update_subjects_updated_at
     BEFORE UPDATE ON subjects
@@ -92,6 +96,7 @@ ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE subjects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE grades ENABLE ROW LEVEL SECURITY;
 ALTER TABLE grade_subjects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE student_subjects ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Profiles visiveis" ON profiles FOR SELECT USING (TRUE);
 CREATE POLICY "Usuario atualiza perfil" ON profiles FOR UPDATE USING (auth.uid() = id);

@@ -37,3 +37,15 @@ coverage/
 
 # Supabase
 .supabase/temp/
+
+# Backups e artefatos de trabalho
+*.bak
+*.new
+*.old/
+old/
+
+# Evidencias de teste (snapshots locais, nao versionar)
+test-*.png
+.playwright-mcp/
+.firecrawl/
+.mimocode/
