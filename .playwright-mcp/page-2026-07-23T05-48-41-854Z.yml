@@ -1,0 +1,590 @@
+- generic [ref=f23e2]:
+  - banner [ref=f23e3]:
+    - heading "📅 Organizador de Grade BSI" [level=1] [ref=f23e4]
+    - generic [ref=f23e5]:
+      - generic [ref=f23e6] [cursor=pointer]:
+        - checkbox "🌙 Modo Escuro" [checked] [ref=f23e7]
+        - generic [ref=f23e8]: 🌙 Modo Escuro
+      - generic [ref=f23e9] [cursor=pointer]:
+        - checkbox "👥 Comparar Horários (Todos)" [checked] [ref=f23e10]
+        - generic [ref=f23e11]: 👥 Comparar Horários (Todos)
+    - generic [ref=f23e13]:
+      - button "👤 Editar Perfil Atual" [ref=f23e14] [cursor=pointer]
+      - generic [ref=f23e15]: 📂 Carregar JSON
+      - button "📝 Colar JSON" [ref=f23e17] [cursor=pointer]
+      - button "🗑️ Resetar Tudo" [ref=f23e18] [cursor=pointer]
+  - generic [ref=f23e19]:
+    - generic [ref=f23e20]:
+      - generic [ref=f23e21] [cursor=pointer]: 👤 Você
+      - generic [ref=f23e22] [cursor=pointer]: ✕
+    - generic [ref=f23e23]:
+      - generic [ref=f23e24] [cursor=pointer]: 👤 Maria
+      - generic [ref=f23e25] [cursor=pointer]: ✕
+    - generic [ref=f23e26]:
+      - generic [ref=f23e27] [cursor=pointer]: 👤 João
+      - generic [ref=f23e28] [cursor=pointer]: ✕
+    - button "➕ Amigo" [ref=f23e29] [cursor=pointer]
+  - generic [ref=f23e30]:
+    - strong [ref=f23e31]: ⚠️ Conflito Detectado!
+    - text: Verifique os blocos vermelhos na grade.
+  - generic [ref=f23e32]:
+    - generic [ref=f23e33]:
+      - generic [ref=f23e34]:
+        - generic [ref=f23e35] [cursor=pointer]: 1º Semestre
+        - generic [ref=f23e36]:
+          - generic [ref=f23e37] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e38]
+            - generic [ref=f23e39]: Metodologia Científica
+          - generic [ref=f23e41] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e42]
+            - generic [ref=f23e43]:
+              - generic [ref=f23e44]: Inglês Instrumental I
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e46]: 🌙 Civil
+          - generic [ref=f23e47] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e48]
+            - generic [ref=f23e49]:
+              - generic [ref=f23e50]: Leitura e Produção de Textos Acadêmicos
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e52]: 🌙 Civil
+          - generic [ref=f23e53] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e54]
+            - generic [ref=f23e55]: Contexto Social e Profissional do Bacharel em Sistemas de Informação
+          - generic [ref=f23e57] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e58]
+            - generic [ref=f23e59]:
+              - generic [ref=f23e60]: Cálculo com Funções de uma Variável Real
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e62]: 🌙 Civil
+          - generic [ref=f23e63] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e64]
+            - generic [ref=f23e65]:
+              - generic [ref=f23e66]: Laboratório de Programação de Computadores I
+              - generic [ref=f23e67]:
+                - generic [ref=f23e68]: ⟳ Programação de Computadores I
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e69]: 🌙 Civil
+          - generic [ref=f23e70] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e71]
+            - generic [ref=f23e72]: Geometria Analítica e Álgebra Linear
+          - generic [ref=f23e74] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e75]
+            - generic [ref=f23e76]:
+              - generic [ref=f23e77]: Programação de Computadores I
+              - generic [ref=f23e78]:
+                - generic [ref=f23e79]: ⟳ Laboratório de Programação de Computadores I
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e80]: 🌙 Civil
+      - generic [ref=f23e81]:
+        - generic [ref=f23e82] [cursor=pointer]: 2º Semestre
+        - generic [ref=f23e83]:
+          - generic [ref=f23e84] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e85]
+            - generic [ref=f23e86]:
+              - generic [ref=f23e87]: Banco de Dados I
+              - generic [ref=f23e88]: ⟳ Laboratório de Banco de Dados I
+          - generic [ref=f23e90] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e91]
+            - generic [ref=f23e92]: Arquitetura e Organização de Computadores
+          - generic [ref=f23e94] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e95]
+            - generic [ref=f23e96]: Informática e Sociedade
+          - generic [ref=f23e98] [cursor=pointer]:
+            - checkbox [ref=f23e99]
+            - generic [ref=f23e100]:
+              - generic [ref=f23e101]: Laboratório de Programação de Computadores II
+              - generic [ref=f23e102]:
+                - generic [ref=f23e103]: ⟳ Programação de Computadores I
+                - generic [ref=f23e104]: ⟳ Laboratório de Programação de Computadores I
+                - generic [ref=f23e105]: ⟳ Programação de Computadores II
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e106]: 🌙 Civil
+          - generic [ref=f23e107] [cursor=pointer]:
+            - checkbox [ref=f23e108]
+            - generic [ref=f23e109]:
+              - generic [ref=f23e110]: Integração e Séries
+              - generic [ref=f23e111]: ⟳ Cálculo com Funções de uma Variável Real
+          - generic [ref=f23e113] [cursor=pointer]:
+            - checkbox [ref=f23e114]
+            - generic [ref=f23e115]:
+              - generic [ref=f23e116]: Cálculo com Funções de Várias Variáveis I
+              - generic [ref=f23e117]:
+                - generic [ref=f23e118]: ⟳ Cálculo com Funções de uma Variável Real
+                - generic [ref=f23e119]: ⟳ Geometria Analítica e Álgebra Linear
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e120]: 🌙 Civil
+          - generic [ref=f23e121] [cursor=pointer]:
+            - checkbox [ref=f23e122]
+            - generic [ref=f23e123]:
+              - generic [ref=f23e124]: Programação de Computadores II
+              - generic [ref=f23e125]:
+                - generic [ref=f23e126]: ⟳ Programação de Computadores I
+                - generic [ref=f23e127]: ⟳ Laboratório de Programação de Computadores I
+                - generic [ref=f23e128]: ⟳ Laboratório de Programação de Computadores II
+          - generic [ref=f23e129] [cursor=pointer]:
+            - checkbox [checked] [ref=f23e130]
+            - generic [ref=f23e131]:
+              - generic [ref=f23e132]: Laboratório de Banco de Dados I
+              - generic [ref=f23e133]: ⟳ Banco de Dados I
+      - generic [ref=f23e135]:
+        - generic [ref=f23e136] [cursor=pointer]: 3º Semestre
+        - generic [ref=f23e137]:
+          - generic [ref=f23e138] [cursor=pointer]:
+            - checkbox [ref=f23e139]
+            - generic [ref=f23e140]:
+              - generic [ref=f23e141]: Laboratório de Programação de Computadores III
+              - generic [ref=f23e142]:
+                - generic [ref=f23e143]: ⟳ Programação de Computadores II
+                - generic [ref=f23e144]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e145]: ⟳ Programação de Computadores III
+          - generic [ref=f23e146] [cursor=pointer]:
+            - checkbox [ref=f23e147]
+            - generic [ref=f23e148]:
+              - generic [ref=f23e149]: Métodos Numéricos Computacionais
+              - generic [ref=f23e150]:
+                - generic [ref=f23e151]: ⟳ Programação de Computadores I
+                - generic [ref=f23e152]: ⟳ Laboratório de Programação de Computadores I
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e153]: 🌙 Civil
+          - generic [ref=f23e154] [cursor=pointer]:
+            - checkbox [ref=f23e155]
+            - generic [ref=f23e156]:
+              - generic [ref=f23e157]: Introdução à Sociologia
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e159]: 🌙 Civil
+          - generic [ref=f23e160] [cursor=pointer]:
+            - checkbox [ref=f23e161]
+            - generic [ref=f23e162]:
+              - generic [ref=f23e163]: Banco de Dados II
+              - generic [ref=f23e164]:
+                - generic [ref=f23e165]: ⟳ Banco de Dados I
+                - generic [ref=f23e166]: ⟳ Laboratório de Banco de Dados I
+                - generic [ref=f23e167]: ⟳ Laboratório de Banco de Dados II
+          - generic [ref=f23e168] [cursor=pointer]:
+            - checkbox [ref=f23e169]
+            - generic [ref=f23e170]:
+              - generic [ref=f23e171]: Álgebra Linear
+              - generic [ref=f23e172]:
+                - generic [ref=f23e173]: ⟳ Geometria Analítica e Álgebra Linear
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e174]: 🌙 Civil
+          - generic [ref=f23e175] [cursor=pointer]:
+            - checkbox [ref=f23e176]
+            - generic [ref=f23e177]:
+              - generic [ref=f23e178]: Laboratório de Banco de Dados II
+              - generic [ref=f23e179]:
+                - generic [ref=f23e180]: ⟳ Banco de Dados I
+                - generic [ref=f23e181]: ⟳ Laboratório de Banco de Dados I
+                - generic [ref=f23e182]: ⟳ Banco de Dados II
+          - generic [ref=f23e183] [cursor=pointer]:
+            - checkbox [ref=f23e184]
+            - generic [ref=f23e185]:
+              - generic [ref=f23e186]: Equações Diferenciais Ordinárias
+              - generic [ref=f23e187]:
+                - generic [ref=f23e188]: ⟳ Cálculo com Funções de Várias Variáveis I
+                - generic [ref=f23e189]: ⟳ Integração e Séries
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e190]: 🌙 Civil
+          - generic [ref=f23e191] [cursor=pointer]:
+            - checkbox [ref=f23e192]
+            - generic [ref=f23e193]:
+              - generic [ref=f23e194]: Programação de Computadores III
+              - generic [ref=f23e195]:
+                - generic [ref=f23e196]: ⟳ Programação de Computadores II
+                - generic [ref=f23e197]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e198]: ⟳ Laboratório de Programação de Computadores III
+      - generic [ref=f23e199]:
+        - generic [ref=f23e200] [cursor=pointer]: 4º Semestre
+        - generic [ref=f23e201]:
+          - generic [ref=f23e202] [cursor=pointer]:
+            - checkbox [ref=f23e203]
+            - generic [ref=f23e204]:
+              - generic [ref=f23e205]: Sistemas Operacionais
+              - generic [ref=f23e206]: ⟳ Arquitetura e Organização de Computadores
+          - generic [ref=f23e208] [cursor=pointer]:
+            - checkbox [ref=f23e209]
+            - generic [ref=f23e210]: Design de Interação
+          - generic [ref=f23e212] [cursor=pointer]:
+            - checkbox [ref=f23e213]
+            - generic [ref=f23e214]:
+              - generic [ref=f23e215]: Laboratório de Engenharia de Software
+              - generic [ref=f23e216]:
+                - generic [ref=f23e217]: ⟳ Programação de Computadores I
+                - generic [ref=f23e218]: ⟳ Laboratório de Programação de Computadores I
+                - generic [ref=f23e219]: ⟳ Engenharia de Software
+          - generic [ref=f23e220] [cursor=pointer]:
+            - checkbox [ref=f23e221]
+            - generic [ref=f23e222]:
+              - generic [ref=f23e223]: Estatística
+              - generic [ref=f23e224]:
+                - generic [ref=f23e225]: ⟳ Integração e Séries
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e226]: 🌙 Civil
+          - generic [ref=f23e227] [cursor=pointer]:
+            - checkbox [ref=f23e228]
+            - generic [ref=f23e229]:
+              - generic [ref=f23e230]: Laboratório de Redes de Computadores
+              - generic [ref=f23e231]: ⟳ Redes de Computadores
+          - generic [ref=f23e233] [cursor=pointer]:
+            - checkbox [ref=f23e234]
+            - generic [ref=f23e235]:
+              - generic [ref=f23e236]: Redes de Computadores
+              - generic [ref=f23e237]:
+                - generic [ref=f23e238]: ⟳ Laboratório de Redes de Computadores
+                - generic [ref=f23e239]: ⟳ Sistemas Operacionais
+          - generic [ref=f23e240] [cursor=pointer]:
+            - checkbox [ref=f23e241]
+            - generic [ref=f23e242]:
+              - generic [ref=f23e243]: Engenharia de Software
+              - generic [ref=f23e244]:
+                - generic [ref=f23e245]: ⟳ Programação de Computadores I
+                - generic [ref=f23e246]: ⟳ Laboratório de Programação de Computadores I
+                - generic [ref=f23e247]: ⟳ Laboratório de Engenharia de Software
+      - generic [ref=f23e248]:
+        - generic [ref=f23e249] [cursor=pointer]: 5º Semestre
+        - generic [ref=f23e250]:
+          - generic [ref=f23e251] [cursor=pointer]:
+            - checkbox [ref=f23e252]
+            - generic [ref=f23e253]:
+              - generic [ref=f23e254]: Gerenciamento de Projetos
+              - generic [ref=f23e255]:
+                - generic [ref=f23e256]: ⟳ Engenharia de Software
+                - generic [ref=f23e257]: ⟳ Laboratório de Engenharia de Software
+                - generic [ref=f23e258]: ⟳ Laboratório de Gerenciamento de Projetos
+          - generic [ref=f23e259] [cursor=pointer]:
+            - checkbox [ref=f23e260]
+            - generic [ref=f23e261]:
+              - generic [ref=f23e262]: Teoria da Probabilidade
+              - generic [ref=f23e263]: ⟳ Estatística
+          - generic [ref=f23e265] [cursor=pointer]:
+            - checkbox [ref=f23e266]
+            - generic [ref=f23e267]:
+              - generic [ref=f23e268]: Filosofia da Tecnologia
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e270]: 🌙 Civil
+          - generic [ref=f23e271] [cursor=pointer]:
+            - checkbox [ref=f23e272]
+            - generic [ref=f23e273]:
+              - generic [ref=f23e274]: Laboratório de Programação Web
+              - generic [ref=f23e275]:
+                - generic [ref=f23e276]: ⟳ Programação de Computadores III
+                - generic [ref=f23e277]: ⟳ Laboratório de Programação de Computadores III
+                - generic [ref=f23e278]: ⟳ Banco de Dados II
+                - generic [ref=f23e279]: ⟳ Laboratório de Banco de Dados II
+                - generic [ref=f23e280]: ⟳ Programação Web
+          - generic [ref=f23e281] [cursor=pointer]:
+            - checkbox [ref=f23e282]
+            - generic [ref=f23e283]:
+              - generic [ref=f23e284]: Laboratório de Gerenciamento de Projetos
+              - generic [ref=f23e285]:
+                - generic [ref=f23e286]: ⟳ Engenharia de Software
+                - generic [ref=f23e287]: ⟳ Laboratório de Engenharia de Software
+                - generic [ref=f23e288]: ⟳ Gerenciamento de Projetos
+          - generic [ref=f23e289] [cursor=pointer]:
+            - checkbox [ref=f23e290]
+            - generic [ref=f23e291]:
+              - generic [ref=f23e292]: Metodologia da Pesquisa
+              - generic [ref=f23e293]: ⟳ Metodologia Científica
+          - generic [ref=f23e295] [cursor=pointer]:
+            - checkbox [ref=f23e296]
+            - generic [ref=f23e297]:
+              - generic [ref=f23e298]: Programação Web
+              - generic [ref=f23e299]:
+                - generic [ref=f23e300]: ⟳ Programação de Computadores III
+                - generic [ref=f23e301]: ⟳ Laboratório de Programação de Computadores III
+                - generic [ref=f23e302]: ⟳ Banco de Dados II
+                - generic [ref=f23e303]: ⟳ Laboratório de Banco de Dados II
+                - generic [ref=f23e304]: ⟳ Laboratório de Programação Web
+          - generic [ref=f23e305] [cursor=pointer]:
+            - checkbox [ref=f23e306]
+            - generic [ref=f23e307]: Introdução à Experimentação e ao Desenvolvimento de Protótipos e Projetos
+          - generic [ref=f23e309] [cursor=pointer]:
+            - checkbox [ref=f23e310]
+            - generic [ref=f23e311]:
+              - generic [ref=f23e312]: Estrutura de Dados
+              - generic [ref=f23e313]:
+                - generic [ref=f23e314]: ⟳ Programação de Computadores II
+                - generic [ref=f23e315]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e316]: ⟳ Laboratório de Estrutura de Dados
+          - generic [ref=f23e317] [cursor=pointer]:
+            - checkbox [ref=f23e318]
+            - generic [ref=f23e319]:
+              - generic [ref=f23e320]: Laboratório de Estrutura de Dados
+              - generic [ref=f23e321]:
+                - generic [ref=f23e322]: ⟳ Programação de Computadores II
+                - generic [ref=f23e323]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e324]: ⟳ Estrutura de Dados
+      - generic [ref=f23e325]:
+        - generic [ref=f23e326] [cursor=pointer]: 6º Semestre
+        - generic [ref=f23e327]:
+          - generic [ref=f23e328] [cursor=pointer]:
+            - checkbox [ref=f23e329]
+            - generic [ref=f23e330]: Empreendedorismo I
+          - generic [ref=f23e332] [cursor=pointer]:
+            - checkbox [ref=f23e333]
+            - generic [ref=f23e334]:
+              - generic [ref=f23e335]: Computação em Nuvem
+              - generic [ref=f23e336]:
+                - generic [ref=f23e337]: ⟳ Redes de Computadores
+                - generic [ref=f23e338]: ⟳ Laboratório de Redes de Computadores
+                - generic [ref=f23e339]: ⟳ Laboratório de Computação em Nuvem
+          - generic [ref=f23e340] [cursor=pointer]:
+            - checkbox [ref=f23e341]
+            - generic [ref=f23e342]:
+              - generic [ref=f23e343]: Análise Multivariada
+              - generic [ref=f23e344]: ⟳ Teoria da Probabilidade
+          - generic [ref=f23e346] [cursor=pointer]:
+            - checkbox [ref=f23e347]
+            - generic [ref=f23e348]:
+              - generic [ref=f23e349]: Laboratório de Desenvolvimento de Aplicações para Dispositivos Móveis
+              - generic [ref=f23e350]:
+                - generic [ref=f23e351]: ⟳ Programação Web
+                - generic [ref=f23e352]: ⟳ Laboratório de Programação Web
+                - generic [ref=f23e353]: ⟳ Desenvolvimento de Aplicações para Dispositivos Móveis
+          - generic [ref=f23e354] [cursor=pointer]:
+            - checkbox [ref=f23e355]
+            - generic [ref=f23e356]:
+              - generic [ref=f23e357]: Laboratório de Computação em Nuvem
+              - generic [ref=f23e358]:
+                - generic [ref=f23e359]: ⟳ Redes de Computadores
+                - generic [ref=f23e360]: ⟳ Laboratório de Redes de Computadores
+                - generic [ref=f23e361]: ⟳ Computação em Nuvem
+          - generic [ref=f23e362] [cursor=pointer]:
+            - checkbox [ref=f23e363]
+            - generic [ref=f23e364]:
+              - generic [ref=f23e365]: Desenvolvimento de Aplicações para Dispositivos Móveis
+              - generic [ref=f23e366]:
+                - generic [ref=f23e367]: ⟳ Programação Web
+                - generic [ref=f23e368]: ⟳ Laboratório de Programação Web
+                - generic [ref=f23e369]: ⟳ Laboratório de Desenvolvimento de Aplicações para Dispositivos Móveis
+          - generic [ref=f23e370] [cursor=pointer]:
+            - checkbox [ref=f23e371]
+            - generic [ref=f23e372]:
+              - generic [ref=f23e373]: Matemática Discreta
+              - generic [ref=f23e374]:
+                - generic [ref=f23e375]: ⟳ Programação de Computadores II
+                - generic [ref=f23e376]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e377]: ⟳ Teoria da Probabilidade
+      - generic [ref=f23e378]:
+        - generic [ref=f23e379] [cursor=pointer]: 7º Semestre
+        - generic [ref=f23e380]:
+          - generic [ref=f23e381] [cursor=pointer]:
+            - checkbox [ref=f23e382]
+            - generic [ref=f23e383]:
+              - generic [ref=f23e384]: Laboratório de Mineração de Dados
+              - generic [ref=f23e385]:
+                - generic [ref=f23e386]: ⟳ Estrutura de Dados
+                - generic [ref=f23e387]: ⟳ Banco de Dados II
+                - generic [ref=f23e388]: ⟳ Mineração de Dados
+          - generic [ref=f23e389] [cursor=pointer]:
+            - checkbox [ref=f23e390]
+            - generic [ref=f23e391]:
+              - generic [ref=f23e392]: Empreendedorismo II
+              - generic [ref=f23e393]: ⟳ Empreendedorismo I
+          - generic [ref=f23e395] [cursor=pointer]:
+            - checkbox [ref=f23e396]
+            - generic [ref=f23e397]:
+              - generic [ref=f23e398]: Laboratório de Linguagens de Programação
+              - generic [ref=f23e399]:
+                - generic [ref=f23e400]: ⟳ Programação de Computadores II
+                - generic [ref=f23e401]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e402]: ⟳ Linguagens de Programação
+          - generic [ref=f23e403] [cursor=pointer]:
+            - checkbox [ref=f23e404]
+            - generic [ref=f23e405]: Engenharia Econômica
+          - generic [ref=f23e407] [cursor=pointer]:
+            - checkbox [ref=f23e408]
+            - generic [ref=f23e409]:
+              - generic [ref=f23e410]: Inteligência Artificial I
+              - generic [ref=f23e411]:
+                - generic [ref=f23e412]: ⟳ Estrutura de Dados
+                - generic [ref=f23e413]: ⟳ Laboratório de Estrutura de Dados
+                - generic [ref=f23e414]: ⟳ Análise Multivariada
+                - generic [ref=f23e415]: ⟳ Laboratório de Inteligência Artificial I
+          - generic [ref=f23e416] [cursor=pointer]:
+            - checkbox [ref=f23e417]
+            - generic [ref=f23e418]:
+              - generic [ref=f23e419]: Mineração de Dados
+              - generic [ref=f23e420]:
+                - generic [ref=f23e421]: ⟳ Estrutura de Dados
+                - generic [ref=f23e422]: ⟳ Laboratório de Estrutura de Dados
+                - generic [ref=f23e423]: ⟳ Banco de Dados II
+                - generic [ref=f23e424]: ⟳ Laboratório de Banco de Dados II
+                - generic [ref=f23e425]: ⟳ Laboratório de Mineração de Dados
+          - generic [ref=f23e426] [cursor=pointer]:
+            - checkbox [ref=f23e427]
+            - generic [ref=f23e428]:
+              - generic [ref=f23e429]: Laboratório de Inteligência Artificial I
+              - generic [ref=f23e430]:
+                - generic [ref=f23e431]: ⟳ Estrutura de Dados
+                - generic [ref=f23e432]: ⟳ Laboratório de Estrutura de Dados
+                - generic [ref=f23e433]: ⟳ Análise Multivariada
+                - generic [ref=f23e434]: ⟳ Inteligência Artificial I
+          - generic [ref=f23e435] [cursor=pointer]:
+            - checkbox [ref=f23e436]
+            - generic [ref=f23e437]:
+              - generic [ref=f23e438]: Linguagens de Programação
+              - generic [ref=f23e439]:
+                - generic [ref=f23e440]: ⟳ Programação de Computadores II
+                - generic [ref=f23e441]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e442]: ⟳ Laboratório de Linguagens de Programação
+      - generic [ref=f23e443]:
+        - generic [ref=f23e444] [cursor=pointer]: 8º Semestre
+        - generic [ref=f23e445]:
+          - generic [ref=f23e446] [cursor=pointer]:
+            - checkbox [ref=f23e447]
+            - generic [ref=f23e448]:
+              - generic [ref=f23e449]: Sistemas de Informação
+              - generic [ref=f23e450]: ⟳ Segurança e Auditoria de Sistemas
+          - generic [ref=f23e452] [cursor=pointer]:
+            - checkbox [ref=f23e453]
+            - generic [ref=f23e454]:
+              - generic [ref=f23e455]: Gestão de TI
+              - generic [ref=f23e456]: ⟳ Sistemas de Informação
+          - generic [ref=f23e458] [cursor=pointer]:
+            - checkbox [ref=f23e459]
+            - generic [ref=f23e460]:
+              - generic [ref=f23e461]: Laboratório de Ciência de Dados
+              - generic [ref=f23e462]:
+                - generic [ref=f23e463]: ⟳ Mineração de Dados
+                - generic [ref=f23e464]: ⟳ Laboratório de Mineração de Dados
+                - generic [ref=f23e465]: ⟳ Análise Multivariada
+                - generic [ref=f23e466]: ⟳ Ciência de Dados
+          - generic [ref=f23e467] [cursor=pointer]:
+            - checkbox [ref=f23e468]
+            - generic [ref=f23e469]: Seminários de SI
+          - generic [ref=f23e471] [cursor=pointer]:
+            - checkbox [ref=f23e472]
+            - generic [ref=f23e473]:
+              - generic [ref=f23e474]: Inteligência Artificial II
+              - generic [ref=f23e475]:
+                - generic [ref=f23e476]: ⟳ Inteligência Artificial I
+                - generic [ref=f23e477]: ⟳ Laboratório de Inteligência Artificial I
+                - generic [ref=f23e478]: ⟳ Laboratório de Inteligência Artificial II
+          - generic [ref=f23e479] [cursor=pointer]:
+            - checkbox [ref=f23e480]
+            - generic [ref=f23e481]:
+              - generic [ref=f23e482]: Laboratório de Inteligência Artificial II
+              - generic [ref=f23e483]:
+                - generic [ref=f23e484]: ⟳ Inteligência Artificial I
+                - generic [ref=f23e485]: ⟳ Laboratório de Inteligência Artificial I
+                - generic [ref=f23e486]: ⟳ Inteligência Artificial II
+          - generic [ref=f23e487] [cursor=pointer]:
+            - checkbox [ref=f23e488]
+            - generic [ref=f23e489]:
+              - generic [ref=f23e490]: Ciência de Dados
+              - generic [ref=f23e491]:
+                - generic [ref=f23e492]: ⟳ Mineração de Dados
+                - generic [ref=f23e493]: ⟳ Laboratório de Mineração de Dados
+                - generic [ref=f23e494]: ⟳ Análise Multivariada
+                - generic [ref=f23e495]: ⟳ Laboratório de Ciência de Dados
+          - generic [ref=f23e496] [cursor=pointer]:
+            - checkbox [ref=f23e497]
+            - generic [ref=f23e498]:
+              - generic [ref=f23e499]: Psicologia Aplicada às Organizações
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e501]: 🌙 Civil
+          - generic [ref=f23e502] [cursor=pointer]:
+            - checkbox [ref=f23e503]
+            - generic [ref=f23e504]:
+              - generic [ref=f23e505]: Segurança e Auditoria de Sistemas
+              - generic [ref=f23e506]: ⟳ Gestão de TI
+    - generic [ref=f23e508]:
+      - generic [ref=f23e509]:
+        - generic [ref=f23e510]: 7:00
+        - generic [ref=f23e511]: 8:00
+        - generic [ref=f23e512]: 9:00
+        - generic [ref=f23e513]: 10:00
+        - generic [ref=f23e514]: 11:00
+        - generic [ref=f23e515]: 12:00
+        - generic [ref=f23e516]: 13:00
+        - generic [ref=f23e517]: 14:00
+        - generic [ref=f23e518]: 15:00
+        - generic [ref=f23e519]: 16:00
+        - generic [ref=f23e520]: 17:00
+        - generic [ref=f23e521]: 18:00
+        - generic [ref=f23e522]: 19:00
+        - generic [ref=f23e523]: 20:00
+        - generic [ref=f23e524]: 21:00
+        - generic [ref=f23e525]: 22:00
+      - generic [ref=f23e526]:
+        - generic [ref=f23e527]:
+          - generic [ref=f23e528]: Seg
+          - generic [ref=f23e708]:
+            - generic [ref=f23e709]: Metodologia Científica
+            - generic [ref=f23e710]: Seg 13:00-14:40
+            - generic [ref=f23e711]: S309
+            - generic [ref=f23e712]: Maria
+          - generic [ref=f23e713]:
+            - generic [ref=f23e714]: Metodologia Científica
+            - generic [ref=f23e715]: Seg 13:00-14:40
+            - generic [ref=f23e716]: S309
+            - generic [ref=f23e717]: João
+          - generic [ref=f23e718]:
+            - generic [ref=f23e719]: Inglês Instrumental I
+            - generic [ref=f23e720]: Seg 14:40-16:40
+            - generic [ref=f23e721]: João
+          - generic [ref=f23e722]:
+            - generic [ref=f23e723]: Leitura e Produção de Textos Acadêmicos
+            - generic [ref=f23e724]: Seg 16:40-18:30
+            - generic [ref=f23e725]: S309
+            - generic [ref=f23e726]: João
+          - generic [ref=f23e727]:
+            - generic [ref=f23e728]: Informática e Sociedade
+            - generic [ref=f23e729]: Seg 16:40-18:30
+            - generic [ref=f23e730]: S312
+            - generic [ref=f23e731]: João
+          - generic [ref=f23e732]:
+            - generic [ref=f23e733]: Banco de Dados I
+            - generic [ref=f23e734]: Seg 13:00-14:40
+            - generic [ref=f23e735]: S312
+            - generic [ref=f23e736]: João
+          - generic [ref=f23e737]:
+            - generic [ref=f23e738]: Arquitetura e Organização de Computadores
+            - generic [ref=f23e739]: Seg 14:40-16:40
+            - generic [ref=f23e740]: S312
+            - generic [ref=f23e741]: João
+        - generic [ref=f23e574]:
+          - generic [ref=f23e575]: Ter
+          - generic [ref=f23e742]:
+            - generic [ref=f23e743]: Contexto Social e Profissional do Bacharel em Sistemas de Informação
+            - generic [ref=f23e744]: Ter 13:00-14:40
+            - generic [ref=f23e745]: João
+          - generic [ref=f23e746]:
+            - generic [ref=f23e747]: Cálculo com Funções de uma Variável Real
+            - generic [ref=f23e748]: Ter 14:40-16:40
+            - generic [ref=f23e749]: S305
+            - generic [ref=f23e750]: João
+          - generic [ref=f23e751]:
+            - generic [ref=f23e752]: Laboratório de Programação de Computadores I
+            - generic [ref=f23e753]: Ter 16:40-18:30
+            - generic [ref=f23e754]: S116/S114
+            - generic [ref=f23e755]: João
+        - generic [ref=f23e606]:
+          - generic [ref=f23e607]: Qua
+          - generic [ref=f23e756]:
+            - generic [ref=f23e757]: Cálculo com Funções de uma Variável Real
+            - generic [ref=f23e758]: Qua 13:00-14:40
+            - generic [ref=f23e759]: S305
+            - generic [ref=f23e760]: João
+        - generic [ref=f23e629]:
+          - generic [ref=f23e630]: Qui
+          - generic [ref=f23e761]:
+            - generic [ref=f23e762]: Cálculo com Funções de uma Variável Real
+            - generic [ref=f23e763]: Qui 16:40-18:30
+            - generic [ref=f23e764]: S305
+            - generic [ref=f23e765]: João
+          - generic [ref=f23e766]:
+            - generic [ref=f23e767]: Geometria Analítica e Álgebra Linear
+            - generic [ref=f23e768]: Qui 13:00-14:40
+            - generic [ref=f23e769]: S305
+            - generic [ref=f23e770]: João
+          - generic [ref=f23e771]:
+            - generic [ref=f23e772]: Programação de Computadores I
+            - generic [ref=f23e773]: Qui 14:40-16:40
+            - generic [ref=f23e774]: S305
+            - generic [ref=f23e775]: João
+          - generic [ref=f23e776]:
+            - generic [ref=f23e777]: Arquitetura e Organização de Computadores
+            - generic [ref=f23e778]: Qui 13:00-14:40
+            - generic [ref=f23e779]: S312
+            - generic [ref=f23e780]: João
+        - generic [ref=f23e662]:
+          - generic [ref=f23e663]: Sex
+          - generic [ref=f23e781]:
+            - generic [ref=f23e782]: Geometria Analítica e Álgebra Linear
+            - generic [ref=f23e783]: Sex 14:40-16:40
+            - generic [ref=f23e784]: S305
+            - generic [ref=f23e785]: João
+          - generic [ref=f23e786]:
+            - generic [ref=f23e787]: Laboratório de Banco de Dados I
+            - generic [ref=f23e788]: Sex 14:40-16:40
+            - generic [ref=f23e789]: S312
+            - generic [ref=f23e790]: João
+        - generic [ref=f23e690]: Sáb

@@ -1,0 +1,556 @@
+// render.js — Render/DOM manipulation layer (ES Module)
+
+import {   
+  findSubjectByName, timeToPixels, getUserColor,
+  getActiveProfile, toggleSubject, toggleHistoryStatus, toggleDarkMode, toggleGroupMode,
+  saveAppState, loadAppState, resetAllData, processPastedJSON, processFileJSON,
+  getCorequisiteGroup, initCalendarGrid, setUpdateSchedule, exportJSON
+} from './logica.js';
+
+import { appState, findSubjectById, subjectsData } from './dados.js';
+
+// Set the updateSchedule function on logica.js for real-time updates
+setUpdateSchedule(updateSchedule);
+
+// --- Modal Management ---
+
+let pendingConfirmAction = null;
+
+// --- UI Helpers ---
+
+export function togglePasteArea() {
+  const container = document.getElementById('paste-area-container');
+  container.style.display = container.style.display === 'none' ? 'block' : 'none';
+}
+
+// --- Toast Notifications ---
+
+function showToast(message, type = 'error') {
+  const container = document.getElementById('toast-container') || (() => {
+    const div = document.createElement('div');
+    div.id = 'toast-container';
+    div.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;';
+    document.body.appendChild(div);
+    return div;
+  })();
+
+  const toast = document.createElement('div');
+  toast.style.cssText = `padding: 12px 20px; border-radius: 8px; color: white; font-weight: 500; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: slideIn 0.3s ease; max-width: 400px;
+    background: ${type === 'error' ? 'var(--danger-color)' : type === 'success' ? 'var(--success-color)' : 'var(--primary-color)'};
+  `;
+  toast.textContent = message;
+  
+  const style = document.createElement('style');
+  style.textContent = '@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }';
+  document.head.appendChild(style);
+
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.animation = 'slideIn 0.3s ease reverse';
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
+}
+
+// --- Export ---
+
+export function exportGradeJSON() {
+  const json = exportJSON();
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const profile = getActiveProfile();
+  a.download = `grade-${profile.name}-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// --- Modal Management ---
+
+export function openConfirmModal(message, onConfirm) {
+  const modal = document.getElementById('confirm-modal');
+  const text = document.getElementById('confirm-text');
+  const btnYes = document.getElementById('confirm-yes-btn');
+  
+  text.textContent = message;
+  pendingConfirmAction = onConfirm;
+  
+  modal.classList.add('active');
+  
+  btnYes.onclick = () => {
+    if (pendingConfirmAction) pendingConfirmAction();
+    closeConfirmModal();
+  };
+}
+
+export function closeConfirmModal() {
+  document.getElementById('confirm-modal').classList.remove('active');
+  pendingConfirmAction = null;
+}
+
+// --- Modal Functions ---
+
+export function showAddFriendModal() {
+  const modal = document.getElementById('welcome-modal');
+  modal.classList.add('active');
+  document.getElementById('modal-step-0').style.display = 'block';
+  document.getElementById('modal-step-1').style.display = 'none';
+  document.getElementById('modal-step-2').style.display = 'none';
+  setTimeout(() => document.getElementById('new-friend-name').focus(), 100);
+}
+
+export function confirmFriendName() {
+  const input = document.getElementById('new-friend-name');
+  const name = input.value.trim();
+  if (name) {
+    input.value = '';
+    createNewProfile(name);
+  }
+}
+
+export function openProfileModal(isNew = false) {
+  const profile = getActiveProfile();
+  document.getElementById('modal-user-name').textContent = profile.name;
+  const modal = document.getElementById('welcome-modal');
+  modal.classList.add('active');
+  document.getElementById('modal-step-0').style.display = 'none';
+  document.getElementById('modal-step-1').style.display = 'block';
+  document.getElementById('modal-step-2').style.display = 'none';
+}
+
+export function editCurrentProfile() { openProfileModal(); }
+export function closeProfileModal() { document.getElementById('welcome-modal').classList.remove('active'); }
+
+export function selectProfileType(type) {
+  const profile = getActiveProfile();
+  if (type === 'calouro') {
+    profile.history = { approved: [], failed: [] };
+    profile.selected = [];
+    const sem1 = subjectsData.find(s => s.semestre.includes("1º"));
+    if (sem1 && sem1.disciplinas) sem1.disciplinas.forEach(d => profile.selected.push(d.nome));
+    saveAppState();
+    updateSchedule();
+    renderSubjectsList();
+    closeProfileModal();
+    alert(`Perfil de ${profile.name} configurado como Calouro!`);
+  } else if (type === 'veterano') {
+    document.getElementById('modal-step-1').style.display = 'none';
+    document.getElementById('modal-step-2').style.display = 'block';
+    renderHistoryPanel();
+  }
+}
+
+export function renderHistoryPanel() {
+  const container = document.getElementById('history-container');
+  container.innerHTML = '';
+  const profile = getActiveProfile();
+  const approvedSet = new Set(profile.history.approved);
+  const failedSet = new Set(profile.history.failed);
+
+  subjectsData.forEach(sem => {
+    const groupTitle = document.createElement('h4');
+    groupTitle.textContent = sem.semestre;
+    groupTitle.style.marginTop = '15px';
+    groupTitle.style.borderBottom = '1px solid var(--border-color)';
+    container.appendChild(groupTitle);
+    const grid = document.createElement('div');
+    grid.className = 'history-grid';
+    if (sem.disciplinas) {
+      sem.disciplinas.forEach(subj => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        if (approvedSet.has(subj.id)) {
+          item.classList.add('status-approved');
+          item.innerHTML = `<span>${subj.nome}</span> <span class="status-icon">✅</span>`;
+        } else if (failedSet.has(subj.id)) {
+          item.classList.add('status-failed');
+          item.innerHTML = `<span>${subj.nome}</span> <span class="status-icon">🔴</span>`;
+        } else {
+          item.classList.add('status-none');
+          item.innerHTML = `<span>${subj.nome}</span> <span class="status-icon">⚪</span>`;
+        }
+        item.onclick = () => toggleHistoryStatus(subj.id, item, subj.nome, profile);
+        grid.appendChild(item);
+      });
+    }
+    container.appendChild(grid);
+  });
+}
+
+export function finishVeteranSetup() {
+  const profile = getActiveProfile();
+  profile.selected = []; 
+  saveAppState();
+  updateSchedule();
+  renderSubjectsList();
+  closeProfileModal();
+}
+
+// --- Tabs / Profiles ---
+
+export function renderTabs() {
+  const container = document.getElementById('tabs-container');
+  container.innerHTML = '';
+
+  appState.profiles.forEach(profile => {
+    const wrapper = document.createElement('div');
+    wrapper.className = `tab-wrapper ${profile.id === appState.activeProfileId ? 'active' : ''}`;
+    
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'tab-name';
+    nameDiv.textContent = `👤 ${profile.name}`;
+    nameDiv.onclick = () => switchProfile(profile.id);
+    wrapper.appendChild(nameDiv);
+
+    if (appState.profiles.length > 1) {
+      const closeDiv = document.createElement('div');
+      closeDiv.className = 'tab-close';
+      closeDiv.textContent = '✕';
+      closeDiv.onclick = (e) => {
+        e.stopPropagation();
+        deleteProfile(profile.id);
+      };
+      wrapper.appendChild(closeDiv);
+    }
+    
+    container.appendChild(wrapper);
+  });
+
+  const addBtn = document.createElement('button');
+  addBtn.className = 'add-tab-btn';
+  addBtn.innerHTML = '➕ Amigo';
+  addBtn.onclick = () => showAddFriendModal();
+  container.appendChild(addBtn);
+}
+
+export function switchProfile(profileId) {
+  appState.activeProfileId = profileId;
+  saveAppState();
+  renderTabs();
+  renderSubjectsList();
+  updateSchedule();
+}
+
+export function deleteProfile(profileId) {
+  openConfirmModal("Tem certeza que deseja remover este amigo?", () => {
+    const indexToRemove = appState.profiles.findIndex(p => p.id === profileId);
+    const isActive = (profileId === appState.activeProfileId);
+    
+    appState.profiles = appState.profiles.filter(p => p.id !== profileId);
+    
+    if (appState.profiles.length === 0) {
+      createNewProfile("Você");
+    } else {
+      if (isActive) {
+        const newIndex = Math.max(0, indexToRemove - 1);
+        switchProfile(appState.profiles[newIndex].id);
+      } else {
+        saveAppState();
+        renderTabs();
+        if (appState.groupMode) updateSchedule();
+      }
+    }
+  });
+}
+
+export function createNewProfile(name) {
+  const newId = Date.now();
+  const newProfile = {
+    id: newId,
+    name: name,
+    history: { approved: [], failed: [] },
+    selected: []
+  };
+  appState.profiles.push(newProfile);
+  switchProfile(newId);
+  openProfileModal(true); 
+}
+
+// --- Render Functions ---
+
+export function renderSubjectsList() {
+  const container = document.getElementById('subjects-list');
+  container.innerHTML = '';
+  const profile = getActiveProfile();
+  const selectedSet = new Set(profile.selected);
+  const approvedSet = new Set(profile.history.approved);
+  const failedSet = new Set(profile.history.failed);
+
+  subjectsData.forEach(sem => {
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'semester-group';
+    
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'semester-title';
+    titleDiv.textContent = sem.semestre;
+    groupDiv.appendChild(titleDiv);
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'semester-content';
+
+    if (sem.disciplinas) {
+      sem.disciplinas.forEach(subj => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'subject-item';
+        itemDiv.dataset.subjName = subj.nome; // For conflict detection
+        
+        const isSelected = selectedSet.has(subj.nome);
+        const isApproved = approvedSet.has(subj.id);
+        const isFailed = failedSet.has(subj.id);
+        const isLocked = isApproved || isFailed;
+        
+        if (isLocked) itemDiv.classList.add('locked');
+        if (isSelected) itemDiv.classList.add('selected');
+        if (isFailed) itemDiv.classList.add('reprovado-flag');
+
+        const checkboxWrapper = document.createElement('div');
+        checkboxWrapper.className = 'checkbox-wrapper';
+        checkboxWrapper.style.pointerEvents = 'none'; // Allow clicks through to itemDiv
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = isSelected;
+        checkbox.disabled = isLocked;
+        checkbox.style.pointerEvents = 'auto'; // Only checkbox captures clicks
+        checkbox.onclick = (e) => { e.stopPropagation(); toggleSubject(subj); };
+        checkboxWrapper.appendChild(checkbox);
+        itemDiv.appendChild(checkboxWrapper);
+
+        const infoDiv = document.createElement('div');
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'subject-name';
+        nameDiv.textContent = subj.nome;
+        infoDiv.appendChild(nameDiv);
+
+        let details = '';
+        if (subj.requisitos && subj.requisitos.length > 0) {
+          details += subj.requisitos.map(reqId => {
+            const req = findSubjectById(reqId);
+            return req ? `<span class="req-badge">⟳ ${req.nome}</span>` : '';
+          }).join(' ');
+        }
+        if (subj.correquisitos && subj.correquisitos.length > 0) {
+          details += subj.correquisitos.map(reqId => {
+            const req = findSubjectById(reqId);
+            return req ? `<span class="coreq-badge">⟳ ${req.nome}</span>` : '';
+          }).join(' ');
+        }
+        if (subj.civilNight) {
+          details += ' <span class="civil-badge" title="Matéria do período noturno de Engenharia Civil">🌙 Civil</span>';
+        }
+        if (isFailed) {
+          details += ' <span class="alert-badge">⚠ REPROVADO</span>';
+        }
+        if (isLocked) {
+          details = `<span class="locked-badge">${isApproved ? '🔒' : '🔓'}</span>` + details;
+        }
+        
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'subject-details';
+        detailsDiv.innerHTML = details;
+        infoDiv.appendChild(detailsDiv);
+        itemDiv.appendChild(infoDiv);
+
+        if (!isLocked) {
+          itemDiv.onclick = () => {
+            try {
+              const changed = toggleSubject(subj);
+              if (changed) {
+                // Manually sync checkbox since card click doesn't trigger native toggle
+                const checkbox = itemDiv.querySelector('input[type="checkbox"]');
+                if (checkbox) {
+                  checkbox.checked = !checkbox.checked;
+                }
+              }
+            } catch (err) {
+              console.error('toggleSubject ERROR:', err);
+            }
+          };
+        }
+        contentDiv.appendChild(itemDiv);
+      });
+    }
+    groupDiv.appendChild(contentDiv);
+    container.appendChild(groupDiv);
+  });
+}
+
+// --- Calendar/Schedule ---
+
+export function updateSchedule() {
+  document.querySelectorAll('.event-block').forEach(el => el.remove());
+  document.querySelectorAll('.subject-item.conflict').forEach(el => el.classList.remove('conflict'));
+  const conflictAlert = document.getElementById('conflict-alert');
+  conflictAlert.style.display = 'none';
+
+  const profilesToRender = appState.groupMode ? appState.profiles : [getActiveProfile()];
+  
+  const allEvents = [];
+  
+  profilesToRender.forEach((profile, profileIndex) => {
+    const userColor = getUserColor(profileIndex);
+    if (!profile.selected || profile.selected.length === 0) return;
+    
+    for (const subjectName of profile.selected) {
+      const subject = findSubjectByName(subjectName);
+      if (!subject || !subject.horarios) continue;
+      
+      for (const horario of subject.horarios) {
+        const { day, top, height } = timeToPixels(horario);
+        allEvents.push({
+          subject,
+          profile,
+          profileIndex,
+          userColor,
+          day,
+          top,
+          height,
+          horario
+        });
+      }
+    }
+  });
+
+  const dayColumns = {};
+  allEvents.forEach((event, idx) => {
+    if (!dayColumns[event.day]) dayColumns[event.day] = [];
+    dayColumns[event.day].push({...event, originalIndex: idx});
+  });
+
+  let hasConflict = false;
+
+  for (const day in dayColumns) {
+    const col = document.querySelector(`.day-column[data-day="${day}"]`);
+    if (!col) continue;
+    
+    const events = dayColumns[day];
+    events.sort((a, b) => a.top - b.top || a.height - b.height);
+
+    for (let i = 0; i < events.length; i++) {
+      for (let j = i + 1; j < events.length; j++) {
+        const a = events[i];
+        const b = events[j];
+        const aBottom = a.top + a.height;
+        const bBottom = b.top + b.height;
+        
+        if (a.top < bBottom && b.top < aBottom) {
+          hasConflict = true;
+          if (a.profile.id === b.profile.id) {
+            a.isConflict = true;
+            b.isConflict = true;
+          } else {
+            a.isOverlap = true;
+            b.isOverlap = true;
+            a.overlapWith = b.profileIndex;
+            b.overlapWith = a.profileIndex;
+          }
+        }
+      }
+    }
+  }
+
+  allEvents.forEach(event => {
+    const col = document.querySelector(`.day-column[data-day="${event.day}"]`);
+    if (!col) return;
+
+    const block = document.createElement('div');
+    block.className = 'event-block';
+    block.style.top = `${event.top}px`;
+    block.style.height = `${event.height}px`;
+    
+    if (event.isConflict) {
+      block.classList.add('conflict');
+      const subjectItem = document.querySelector(`.subject-item[data-subj-name="${event.subject.nome}"]`);
+      if (subjectItem) subjectItem.classList.add('conflict');
+    }
+    
+    if (event.isOverlap) {
+      const otherColor = getUserColor(event.overlapWith);
+      block.style.background = `linear-gradient(90deg, ${event.userColor.bg} 50%, ${otherColor.bg} 50%)`;
+      block.style.borderLeftColor = event.userColor.border;
+      block.style.width = '80%';
+      if (event.originalIndex % 2 === 1) block.style.left = '15%';
+    } else {
+      block.style.background = event.userColor.bg;
+      block.style.borderLeftColor = event.userColor.border;
+      block.style.color = event.userColor.text;
+    }
+
+    const title = document.createElement('div');
+    title.className = 'event-title';
+    title.textContent = event.subject.nome;
+    block.appendChild(title);
+
+    const info = document.createElement('div');
+    info.className = 'event-info';
+    info.textContent = event.horario;
+    block.appendChild(info);
+
+    if (event.subject.sala && event.subject.sala !== 'N/A') {
+      const room = document.createElement('div');
+      room.className = 'event-room';
+      room.textContent = event.subject.sala;
+      block.appendChild(room);
+    }
+
+    if (appState.groupMode && profilesToRender.length > 1) {
+      const owner = document.createElement('div');
+      owner.className = 'event-owner';
+      owner.textContent = event.profile.name;
+      block.appendChild(owner);
+    }
+
+    col.appendChild(block);
+  });
+
+  if (hasConflict) {
+    conflictAlert.style.display = 'block';
+  }
+}
+
+// --- Init ---
+
+export function init() {
+  document.addEventListener('DOMContentLoaded', () => {
+    loadAppState();
+    
+    document.getElementById('dark-mode-toggle').checked = appState.darkMode;
+    document.getElementById('group-mode-toggle').checked = appState.groupMode;
+    if (appState.darkMode) document.body.classList.add('dark-mode');
+
+    initCalendarGrid();
+    renderTabs();
+    
+    // Expose functions to window for inline onclick handlers
+    window.toggleDarkMode = toggleDarkMode;
+    window.toggleGroupMode = toggleGroupMode;
+    window.editCurrentProfile = editCurrentProfile;
+    window.togglePasteArea = togglePasteArea;
+    window.processPastedJSON = (textarea) => {
+      const result = processPastedJSON(textarea);
+      if (result.success) {
+        showToast('JSON carregado com sucesso!', 'success');
+        renderSubjectsList();
+        updateSchedule();
+      } else {
+        showToast(result.message, 'error');
+      }
+    };
+    window.resetAllData = resetAllData;
+    window.selectProfileType = selectProfileType;
+    window.finishVeteranSetup = finishVeteranSetup;
+    window.showAddFriendModal = showAddFriendModal;
+    window.confirmFriendName = confirmFriendName;
+    window.closeProfileModal = closeProfileModal;
+    window.openConfirmModal = openConfirmModal;
+    window.closeConfirmModal = closeConfirmModal;
+    window.exportGradeJSON = exportGradeJSON;
+    
+    if (appState.profiles.length === 0) {
+      createNewProfile("Você");
+    } else {
+      renderSubjectsList();
+      updateSchedule();
+    }
+  });
+}

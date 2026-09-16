@@ -1,0 +1,14 @@
+- banner [ref=f1e3]:
+  - heading "📅 Organizador de Grade BSI" [level=1] [ref=f1e4]
+  - generic [ref=f1e5]:
+    - generic [ref=f1e6] [cursor=pointer]:
+      - checkbox "🌙 Modo Escuro" [ref=f1e7]
+      - generic [ref=f1e8]: 🌙 Modo Escuro
+    - generic [ref=f1e9] [cursor=pointer]:
+      - checkbox "👥 Comparar Horários (Todos)" [ref=f1e10]
+      - generic [ref=f1e11]: 👥 Comparar Horários (Todos)
+  - generic [ref=f1e13]:
+    - button "👤 Editar Perfil Atual" [ref=f1e14] [cursor=pointer]
+    - generic [ref=f1e15]: 📂 Carregar JSON
+    - button "📝 Colar JSON" [ref=f1e17] [cursor=pointer]
+    - button "🗑️ Resetar Tudo" [ref=f1e18] [cursor=pointer]

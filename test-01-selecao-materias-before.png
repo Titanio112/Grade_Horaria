@@ -1,0 +1,580 @@
+- generic [ref=f23e2] [box=20,20,879,2137]:
+  - banner [ref=f23e3] [box=20,20,879,278]:
+    - heading "📅 Organizador de Grade BSI" [level=1] [ref=f23e4] [box=52,57,815,43]
+    - generic [ref=f23e5] [box=52,115,815,42]:
+      - generic [ref=f23e6] [cursor=pointer] [box=217,115,182,42]:
+        - checkbox "🌙 Modo Escuro" [checked] [ref=f23e7] [box=234,127,18,18]
+        - generic [ref=f23e8] [box=260,124,122,24]: 🌙 Modo Escuro
+      - generic [ref=f23e9] [cursor=pointer] [box=419,115,283,42]:
+        - checkbox "👥 Comparar Horários (Todos)" [checked] [ref=f23e10] [box=436,127,18,18]
+        - generic [ref=f23e11] [box=462,124,223,24]: 👥 Comparar Horários (Todos)
+    - generic [ref=f23e13] [box=120,206,679,44]:
+      - button "👤 Editar Perfil Atual" [ref=f23e14] [cursor=pointer] [box=120,206,182,44]
+      - generic [ref=f23e15] [box=318,206,159,44]: 📂 Carregar JSON
+      - button "📝 Colar JSON" [ref=f23e17] [cursor=pointer] [box=493,206,139,44]
+      - button "🗑️ Resetar Tudo" [ref=f23e18] [cursor=pointer] [box=648,206,150,44]
+  - generic [ref=f23e19] [box=20,330,879,50]:
+    - generic [ref=f23e20] [box=30,330,125,45]:
+      - generic [ref=f23e21] [cursor=pointer] [box=31,331,91,44]: 👤 Você
+      - generic [ref=f23e22] [cursor=pointer] [box=122,332,32,42]: ✕
+    - generic [ref=f23e23] [box=165,330,132,45]:
+      - generic [ref=f23e24] [cursor=pointer] [box=166,331,98,44]: 👤 Maria
+      - generic [ref=f23e25] [cursor=pointer] [box=264,332,32,42]: ✕
+    - generic [ref=f23e26] [box=307,328,124,45]:
+      - generic [ref=f23e27] [cursor=pointer] [box=308,329,90,44]: 👤 João
+      - generic [ref=f23e28] [cursor=pointer] [box=398,330,32,42]: ✕
+    - button "➕ Amigo" [ref=f23e29] [cursor=pointer] [box=440,330,96,45]
+  - generic [ref=f23e30] [box=20,380,879,56]:
+    - strong [ref=f23e31] [box=40,397,174,21]: ⚠️ Conflito Detectado!
+    - text: Verifique os blocos vermelhos na grade.
+  - generic [ref=f23e32] [box=20,452,879,1705]:
+    - generic [ref=f23e33] [box=20,452,879,773]:
+      - generic [ref=f23e34] [box=44,476,821,673]:
+        - generic [ref=f23e35] [cursor=pointer] [box=44,476,821,40]: 1º Semestre
+        - generic [ref=f23e36] [box=44,529,821,595]:
+          - generic [ref=f23e37] [cursor=pointer] [box=44,529,821,54]:
+            - checkbox [checked] [ref=f23e38] [box=59,547,18,18]
+            - generic [ref=f23e39] [box=87,544,149,25]: Metodologia Científica
+          - generic [ref=f23e41] [cursor=pointer] [box=44,591,821,75]:
+            - checkbox [checked] [ref=f23e42] [box=59,620,18,18]
+            - generic [ref=f23e43] [box=87,606,134,46]:
+              - generic [ref=f23e44] [box=87,606,134,22]: Inglês Instrumental I
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e46] [box=93,633,52,19]: 🌙 Civil
+          - generic [ref=f23e47] [cursor=pointer] [box=44,675,821,75]:
+            - checkbox [checked] [ref=f23e48] [box=59,703,18,18]
+            - generic [ref=f23e49] [box=87,689,271,46]:
+              - generic [ref=f23e50] [box=87,689,271,22]: Leitura e Produção de Textos Acadêmicos
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e52] [box=93,716,52,19]: 🌙 Civil
+          - generic [ref=f23e53] [cursor=pointer] [box=44,758,821,54]:
+            - checkbox [checked] [ref=f23e54] [box=59,776,18,18]
+            - generic [ref=f23e55] [box=87,773,458,25]: Contexto Social e Profissional do Bacharel em Sistemas de Informação
+          - generic [ref=f23e57] [cursor=pointer] [box=44,820,821,75]:
+            - checkbox [checked] [ref=f23e58] [box=59,849,18,18]
+            - generic [ref=f23e59] [box=87,835,276,46]:
+              - generic [ref=f23e60] [box=87,835,276,22]: Cálculo com Funções de uma Variável Real
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e62] [box=93,862,52,19]: 🌙 Civil
+          - generic [ref=f23e63] [cursor=pointer] [box=44,903,821,75]:
+            - checkbox [checked] [ref=f23e64] [box=59,932,18,18]
+            - generic [ref=f23e65] [box=87,918,316,46]:
+              - generic [ref=f23e66] [box=87,918,316,22]: Laboratório de Programação de Computadores I
+              - generic [ref=f23e67] [box=87,943,316,21]:
+                - generic [ref=f23e68] [box=93,945,194,19]: ⟳ Programação de Computadores I
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e69] [box=296,945,52,19]: 🌙 Civil
+          - generic [ref=f23e70] [cursor=pointer] [box=44,987,821,54]:
+            - checkbox [checked] [ref=f23e71] [box=59,1005,18,18]
+            - generic [ref=f23e72] [box=87,1001,239,25]: Geometria Analítica e Álgebra Linear
+          - generic [ref=f23e74] [cursor=pointer] [box=44,1049,821,75]:
+            - checkbox [checked] [ref=f23e75] [box=59,1078,18,18]
+            - generic [ref=f23e76] [box=87,1064,339,46]:
+              - generic [ref=f23e77] [box=87,1064,339,22]: Programação de Computadores I
+              - generic [ref=f23e78] [box=87,1089,339,21]:
+                - generic [ref=f23e79] [box=93,1091,272,19]: ⟳ Laboratório de Programação de Computadores I
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e80] [box=374,1091,52,19]: 🌙 Civil
+      - generic [ref=f23e81] [box=44,1173,821,702]:
+        - generic [ref=f23e82] [cursor=pointer] [box=44,1173,821,40]: 2º Semestre
+        - generic [ref=f23e83] [box=44,1226,821,624]:
+          - generic [ref=f23e84] [cursor=pointer] [box=44,1226,821,75]:
+            - checkbox [checked] [ref=f23e85] [box=59,1254,18,18]
+            - generic [ref=f23e86] [box=87,1241,198,46]:
+              - generic [ref=f23e87] [box=87,1241,198,22]: Banco de Dados I
+              - generic [ref=f23e88] [box=87,1265,198,21]: ⟳ Laboratório de Banco de Dados I
+          - generic [ref=f23e90] [cursor=pointer] [box=44,1309,821,54]:
+            - checkbox [ref=f23e91] [box=59,1327,18,18]
+            - generic [ref=f23e92] [box=87,1324,293,25]: Arquitetura e Organização de Computadores
+          - generic [ref=f23e94] [cursor=pointer] [box=44,1371,821,54]:
+            - checkbox [checked] [ref=f23e95] [box=59,1390,18,18]
+            - generic [ref=f23e96] [box=87,1386,158,25]: Informática e Sociedade
+          - generic [ref=f23e98] [cursor=pointer] [box=44,1434,821,77]:
+            - checkbox [ref=f23e99] [box=59,1463,18,18]
+            - generic [ref=f23e100] [box=87,1449,732,48]:
+              - generic [ref=f23e101] [box=87,1449,732,22]: Laboratório de Programação de Computadores II
+              - generic [ref=f23e102] [box=87,1473,732,23]:
+                - generic [ref=f23e103] [box=87,1473,189,23]: ⟳ Programação de Computadores I
+                - generic [ref=f23e104] [box=285,1473,265,23]: ⟳ Laboratório de Programação de Computadores I
+                - generic [ref=f23e105] [box=561,1475,197,19]: ⟳ Programação de Computadores II
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e106] [box=767,1475,52,19]: 🌙 Civil
+          - generic [ref=f23e107] [cursor=pointer] [box=44,1519,821,77]:
+            - checkbox [ref=f23e108] [box=59,1549,18,18]
+            - generic [ref=f23e109] [box=87,1534,240,48]:
+              - generic [ref=f23e110] [box=87,1534,240,22]: Integração e Séries
+              - generic [ref=f23e111] [box=87,1559,240,23]: ⟳ Cálculo com Funções de uma Variável Real
+          - generic [ref=f23e113] [cursor=pointer] [box=44,1604,821,77]:
+            - checkbox [ref=f23e114] [box=59,1634,18,18]
+            - generic [ref=f23e115] [box=87,1619,516,48]:
+              - generic [ref=f23e116] [box=87,1619,516,22]: Cálculo com Funções de Várias Variáveis I
+              - generic [ref=f23e117] [box=87,1644,516,23]:
+                - generic [ref=f23e118] [box=87,1644,235,23]: ⟳ Cálculo com Funções de uma Variável Real
+                - generic [ref=f23e119] [box=330,1644,206,23]: ⟳ Geometria Analítica e Álgebra Linear
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e120] [box=551,1646,52,19]: 🌙 Civil
+          - generic [ref=f23e121] [cursor=pointer] [box=44,1689,821,77]:
+            - checkbox [ref=f23e122] [box=59,1719,18,18]
+            - generic [ref=f23e123] [box=87,1704,749,48]:
+              - generic [ref=f23e124] [box=87,1704,749,22]: Programação de Computadores II
+              - generic [ref=f23e125] [box=87,1729,749,23]:
+                - generic [ref=f23e126] [box=87,1729,189,23]: ⟳ Programação de Computadores I
+                - generic [ref=f23e127] [box=285,1729,265,23]: ⟳ Laboratório de Programação de Computadores I
+                - generic [ref=f23e128] [box=561,1731,275,19]: ⟳ Laboratório de Programação de Computadores II
+          - generic [ref=f23e129] [cursor=pointer] [box=44,1775,821,75]:
+            - checkbox [checked] [ref=f23e130] [box=59,1803,18,18]
+            - generic [ref=f23e131] [box=87,1789,214,46]:
+              - generic [ref=f23e132] [box=87,1789,214,22]: Laboratório de Banco de Dados I
+              - generic [ref=f23e133] [box=87,1814,214,21]: ⟳ Banco de Dados I
+      - generic [ref=f23e135] [box=44,1899,821,749]:
+        - generic [ref=f23e136] [cursor=pointer] [box=44,1899,821,40]: 3º Semestre
+        - generic [ref=f23e137] [box=44,1952,821,672]:
+          - generic [ref=f23e138] [cursor=pointer] [box=44,1952,821,77]:
+            - checkbox [ref=f23e139] [box=59,1981,18,18]
+            - generic [ref=f23e140] [box=87,1966,680,48]:
+              - generic [ref=f23e141] [box=87,1966,680,22]: Laboratório de Programação de Computadores III
+              - generic [ref=f23e142] [box=87,1991,680,23]:
+                - generic [ref=f23e143] [box=87,1991,192,23]: ⟳ Programação de Computadores II
+                - generic [ref=f23e144] [box=288,1991,268,23]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e145] [box=567,1993,200,19]: ⟳ Programação de Computadores III
+          - generic [ref=f23e146] [cursor=pointer] [box=44,2037,821,77]:
+            - checkbox [ref=f23e147] [box=59,2066,18,18]
+            - generic [ref=f23e148] [box=87,2052,529,48]:
+              - generic [ref=f23e149] [box=87,2052,529,22]: Métodos Numéricos Computacionais
+              - generic [ref=f23e150] [box=87,2076,529,23]:
+                - generic [ref=f23e151] [box=87,2076,189,23]: ⟳ Programação de Computadores I
+                - generic [ref=f23e152] [box=285,2076,265,23]: ⟳ Laboratório de Programação de Computadores I
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e153] [box=564,2078,52,19]: 🌙 Civil
+          - generic [ref=f23e154] [cursor=pointer] [box=44,2122,821,75]:
+            - checkbox [ref=f23e155] [box=59,2151,18,18]
+            - generic [ref=f23e156] [box=87,2137,155,46]:
+              - generic [ref=f23e157] [box=87,2137,155,22]: Introdução à Sociologia
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e159] [box=93,2164,52,19]: 🌙 Civil
+          - generic [ref=f23e160] [cursor=pointer] [box=44,2205,821,77]:
+            - checkbox [ref=f23e161] [box=59,2235,18,18]
+            - generic [ref=f23e162] [box=87,2220,515,48]:
+              - generic [ref=f23e163] [box=87,2220,515,22]: Banco de Dados II
+              - generic [ref=f23e164] [box=87,2245,515,23]:
+                - generic [ref=f23e165] [box=87,2245,112,23]: ⟳ Banco de Dados I
+                - generic [ref=f23e166] [box=207,2245,188,23]: ⟳ Laboratório de Banco de Dados I
+                - generic [ref=f23e167] [box=406,2247,196,19]: ⟳ Laboratório de Banco de Dados II
+          - generic [ref=f23e168] [cursor=pointer] [box=44,2290,821,77]:
+            - checkbox [ref=f23e169] [box=59,2320,18,18]
+            - generic [ref=f23e170] [box=87,2305,272,48]:
+              - generic [ref=f23e171] [box=87,2305,272,22]: Álgebra Linear
+              - generic [ref=f23e172] [box=87,2330,272,23]:
+                - generic [ref=f23e173] [box=87,2330,206,23]: ⟳ Geometria Analítica e Álgebra Linear
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e174] [box=307,2332,52,19]: 🌙 Civil
+          - generic [ref=f23e175] [cursor=pointer] [box=44,2376,821,77]:
+            - checkbox [ref=f23e176] [box=59,2405,18,18]
+            - generic [ref=f23e177] [box=87,2390,437,48]:
+              - generic [ref=f23e178] [box=87,2390,437,22]: Laboratório de Banco de Dados II
+              - generic [ref=f23e179] [box=87,2415,437,23]:
+                - generic [ref=f23e180] [box=87,2415,112,23]: ⟳ Banco de Dados I
+                - generic [ref=f23e181] [box=207,2415,188,23]: ⟳ Laboratório de Banco de Dados I
+                - generic [ref=f23e182] [box=406,2417,118,19]: ⟳ Banco de Dados II
+          - generic [ref=f23e183] [cursor=pointer] [box=44,2461,821,77]:
+            - checkbox [ref=f23e184] [box=59,2490,18,18]
+            - generic [ref=f23e185] [box=87,2476,424,48]:
+              - generic [ref=f23e186] [box=87,2476,424,22]: Equações Diferenciais Ordinárias
+              - generic [ref=f23e187] [box=87,2500,424,23]:
+                - generic [ref=f23e188] [box=87,2500,229,23]: ⟳ Cálculo com Funções de Várias Variáveis I
+                - generic [ref=f23e189] [box=325,2500,119,23]: ⟳ Integração e Séries
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e190] [box=459,2502,52,19]: 🌙 Civil
+          - generic [ref=f23e191] [cursor=pointer] [box=44,2546,821,77]:
+            - checkbox [ref=f23e192] [box=59,2576,18,18]
+            - generic [ref=f23e193] [box=87,2561,758,48]:
+              - generic [ref=f23e194] [box=87,2561,758,22]: Programação de Computadores III
+              - generic [ref=f23e195] [box=87,2586,758,23]:
+                - generic [ref=f23e196] [box=87,2586,192,23]: ⟳ Programação de Computadores II
+                - generic [ref=f23e197] [box=288,2586,268,23]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e198] [box=567,2588,278,19]: ⟳ Laboratório de Programação de Computadores III
+      - generic [ref=f23e199] [box=44,2672,821,639]:
+        - generic [ref=f23e200] [cursor=pointer] [box=44,2672,821,40]: 4º Semestre
+        - generic [ref=f23e201] [box=44,2725,821,562]:
+          - generic [ref=f23e202] [cursor=pointer] [box=44,2725,821,77]:
+            - checkbox [ref=f23e203] [box=59,2754,18,18]
+            - generic [ref=f23e204] [box=87,2740,253,48]:
+              - generic [ref=f23e205] [box=87,2740,253,22]: Sistemas Operacionais
+              - generic [ref=f23e206] [box=87,2764,253,23]: ⟳ Arquitetura e Organização de Computadores
+          - generic [ref=f23e208] [cursor=pointer] [box=44,2810,821,54]:
+            - checkbox [ref=f23e209] [box=59,2828,18,18]
+            - generic [ref=f23e210] [box=87,2825,130,25]: Design de Interação
+          - generic [ref=f23e212] [cursor=pointer] [box=44,2872,821,77]:
+            - checkbox [ref=f23e213] [box=59,2902,18,18]
+            - generic [ref=f23e214] [box=87,2887,621,48]:
+              - generic [ref=f23e215] [box=87,2887,621,22]: Laboratório de Engenharia de Software
+              - generic [ref=f23e216] [box=87,2912,621,23]:
+                - generic [ref=f23e217] [box=87,2912,189,23]: ⟳ Programação de Computadores I
+                - generic [ref=f23e218] [box=285,2912,265,23]: ⟳ Laboratório de Programação de Computadores I
+                - generic [ref=f23e219] [box=561,2914,147,19]: ⟳ Engenharia de Software
+          - generic [ref=f23e220] [cursor=pointer] [box=44,2958,821,77]:
+            - checkbox [ref=f23e221] [box=59,2987,18,18]
+            - generic [ref=f23e222] [box=87,2972,186,48]:
+              - generic [ref=f23e223] [box=87,2972,186,22]: Estatística
+              - generic [ref=f23e224] [box=87,2997,186,23]:
+                - generic [ref=f23e225] [box=87,2997,119,23]: ⟳ Integração e Séries
+                - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e226] [box=221,2999,52,19]: 🌙 Civil
+          - generic [ref=f23e227] [cursor=pointer] [box=44,3043,821,75]:
+            - checkbox [ref=f23e228] [box=59,3071,18,18]
+            - generic [ref=f23e229] [box=87,3058,260,46]:
+              - generic [ref=f23e230] [box=87,3058,260,22]: Laboratório de Redes de Computadores
+              - generic [ref=f23e231] [box=87,3082,260,21]: ⟳ Redes de Computadores
+          - generic [ref=f23e233] [cursor=pointer] [box=44,3126,821,75]:
+            - checkbox [ref=f23e234] [box=59,3155,18,18]
+            - generic [ref=f23e235] [box=87,3141,383,46]:
+              - generic [ref=f23e236] [box=87,3141,383,22]: Redes de Computadores
+              - generic [ref=f23e237] [box=87,3166,383,21]:
+                - generic [ref=f23e238] [box=93,3168,228,19]: ⟳ Laboratório de Redes de Computadores
+                - generic [ref=f23e239] [box=330,3168,140,19]: ⟳ Sistemas Operacionais
+          - generic [ref=f23e240] [cursor=pointer] [box=44,3209,821,77]:
+            - checkbox [ref=f23e241] [box=59,3239,18,18]
+            - generic [ref=f23e242] [box=87,3224,699,48]:
+              - generic [ref=f23e243] [box=87,3224,699,22]: Engenharia de Software
+              - generic [ref=f23e244] [box=87,3249,699,23]:
+                - generic [ref=f23e245] [box=87,3249,189,23]: ⟳ Programação de Computadores I
+                - generic [ref=f23e246] [box=285,3249,265,23]: ⟳ Laboratório de Programação de Computadores I
+                - generic [ref=f23e247] [box=561,3251,225,19]: ⟳ Laboratório de Engenharia de Software
+      - generic [ref=f23e248] [box=44,3335,821,942]:
+        - generic [ref=f23e249] [cursor=pointer] [box=44,3335,821,40]: 5º Semestre
+        - generic [ref=f23e250] [box=44,3388,821,865]:
+          - generic [ref=f23e251] [cursor=pointer] [box=44,3388,821,77]:
+            - checkbox [ref=f23e252] [box=59,3418,18,18]
+            - generic [ref=f23e253] [box=87,3403,623,48]:
+              - generic [ref=f23e254] [box=87,3403,623,22]: Gerenciamento de Projetos
+              - generic [ref=f23e255] [box=87,3428,623,23]:
+                - generic [ref=f23e256] [box=87,3428,143,23]: ⟳ Engenharia de Software
+                - generic [ref=f23e257] [box=238,3428,219,23]: ⟳ Laboratório de Engenharia de Software
+                - generic [ref=f23e258] [box=468,3430,242,19]: ⟳ Laboratório de Gerenciamento de Projetos
+          - generic [ref=f23e259] [cursor=pointer] [box=44,3473,821,77]:
+            - checkbox [ref=f23e260] [box=59,3503,18,18]
+            - generic [ref=f23e261] [box=87,3488,154,48]:
+              - generic [ref=f23e262] [box=87,3488,154,22]: Teoria da Probabilidade
+              - generic [ref=f23e263] [box=87,3513,154,23]: ⟳ Estatística
+          - generic [ref=f23e265] [cursor=pointer] [box=44,3559,821,75]:
+            - checkbox [ref=f23e266] [box=59,3587,18,18]
+            - generic [ref=f23e267] [box=87,3573,149,46]:
+              - generic [ref=f23e268] [box=87,3573,149,22]: Filosofia da Tecnologia
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e270] [box=93,3600,52,19]: 🌙 Civil
+          - generic [ref=f23e271] [cursor=pointer] [box=44,3642,821,100]:
+            - checkbox [ref=f23e272] [box=59,3683,18,18]
+            - generic [ref=f23e273] [box=87,3657,763,70]:
+              - generic [ref=f23e274] [box=87,3657,763,22]: Laboratório de Programação Web
+              - generic [ref=f23e275] [box=87,3681,763,46]:
+                - generic [ref=f23e276] [box=87,3681,195,23]: ⟳ Programação de Computadores III
+                - generic [ref=f23e277] [box=291,3681,271,23]: ⟳ Laboratório de Programação de Computadores III
+                - generic [ref=f23e278] [box=570,3681,115,23]: ⟳ Banco de Dados II
+                - generic [ref=f23e279] [box=87,3704,191,23]: ⟳ Laboratório de Banco de Dados II
+                - generic [ref=f23e280] [box=289,3706,120,19]: ⟳ Programação Web
+          - generic [ref=f23e281] [cursor=pointer] [box=44,3750,821,77]:
+            - checkbox [ref=f23e282] [box=59,3779,18,18]
+            - generic [ref=f23e283] [box=87,3765,545,48]:
+              - generic [ref=f23e284] [box=87,3765,545,22]: Laboratório de Gerenciamento de Projetos
+              - generic [ref=f23e285] [box=87,3789,545,23]:
+                - generic [ref=f23e286] [box=87,3789,143,23]: ⟳ Engenharia de Software
+                - generic [ref=f23e287] [box=238,3789,219,23]: ⟳ Laboratório de Engenharia de Software
+                - generic [ref=f23e288] [box=468,3791,164,19]: ⟳ Gerenciamento de Projetos
+          - generic [ref=f23e289] [cursor=pointer] [box=44,3835,821,77]:
+            - checkbox [ref=f23e290] [box=59,3865,18,18]
+            - generic [ref=f23e291] [box=87,3850,165,48]:
+              - generic [ref=f23e292] [box=87,3850,165,22]: Metodologia da Pesquisa
+              - generic [ref=f23e293] [box=87,3875,165,23]: ⟳ Metodologia Científica
+          - generic [ref=f23e295] [cursor=pointer] [box=44,3920,821,100]:
+            - checkbox [ref=f23e296] [box=59,3961,18,18]
+            - generic [ref=f23e297] [box=87,3935,763,70]:
+              - generic [ref=f23e298] [box=87,3935,763,22]: Programação Web
+              - generic [ref=f23e299] [box=87,3960,763,46]:
+                - generic [ref=f23e300] [box=87,3960,195,23]: ⟳ Programação de Computadores III
+                - generic [ref=f23e301] [box=291,3960,271,23]: ⟳ Laboratório de Programação de Computadores III
+                - generic [ref=f23e302] [box=570,3960,115,23]: ⟳ Banco de Dados II
+                - generic [ref=f23e303] [box=87,3983,191,23]: ⟳ Laboratório de Banco de Dados II
+                - generic [ref=f23e304] [box=289,3985,198,19]: ⟳ Laboratório de Programação Web
+          - generic [ref=f23e305] [cursor=pointer] [box=44,4028,821,54]:
+            - checkbox [ref=f23e306] [box=59,4046,18,18]
+            - generic [ref=f23e307] [box=87,4043,502,25]: Introdução à Experimentação e ao Desenvolvimento de Protótipos e Projetos
+          - generic [ref=f23e309] [cursor=pointer] [box=44,4091,821,77]:
+            - checkbox [ref=f23e310] [box=59,4120,18,18]
+            - generic [ref=f23e311] [box=87,4105,681,48]:
+              - generic [ref=f23e312] [box=87,4105,681,22]: Estrutura de Dados
+              - generic [ref=f23e313] [box=87,4130,681,23]:
+                - generic [ref=f23e314] [box=87,4130,192,23]: ⟳ Programação de Computadores II
+                - generic [ref=f23e315] [box=288,4130,268,23]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e316] [box=567,4132,201,19]: ⟳ Laboratório de Estrutura de Dados
+          - generic [ref=f23e317] [cursor=pointer] [box=44,4176,821,77]:
+            - checkbox [ref=f23e318] [box=59,4205,18,18]
+            - generic [ref=f23e319] [box=87,4190,603,48]:
+              - generic [ref=f23e320] [box=87,4190,603,22]: Laboratório de Estrutura de Dados
+              - generic [ref=f23e321] [box=87,4215,603,23]:
+                - generic [ref=f23e322] [box=87,4215,192,23]: ⟳ Programação de Computadores II
+                - generic [ref=f23e323] [box=288,4215,268,23]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e324] [box=567,4217,123,19]: ⟳ Estrutura de Dados
+      - generic [ref=f23e325] [box=44,4302,821,643]:
+        - generic [ref=f23e326] [cursor=pointer] [box=44,4302,821,40]: 6º Semestre
+        - generic [ref=f23e327] [box=44,4355,821,566]:
+          - generic [ref=f23e328] [cursor=pointer] [box=44,4355,821,54]:
+            - checkbox [ref=f23e329] [box=59,4373,18,18]
+            - generic [ref=f23e330] [box=87,4369,136,25]: Empreendedorismo I
+          - generic [ref=f23e332] [cursor=pointer] [box=44,4417,821,77]:
+            - checkbox [ref=f23e333] [box=59,4447,18,18]
+            - generic [ref=f23e334] [box=87,4432,616,48]:
+              - generic [ref=f23e335] [box=87,4432,616,22]: Computação em Nuvem
+              - generic [ref=f23e336] [box=87,4457,616,23]:
+                - generic [ref=f23e337] [box=87,4457,147,23]: ⟳ Redes de Computadores
+                - generic [ref=f23e338] [box=242,4457,223,23]: ⟳ Laboratório de Redes de Computadores
+                - generic [ref=f23e339] [box=476,4459,227,19]: ⟳ Laboratório de Computação em Nuvem
+          - generic [ref=f23e340] [cursor=pointer] [box=44,4502,821,77]:
+            - checkbox [ref=f23e341] [box=59,4532,18,18]
+            - generic [ref=f23e342] [box=87,4517,147,48]:
+              - generic [ref=f23e343] [box=87,4517,147,22]: Análise Multivariada
+              - generic [ref=f23e344] [box=87,4542,147,23]: ⟳ Teoria da Probabilidade
+          - generic [ref=f23e346] [cursor=pointer] [box=44,4587,821,77]:
+            - checkbox [ref=f23e347] [box=59,4617,18,18]
+            - generic [ref=f23e348] [box=87,4602,645,48]:
+              - generic [ref=f23e349] [box=87,4602,645,22]: Laboratório de Desenvolvimento de Aplicações para Dispositivos Móveis
+              - generic [ref=f23e350] [box=87,4627,645,23]:
+                - generic [ref=f23e351] [box=87,4627,117,23]: ⟳ Programação Web
+                - generic [ref=f23e352] [box=212,4627,193,23]: ⟳ Laboratório de Programação Web
+                - generic [ref=f23e353] [box=416,4629,316,19]: ⟳ Desenvolvimento de Aplicações para Dispositivos Móveis
+          - generic [ref=f23e354] [cursor=pointer] [box=44,4673,821,77]:
+            - checkbox [ref=f23e355] [box=59,4702,18,18]
+            - generic [ref=f23e356] [box=87,4687,538,48]:
+              - generic [ref=f23e357] [box=87,4687,538,22]: Laboratório de Computação em Nuvem
+              - generic [ref=f23e358] [box=87,4712,538,23]:
+                - generic [ref=f23e359] [box=87,4712,147,23]: ⟳ Redes de Computadores
+                - generic [ref=f23e360] [box=242,4712,223,23]: ⟳ Laboratório de Redes de Computadores
+                - generic [ref=f23e361] [box=476,4714,149,19]: ⟳ Computação em Nuvem
+          - generic [ref=f23e362] [cursor=pointer] [box=44,4758,821,77]:
+            - checkbox [ref=f23e363] [box=59,4787,18,18]
+            - generic [ref=f23e364] [box=87,4773,723,48]:
+              - generic [ref=f23e365] [box=87,4773,723,22]: Desenvolvimento de Aplicações para Dispositivos Móveis
+              - generic [ref=f23e366] [box=87,4797,723,23]:
+                - generic [ref=f23e367] [box=87,4797,117,23]: ⟳ Programação Web
+                - generic [ref=f23e368] [box=212,4797,193,23]: ⟳ Laboratório de Programação Web
+                - generic [ref=f23e369] [box=416,4799,394,19]: ⟳ Laboratório de Desenvolvimento de Aplicações para Dispositivos Móveis
+          - generic [ref=f23e370] [cursor=pointer] [box=44,4843,821,77]:
+            - checkbox [ref=f23e371] [box=59,4873,18,18]
+            - generic [ref=f23e372] [box=87,4858,625,48]:
+              - generic [ref=f23e373] [box=87,4858,625,22]: Matemática Discreta
+              - generic [ref=f23e374] [box=87,4883,625,23]:
+                - generic [ref=f23e375] [box=87,4883,192,23]: ⟳ Programação de Computadores II
+                - generic [ref=f23e376] [box=288,4883,268,23]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e377] [box=564,4883,142,23]: ⟳ Teoria da Probabilidade
+      - generic [ref=f23e378] [box=44,4969,821,749]:
+        - generic [ref=f23e379] [cursor=pointer] [box=44,4969,821,40]: 7º Semestre
+        - generic [ref=f23e380] [box=44,5022,821,672]:
+          - generic [ref=f23e381] [cursor=pointer] [box=44,5022,821,77]:
+            - checkbox [ref=f23e382] [box=59,5052,18,18]
+            - generic [ref=f23e383] [box=87,5037,385,48]:
+              - generic [ref=f23e384] [box=87,5037,385,22]: Laboratório de Mineração de Dados
+              - generic [ref=f23e385] [box=87,5062,385,23]:
+                - generic [ref=f23e386] [box=87,5062,120,23]: ⟳ Estrutura de Dados
+                - generic [ref=f23e387] [box=215,5062,115,23]: ⟳ Banco de Dados II
+                - generic [ref=f23e388] [box=341,5064,131,19]: ⟳ Mineração de Dados
+          - generic [ref=f23e389] [cursor=pointer] [box=44,5107,821,77]:
+            - checkbox [ref=f23e390] [box=59,5137,18,18]
+            - generic [ref=f23e391] [box=87,5122,140,48]:
+              - generic [ref=f23e392] [box=87,5122,140,22]: Empreendedorismo II
+              - generic [ref=f23e393] [box=87,5147,140,23]: ⟳ Empreendedorismo I
+          - generic [ref=f23e395] [cursor=pointer] [box=44,5192,821,77]:
+            - checkbox [ref=f23e396] [box=59,5222,18,18]
+            - generic [ref=f23e397] [box=87,5207,650,48]:
+              - generic [ref=f23e398] [box=87,5207,650,22]: Laboratório de Linguagens de Programação
+              - generic [ref=f23e399] [box=87,5232,650,23]:
+                - generic [ref=f23e400] [box=87,5232,192,23]: ⟳ Programação de Computadores II
+                - generic [ref=f23e401] [box=288,5232,268,23]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e402] [box=567,5234,171,19]: ⟳ Linguagens de Programação
+          - generic [ref=f23e403] [cursor=pointer] [box=44,5278,821,54]:
+            - checkbox [ref=f23e404] [box=59,5296,18,18]
+            - generic [ref=f23e405] [box=87,5292,148,25]: Engenharia Econômica
+          - generic [ref=f23e407] [cursor=pointer] [box=44,5340,821,77]:
+            - checkbox [ref=f23e408] [box=59,5370,18,18]
+            - generic [ref=f23e409] [box=87,5355,684,48]:
+              - generic [ref=f23e410] [box=87,5355,684,22]: Inteligência Artificial I
+              - generic [ref=f23e411] [box=87,5380,684,23]:
+                - generic [ref=f23e412] [box=87,5380,120,23]: ⟳ Estrutura de Dados
+                - generic [ref=f23e413] [box=215,5380,196,23]: ⟳ Laboratório de Estrutura de Dados
+                - generic [ref=f23e414] [box=420,5380,125,23]: ⟳ Análise Multivariada
+                - generic [ref=f23e415] [box=556,5382,215,19]: ⟳ Laboratório de Inteligência Artificial I
+          - generic [ref=f23e416] [cursor=pointer] [box=44,5425,821,98]:
+            - checkbox [ref=f23e417] [box=59,5465,18,18]
+            - generic [ref=f23e418] [box=87,5440,763,68]:
+              - generic [ref=f23e419] [box=87,5440,763,22]: Mineração de Dados
+              - generic [ref=f23e420] [box=87,5465,763,44]:
+                - generic [ref=f23e421] [box=87,5465,120,23]: ⟳ Estrutura de Dados
+                - generic [ref=f23e422] [box=215,5465,196,23]: ⟳ Laboratório de Estrutura de Dados
+                - generic [ref=f23e423] [box=420,5465,115,23]: ⟳ Banco de Dados II
+                - generic [ref=f23e424] [box=543,5465,191,23]: ⟳ Laboratório de Banco de Dados II
+                - generic [ref=f23e425] [box=93,5490,209,19]: ⟳ Laboratório de Mineração de Dados
+          - generic [ref=f23e426] [cursor=pointer] [box=44,5531,821,77]:
+            - checkbox [ref=f23e427] [box=59,5561,18,18]
+            - generic [ref=f23e428] [box=87,5546,606,48]:
+              - generic [ref=f23e429] [box=87,5546,606,22]: Laboratório de Inteligência Artificial I
+              - generic [ref=f23e430] [box=87,5571,606,23]:
+                - generic [ref=f23e431] [box=87,5571,120,23]: ⟳ Estrutura de Dados
+                - generic [ref=f23e432] [box=215,5571,196,23]: ⟳ Laboratório de Estrutura de Dados
+                - generic [ref=f23e433] [box=420,5571,125,23]: ⟳ Análise Multivariada
+                - generic [ref=f23e434] [box=556,5573,137,19]: ⟳ Inteligência Artificial I
+          - generic [ref=f23e435] [cursor=pointer] [box=44,5616,821,77]:
+            - checkbox [ref=f23e436] [box=59,5646,18,18]
+            - generic [ref=f23e437] [box=87,5631,728,48]:
+              - generic [ref=f23e438] [box=87,5631,728,22]: Linguagens de Programação
+              - generic [ref=f23e439] [box=87,5656,728,23]:
+                - generic [ref=f23e440] [box=87,5656,192,23]: ⟳ Programação de Computadores II
+                - generic [ref=f23e441] [box=288,5656,268,23]: ⟳ Laboratório de Programação de Computadores II
+                - generic [ref=f23e442] [box=567,5658,249,19]: ⟳ Laboratório de Linguagens de Programação
+      - generic [ref=f23e443] [box=44,5742,821,806]:
+        - generic [ref=f23e444] [cursor=pointer] [box=44,5742,821,40]: 8º Semestre
+        - generic [ref=f23e445] [box=44,5795,821,728]:
+          - generic [ref=f23e446] [cursor=pointer] [box=44,5795,821,75]:
+            - checkbox [ref=f23e447] [box=59,5824,18,18]
+            - generic [ref=f23e448] [box=87,5810,208,46]:
+              - generic [ref=f23e449] [box=87,5810,208,22]: Sistemas de Informação
+              - generic [ref=f23e450] [box=87,5835,208,21]: ⟳ Segurança e Auditoria de Sistemas
+          - generic [ref=f23e452] [cursor=pointer] [box=44,5878,821,75]:
+            - checkbox [ref=f23e453] [box=59,5907,18,18]
+            - generic [ref=f23e454] [box=87,5893,153,46]:
+              - generic [ref=f23e455] [box=87,5893,153,22]: Gestão de TI
+              - generic [ref=f23e456] [box=87,5918,153,21]: ⟳ Sistemas de Informação
+          - generic [ref=f23e458] [cursor=pointer] [box=44,5962,821,77]:
+            - checkbox [ref=f23e459] [box=59,5991,18,18]
+            - generic [ref=f23e460] [box=87,5976,598,48]:
+              - generic [ref=f23e461] [box=87,5976,598,22]: Laboratório de Ciência de Dados
+              - generic [ref=f23e462] [box=87,6001,598,23]:
+                - generic [ref=f23e463] [box=87,6001,128,23]: ⟳ Mineração de Dados
+                - generic [ref=f23e464] [box=223,6001,204,23]: ⟳ Laboratório de Mineração de Dados
+                - generic [ref=f23e465] [box=435,6001,125,23]: ⟳ Análise Multivariada
+                - generic [ref=f23e466] [box=572,6003,113,19]: ⟳ Ciência de Dados
+          - generic [ref=f23e467] [cursor=pointer] [box=44,6047,821,54]:
+            - checkbox [ref=f23e468] [box=59,6065,18,18]
+            - generic [ref=f23e469] [box=87,6062,108,25]: Seminários de SI
+          - generic [ref=f23e471] [cursor=pointer] [box=44,6109,821,77]:
+            - checkbox [ref=f23e472] [box=59,6139,18,18]
+            - generic [ref=f23e473] [box=87,6124,577,48]:
+              - generic [ref=f23e474] [box=87,6124,577,22]: Inteligência Artificial II
+              - generic [ref=f23e475] [box=87,6149,577,23]:
+                - generic [ref=f23e476] [box=87,6149,132,23]: ⟳ Inteligência Artificial I
+                - generic [ref=f23e477] [box=227,6149,208,23]: ⟳ Laboratório de Inteligência Artificial I
+                - generic [ref=f23e478] [box=446,6151,218,19]: ⟳ Laboratório de Inteligência Artificial II
+          - generic [ref=f23e479] [cursor=pointer] [box=44,6194,821,77]:
+            - checkbox [ref=f23e480] [box=59,6224,18,18]
+            - generic [ref=f23e481] [box=87,6209,499,48]:
+              - generic [ref=f23e482] [box=87,6209,499,22]: Laboratório de Inteligência Artificial II
+              - generic [ref=f23e483] [box=87,6234,499,23]:
+                - generic [ref=f23e484] [box=87,6234,132,23]: ⟳ Inteligência Artificial I
+                - generic [ref=f23e485] [box=227,6234,208,23]: ⟳ Laboratório de Inteligência Artificial I
+                - generic [ref=f23e486] [box=446,6236,140,19]: ⟳ Inteligência Artificial II
+          - generic [ref=f23e487] [cursor=pointer] [box=44,6280,821,77]:
+            - checkbox [ref=f23e488] [box=59,6309,18,18]
+            - generic [ref=f23e489] [box=87,6294,676,48]:
+              - generic [ref=f23e490] [box=87,6294,676,22]: Ciência de Dados
+              - generic [ref=f23e491] [box=87,6319,676,23]:
+                - generic [ref=f23e492] [box=87,6319,128,23]: ⟳ Mineração de Dados
+                - generic [ref=f23e493] [box=223,6319,204,23]: ⟳ Laboratório de Mineração de Dados
+                - generic [ref=f23e494] [box=435,6319,125,23]: ⟳ Análise Multivariada
+                - generic [ref=f23e495] [box=572,6321,191,19]: ⟳ Laboratório de Ciência de Dados
+          - generic [ref=f23e496] [cursor=pointer] [box=44,6365,821,75]:
+            - checkbox [ref=f23e497] [box=59,6393,18,18]
+            - generic [ref=f23e498] [box=87,6380,236,46]:
+              - generic [ref=f23e499] [box=87,6380,236,22]: Psicologia Aplicada às Organizações
+              - generic "Matéria do período noturno de Engenharia Civil" [ref=f23e501] [box=93,6406,52,19]: 🌙 Civil
+          - generic [ref=f23e502] [cursor=pointer] [box=44,6448,821,75]:
+            - checkbox [ref=f23e503] [box=59,6477,18,18]
+            - generic [ref=f23e504] [box=87,6463,226,46]:
+              - generic [ref=f23e505] [box=87,6463,226,22]: Segurança e Auditoria de Sistemas
+              - generic [ref=f23e506] [box=87,6488,226,21]: ⟳ Gestão de TI
+    - generic [ref=f23e508] [box=20,1257,879,900]:
+      - generic [ref=f23e509] [box=21,1258,60,898]:
+        - generic [ref=f23e510] [box=21,1248,59,60]: 7:00
+        - generic [ref=f23e511] [box=21,1308,59,60]: 8:00
+        - generic [ref=f23e512] [box=21,1368,59,60]: 9:00
+        - generic [ref=f23e513] [box=21,1428,59,60]: 10:00
+        - generic [ref=f23e514] [box=21,1488,59,60]: 11:00
+        - generic [ref=f23e515] [box=21,1548,59,60]: 12:00
+        - generic [ref=f23e516] [box=21,1608,59,60]: 13:00
+        - generic [ref=f23e517] [box=21,1668,59,60]: 14:00
+        - generic [ref=f23e518] [box=21,1728,59,60]: 15:00
+        - generic [ref=f23e519] [box=21,1788,59,60]: 16:00
+        - generic [ref=f23e520] [box=21,1848,59,60]: 17:00
+        - generic [ref=f23e521] [box=21,1908,59,60]: 18:00
+        - generic [ref=f23e522] [box=21,1968,59,60]: 19:00
+        - generic [ref=f23e523] [box=21,2028,59,60]: 20:00
+        - generic [ref=f23e524] [box=21,2088,59,60]: 21:00
+        - generic [ref=f23e525] [box=21,2148,59,60]: 22:00
+      - generic [ref=f23e526] [box=81,1258,807,898]:
+        - generic [ref=f23e527] [box=81,1258,135,1000]:
+          - generic [ref=f23e528] [box=81,1258,134,40]: Seg
+          - generic [ref=f23e545] [box=83,1618,130,100]:
+            - generic [ref=f23e546] [box=93,1624,114,29]: Metodologia Científica
+            - generic [ref=f23e547] [box=93,1657,114,18]: Seg 13:00-14:40
+            - generic [ref=f23e548] [box=93,1677,35,22]: S309
+            - generic [ref=f23e549] [box=93,1699,36,19]: Maria
+          - generic [ref=f23e550] [box=83,1618,130,100]:
+            - generic [ref=f23e551] [box=93,1624,114,29]: Metodologia Científica
+            - generic [ref=f23e552] [box=93,1657,114,18]: Seg 13:00-14:40
+            - generic [ref=f23e553] [box=93,1677,35,22]: S309
+            - generic [ref=f23e554] [box=93,1699,31,19]: João
+          - generic [ref=f23e555] [box=83,1718,130,120]:
+            - generic [ref=f23e556] [box=93,1724,114,29]: Inglês Instrumental I
+            - generic [ref=f23e557] [box=93,1757,114,18]: Seg 14:40-16:40
+            - generic [ref=f23e558] [box=93,1777,31,19]: João
+          - generic [ref=f23e559] [box=83,1838,130,110]:
+            - generic [ref=f23e560] [box=93,1844,114,43]: Leitura e Produção de Textos Acadêmicos
+            - generic [ref=f23e561] [box=93,1891,114,18]: Seg 16:40-18:30
+            - generic [ref=f23e562] [box=93,1911,35,22]: S309
+            - generic [ref=f23e563] [box=93,1933,31,19]: João
+          - generic [ref=f23e564] [box=83,1838,130,110]:
+            - generic [ref=f23e565] [box=93,1844,114,29]: Informática e Sociedade
+            - generic [ref=f23e566] [box=93,1877,114,18]: Seg 16:40-18:30
+            - generic [ref=f23e567] [box=93,1899,35,22]: S312
+            - generic [ref=f23e568] [box=93,1921,31,19]: João
+          - generic [ref=f23e569] [box=83,1618,130,100]:
+            - generic [ref=f23e570] [box=93,1624,114,14]: Banco de Dados I
+            - generic [ref=f23e571] [box=93,1642,114,18]: Seg 13:00-14:40
+            - generic [ref=f23e572] [box=93,1669,35,22]: S312
+            - generic [ref=f23e573] [box=93,1691,31,19]: João
+        - generic [ref=f23e574] [box=216,1258,135,1000]:
+          - generic [ref=f23e575] [box=216,1258,134,40]: Ter
+          - generic [ref=f23e592] [box=218,1618,130,100]:
+            - generic [ref=f23e593] [box=228,1624,114,72]: Contexto Social e Profissional do Bacharel em Sistemas de Informação
+            - generic [ref=f23e594] [box=228,1700,114,18]: Ter 13:00-14:40
+            - generic [ref=f23e595] [box=228,1720,31,19]: João
+          - generic [ref=f23e596] [box=218,1718,130,120]:
+            - generic [ref=f23e597] [box=228,1724,114,43]: Cálculo com Funções de uma Variável Real
+            - generic [ref=f23e598] [box=228,1771,114,18]: Ter 14:40-16:40
+            - generic [ref=f23e599] [box=228,1791,35,22]: S305
+            - generic [ref=f23e600] [box=228,1813,31,19]: João
+          - generic [ref=f23e601] [box=218,1838,130,110]:
+            - generic [ref=f23e602] [box=228,1844,114,43]: Laboratório de Programação de Computadores I
+            - generic [ref=f23e603] [box=228,1891,114,18]: Ter 16:40-18:30
+            - generic [ref=f23e604] [box=228,1911,68,22]: S116/S114
+            - generic [ref=f23e605] [box=228,1933,31,19]: João
+        - generic [ref=f23e606] [box=350,1258,135,1000]:
+          - generic [ref=f23e607] [box=350,1258,134,40]: Qua
+          - generic [ref=f23e624] [box=352,1618,130,100]:
+            - generic [ref=f23e625] [box=362,1624,114,43]: Cálculo com Funções de uma Variável Real
+            - generic [ref=f23e626] [box=362,1671,114,18]: Qua 13:00-14:40
+            - generic [ref=f23e627] [box=362,1691,35,22]: S305
+            - generic [ref=f23e628] [box=362,1713,31,19]: João
+        - generic [ref=f23e629] [box=485,1258,135,1000]:
+          - generic [ref=f23e630] [box=485,1258,134,40]: Qui
+          - generic [ref=f23e647] [box=487,1838,130,110]:
+            - generic [ref=f23e648] [box=497,1844,114,43]: Cálculo com Funções de uma Variável Real
+            - generic [ref=f23e649] [box=497,1891,114,18]: Qui 16:40-18:30
+            - generic [ref=f23e650] [box=497,1911,35,22]: S305
+            - generic [ref=f23e651] [box=497,1933,31,19]: João
+          - generic [ref=f23e652] [box=487,1618,130,100]:
+            - generic [ref=f23e653] [box=497,1624,114,29]: Geometria Analítica e Álgebra Linear
+            - generic [ref=f23e654] [box=497,1657,114,18]: Qui 13:00-14:40
+            - generic [ref=f23e655] [box=497,1677,35,22]: S305
+            - generic [ref=f23e656] [box=497,1699,31,19]: João
+          - generic [ref=f23e657] [box=487,1718,130,120]:
+            - generic [ref=f23e658] [box=497,1724,114,29]: Programação de Computadores I
+            - generic [ref=f23e659] [box=497,1757,114,18]: Qui 14:40-16:40
+            - generic [ref=f23e660] [box=497,1789,35,22]: S305
+            - generic [ref=f23e661] [box=497,1811,31,19]: João
+        - generic [ref=f23e662] [box=619,1258,135,1000]:
+          - generic [ref=f23e663] [box=619,1258,134,40]: Sex
+          - generic [ref=f23e680] [box=621,1718,130,120]:
+            - generic [ref=f23e681] [box=631,1724,114,29]: Geometria Analítica e Álgebra Linear
+            - generic [ref=f23e682] [box=631,1757,114,18]: Sex 14:40-16:40
+            - generic [ref=f23e683] [box=631,1789,35,22]: S305
+            - generic [ref=f23e684] [box=631,1811,31,19]: João
+          - generic [ref=f23e685] [box=621,1718,130,120]:
+            - generic [ref=f23e686] [box=631,1724,114,29]: Laboratório de Banco de Dados I
+            - generic [ref=f23e687] [box=631,1757,114,18]: Sex 14:40-16:40
+            - generic [ref=f23e688] [box=631,1789,35,22]: S312
+            - generic [ref=f23e689] [box=631,1811,31,19]: João
+        - generic [ref=f23e690] [box=754,1258,135,1000]: Sáb
