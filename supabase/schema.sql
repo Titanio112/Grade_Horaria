@@ -137,9 +137,5 @@ ALTER PUBLICATION supabase_realtime ADD TABLE grades;
 ALTER PUBLICATION supabase_realtime ADD TABLE grade_subjects;
 ALTER PUBLICATION supabase_realtime ADD TABLE student_subjects;
 
-INSERT INTO subjects (code, name, credits, workload, professor, semester, schedule, description) VALUES
-('CCO101', 'Algoritmos e Programacao', 4, 60, 'Prof. Silva', 1, '{"monday": [{"start": "07:30", "end": "09:10"}], "wednesday": [{"start": "07:30", "end": "09:10"}]}', 'Logica de programacao'),
-('CCO102', 'Calculo I', 4, 60, 'Prof. Santos', 1, '{"tuesday": [{"start": "09:20", "end": "11:00"}], "thursday": [{"start": "09:20", "end": "11:00"}]}', 'Limites, derivadas'),
-('CCO103', 'Algebra Linear', 4, 60, 'Prof. Oliveira', 1, '{"monday": [{"start": "09:20", "end": "11:00"}], "friday": [{"start": "07:30", "end": "09:10"}]}', 'Matrizes, vetores'),
-('CCO201', 'Estruturas de Dados', 4, 60, 'Prof. Costa', 2, '{"tuesday": [{"start": "07:30", "end": "09:10"}], "thursday": [{"start": "07:30", "end": "09:10"}]}', 'Listas, pilhas, filas, arvores')
-ON CONFLICT (code) DO NOTHING;
+-- Seed das materias reais: rodar `node seed_subjects.mjs` (extrai do ../dados.js)
+-- Nao manter INSERTs hardcoded aqui.

@@ -1,11 +1,9 @@
-const { Client } = require('pg');
 const fs = require('fs');
 const path = require('path');
-
-const connectionString = 'postgresql://postgres.zhcubvmismnmvtrbolbu:***REMOVED_DB_PASSWORD***@aws-0-us-west-2.pooler.supabase.com:6543/postgres';
+const { getClient } = require('./db');
 
 async function executeSchema() {
-    const client = new Client({ connectionString });
+    const client = getClient();
     
     try {
         console.log('🔌 Conectando ao Supabase...');
@@ -16,25 +14,13 @@ async function executeSchema() {
         const schemaPath = path.join(__dirname, 'schema.sql');
         const schema = fs.readFileSync(schemaPath, 'utf8');
         
-        // Dividir em statements individuais
-        const statements = schema
-            .split(';')
-            .map(s => s.trim())
-            .filter(s => s.length > 0 && !s.startsWith('--'));
-        
-        console.log(`🚀 Executando ${statements.length} statements...`);
-        
-        for (let i = 0; i < statements.length; i++) {
-            const stmt = statements[i] + ';';
-            try {
-                await client.query(stmt);
-                if (i % 10 === 0) console.log(`  ${i}/${statements.length}...`);
-            } catch (err) {
-                if (!err.message.includes('already exists') && !err.message.includes('duplicate')) {
-                    console.error(`⚠️ Statement ${i} falhou:`, err.message);
-                    console.error('Statement:', stmt.substring(0, 100) + '...');
-                }
-            }
+        // Executar schema inteiro de uma vez (node-pg suporta multi-statements;
+        // split por ';' quebra funcoes plpgsql com $$)
+        console.log('🚀 Executando schema completo...');
+        try {
+            await client.query(schema);
+        } catch (err) {
+            console.error('⚠️ Erro no schema (pode ser parcial/idempotente):', err.message);
         }
         
         console.log('✅ Schema executado!');
