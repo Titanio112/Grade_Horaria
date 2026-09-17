@@ -49,3 +49,4 @@ test-*.png
 .playwright-mcp/
 .firecrawl/
 .mimocode/
+serve-log.txt
