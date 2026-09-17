@@ -83,6 +83,10 @@ async function enroll(token, gradeId, classId) {
     const C = {}; for (const c of cls) C[c.subjects.code] = c.id;
 
     console.log('\n== 2) GRADES + TRIGGER DE PRE-REQUISITOS (multiplo) ==');
+    // limpar grades antigas de runs anteriores (via API, deleta em cascata)
+    for (const s of STUDENTS) {
+        await api(`/grades?student_id=eq.${sessions[s.name].id}`, { method: 'DELETE', token: sessions[s.name].token });
+    }
     for (const s of STUDENTS) {
         const t = sessions[s.name].token, uid = sessions[s.name].id;
         const g = await api('/grades', { method: 'POST', token: t,
@@ -111,8 +115,8 @@ async function enroll(token, gradeId, classId) {
     await enroll(tB, gB, C['metodologia']);
     const failB = await enroll(tB, gB, C['bd2']);
     check('Bruno -> bd2 SEM pre-req: BLOQUEADO pelo banco', failB.status >= 400 && !failB._dup, String(failB.body?.message || '').slice(0, 70));
-    const okB = await enroll(tB, gB, C['bd1']);
-    check('Bruno -> bd1 (sem pre-req): LIBERADO', okB.status === 201);
+    const okB = await enroll(tB, gB, C['arq1']);  // Seg 14:40-16:40 (sequencia apos metodologia 13-14:40)
+    check('Bruno -> arq1 (sem pre-req, sem choque): LIBERADO', okB.status === 201);
 
     // Carla: metodologia (grade privada)
     const tC = sessions['Carla Mock'].token, gC = STUDENTS[2].gradeId;
@@ -129,8 +133,8 @@ async function enroll(token, gradeId, classId) {
     console.log('\n== 4) COLEGAS DE TURMA (shares_class) - "modo grupo" ==');
     const colegas = await api(`/student_classes?class_id=eq.${C['metodologia']}&select=grade_id,status&grade_id=neq.${gA}`, { token: tA });
     check('Ana ve colegas da turma de Metodologia', (colegas.body || []).length >= 2, `${(colegas.body || []).length} colegas visiveis`);
-    const bd1view = await api(`/student_classes?class_id=eq.${C['bd1']}&select=id`, { token: tA });
-    check('Ana NAO ve matricula de Bruno em bd1 (ela nao frequenta essa turma)', (bd1view.body || []).length === 0);
+    const arq1view = await api(`/student_classes?class_id=eq.${C['arq1']}&select=id`, { token: tA });
+    check('Ana NAO ve matricula de Bruno em arq1 (ela nao frequenta essa turma)', (arq1view.body || []).length === 0);
 
     console.log('\n== 5) FALTAS (contador) ==');
     const abs = await api(`/student_classes?grade_id=eq.${gA}&class_id=eq.${C['metodologia']}`,

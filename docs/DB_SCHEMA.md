@@ -1,8 +1,7 @@
-# 📐 Schema do Banco de Dados v2 — Grade Horária BSI
+# 📐 Schema do Banco de Dados v3 — Grade Horária BSI
 
-> **Projeto Supabase:** `zhcubvmismnmvtrbolbu` | **Versão:** 2.0 (16/09/2026)
-> **Modelo aprovado pela arquitetura:** hierarquia multi-instituicao + separacao subject/class + trigger de pre-requisitos no banco.
-> **Fora de escopo:** chat interno e import/export JSON (app 100% nuvem).
+> **Projeto Supabase:** `zhcubvmismnmvtrbolbu` | **Versão:** 3.0 (16/09/2026)
+> **v3:** normalização rigorosa — professores em tabela própria, fim do JSONB de horários, trava de choque de horários no banco, índices de busca.
 
 ---
 
@@ -12,79 +11,85 @@
 erDiagram
     institutions ||--o{ campuses : "possui"
     campuses ||--o{ courses : "oferece"
-    courses ||--o{ subjects : "catalogo"
-    subjects ||--o{ classes : "turmas (profesor/horario)"
+    campuses ||--o{ professors : "corpo docente"
+    courses ||--o{ subjects : "catalogo (sem professor)"
+    subjects ||--o{ classes : "turmas"
+    classes ||--o{ class_professors : "N professores"
+    professors ||--o{ class_professors : "leciona em N turmas"
+    classes ||--o{ class_schedules : "N blocos dia/hora/sala"
     subjects ||--o{ subjects : "pre/co-requisitos (UUID[])"
-    courses ||--o{ profiles : "aluno do curso"
-    auth_users ||--|| profiles : "1:1 (trigger)"
+    auth_users ||--|| profiles : "1:1"
     profiles ||--o{ grades : "grades por semestre"
     grades ||--o{ grade_subjects : "blocos visuais"
-    grades ||--o{ student_classes : "matriculas"
+    grades ||--o{ student_classes : "matriculas (status/faltas)"
     classes ||--o{ student_classes : "alunos da turma"
 ```
 
 ## 2. Tabelas
 
 ### A. Hierarquia institucional
-**`institutions`** — id, name, acronym UNIQUE (ex: `CEFET-MG`), state
-**`campuses`** — id, institution_id FK, name (ex: `Varginha`), city; UNIQUE(institution_id, name)
-**`courses`** — id, campus_id FK, name (ex: `Sistemas de Informação`); UNIQUE(campus_id, name)
+- **institutions** — id, name, acronym UNIQUE, state
+- **campuses** — id, institution_id FK, name, city; UNIQUE(institution_id, name)
+- **courses** — id, campus_id FK, name; UNIQUE(campus_id, name)
 
-### B. `profiles` — usuários
-id (FK auth.users CASCADE) | email | full_name | role enum(`admin`,`student`) | **course_id FK→courses** | **avatar_url** | **is_public** (default true) | created_at/updated_at
-- `aphmgbr@gmail.com` vira admin via trigger `handle_new_user`.
+### B. profiles
+id (FK auth.users CASCADE) | email | full_name | role enum | course_id FK | avatar_url | is_public (default true) | timestamps
 
-### C. Catálogo separado de turma
-**`subjects`** (disciplina base) — id | code UNIQUE (chave interna de seed) | **course_id FK** | name | **workload_hours** CHECK IN (30,60,90) | prerequisites UUID[] | corequisites UUID[] | description | is_active
-**`classes`** (turma real) — id | subject_id FK CASCADE | professor_name | semester | schedule JSONB `{dia:[{start,end,room}]}` | **social_group_link** | is_active | UNIQUE(subject_id, professor_name, semester) *(chave interna p/ seed idempotente)*
-
-### D. Grade e vínculo do aluno
-**`grades`** — id | student_id FK→profiles CASCADE | name | semester | year | is_active | is_public | UNIQUE(student_id, semester, year, is_active)
-**`grade_subjects`** — id | grade_id FK CASCADE | subject_id FK CASCADE | day enum | time_start/time_end | classroom | color | UNIQUE(grade_id, subject_id)
-**`student_classes`** — id | grade_id FK CASCADE | class_id FK CASCADE | status CHECK(`enrolled/completed/dropped/pending`) | final_grade NUMERIC(4,2) | **absences INT default 0** | UNIQUE(grade_id, class_id)
-
-## 3. 🔒 Trigger de segurança — pré-requisitos NO BANCO
-
-**`trg_check_prerequisites`** — `BEFORE INSERT ON student_classes` → `public.check_prerequisites()` (SECURITY DEFINER)
-
-1. Resolve aluno via `grade_id → grades.student_id`
-2. Resolve disciplina via `class_id → classes.subject_id`
-3. Para cada `prerequisite` do subject: exige registro do **mesmo aluno** (qualquer grade) com `status='completed'` numa turma daquela disciplina
-4. Faltando qualquer um → `RAISE EXCEPTION 'Pre-requisitos nao cumpridos: <nomes>'` (ERRCODE 23514) → **API rejeita o INSERT**
-
-### Prova (test_trigger.js — 10/10 PASS):
-| # | Teste | Resultado |
+### C. Catálogo normalizado
+| Tabela | Colunas | Índices |
 |---|---|---|
-| 1 | Matricular `prog2` sem pré-req | ❌ **BLOQUEADO** pelo banco |
-| 2 | Matricular `prog1`/`lab_prog` | ✅ |
-| 3 | Marcar ambos `completed` | ✅ |
-| 4 | Matricular `prog2` depois | ✅ **LIBERADO** |
-| 5 | Registrar `absences=6` | ✅ |
-| 6 | INSERT anônimo | ❌ bloqueado (RLS) |
+| **subjects** | id, code UNIQUE (interno), course_id FK, name, workload_hours CHECK(30/60/90), prerequisites UUID[], corequisites UUID[], description, is_active | PK, code |
+| **professors** | id, name, campus_id FK; UNIQUE(name, campus_id) | **idx_professors_name** (busca textual) |
+| **classes** | id, code UNIQUE (interno, ex: `prog1-A`), subject_id FK CASCADE, semester, social_group_link, is_active | |
+| **class_professors** | class_id FK CASCADE, professor_id FK CASCADE; PK composta | N:N |
+| **class_schedules** | id, class_id FK CASCADE, day_of_week INT CHECK(0-6), start_time TIME, end_time TIME, room, CHECK(start<end) | **idx_class_schedules_day**, **idx_class_schedules_start** |
 
-## 4. Regra de faltas (25%)
-**Decisão arquitetural:** o banco guarda SÓ o contador `student_classes.absences` (horas-aula). Não há tabela de chamada diária. A interface calcula: `reprovado_por_falta = absences > 0.25 * subjects.workload_hours`.
+### D. Aluno
+- **grades** — student_id FK CASCADE, name, semester, year, is_active, is_public; UNIQUE(student_id, semester, year, is_active)
+- **grade_subjects** — grade_id, subject_id FKs, day enum, time_start/end, classroom, color; UNIQUE(grade_id, subject_id)
+- **student_classes** — grade_id FK CASCADE, class_id FK CASCADE, status CHECK(enrolled/completed/dropped/pending), final_grade, **absences** INT >= 0; UNIQUE(grade_id, class_id)
 
-## 5. RLS (22 policies)
-| Tabela | Leitura | Escrita |
-|---|---|---|
-| institutions/campuses/courses | pública | admin |
-| profiles | públicos (is_public) ou próprio | próprio; admin |
-| subjects/classes | ativas públicas | admin |
-| grades | dono ou pública | dono |
-| grade_subjects | segue a grade | dono da grade |
-| student_classes | dono ou **colega de turma** (`shares_class()`) | dono |
+## 3. Travas de segurança no banco (triggers)
 
-Anti-recursão: `is_admin()` e `shares_class()` são `SECURITY DEFINER`.
-Realtime ativo: profiles, subjects, classes, grades, grade_subjects, student_classes.
+### 3.1 🔒 `trg_check_prerequisites` — BEFORE INSERT em `student_classes`
+Bloqueia matrícula se faltar pré-requisito com `status='completed'` no histórico do aluno (qualquer grade). Erro 23514 com nomes das matérias faltantes.
 
-## 6. Scripts (`supabase/`)
+### 3.2 ⏰ `trg_check_time_conflict` — BEFORE INSERT OR UPDATE em `student_classes`
+Só avalia quando `status='enrolled'`. Para cada bloco `class_schedules` da turma nova, cruza com os blocos das turmas `enrolled` do aluno (todas as grades) no mesmo `day_of_week`:
+
+**Conflito ⟺ (novo.start < velho.end) AND (velho.start < novo.end)** — fronteira exata (16:40 → 16:40) **NÃO** é conflito.
+Erro 23514: `Choque de horario com a materia: <nome>`.
+
+## 4. Faltas (regra de 25%)
+Banco guarda só `student_classes.absences`. UI calcula: `reprovado = absences > 0.25 * subjects.workload_hours`.
+
+## 5. RLS (28 policies)
+- institutions/campuses/courses/professors/classes/class_professors/class_schedules: leitura pública, escrita admin
+- subjects: ativas públicas; admin CRUD
+- profiles: público (is_public) ou próprio; edição própria; admin total
+- grades: dono ou pública
+- grade_subjects: segue grade
+- student_classes: dono OU colega de turma (`shares_class()`)
+- Anti-recursão: `is_admin()` e `shares_class()` SECURITY DEFINER
+- Realtime: 9 tabelas
+
+## 6. Provas automatizadas
+| Bateria | Resultado |
+|---|---|
+| `test_mock_flow.js` (fluxo completo, 3 alunos) | 16/16 |
+| `test_normalization.js` | 8/8 |
+| (A) busca cruzada matéria + professor + dia | ✅ |
+| (B) 2 professores na mesma turma ("Weider/Marcelo" → 2 vínculos) | ✅ |
+| (C) sequência exata 16:40→16:40 permitida | ✅ |
+| (D) choque real bloqueado pelo banco | ✅ |
+
+## 7. Scripts (`supabase/`)
 | Script | Uso |
 |---|---|
 | `db.js` | conexão via `../.env` |
 | `reset_schema.js` | reset destrutivo + aplica schema.sql |
-| `seed_subjects.mjs` | hierarquia + 65 subjects + 65 classes do `dados.js` (idempotente) |
-| `fix_users.js` | backfill de profiles |
-| `test_api.js` | bateria auth/RLS básica |
-| `test_trigger.js` | bateria do trigger de pré-requisitos (10/10) |
-| `describe_schema.js` | introspecção do banco |
+| `seed_subjects.mjs` | 65 disciplinas → 65 subjects + 27 professores + 65 classes + 72 vínculos + 89 blocos de horário (idempotente) |
+| `create_mock_users.js` / `cleanup_mocks.js` | usuários fictícios completos / limpeza em cascata |
+| `test_mock_flow.js` | 16 testes de fluxo real |
+| `test_normalization.js` | 8 testes de normalização/choque |
+| `test_api.js` / `fix_users.js` / `describe_schema.js` | baterias auxiliares |

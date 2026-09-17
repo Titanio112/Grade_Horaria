@@ -94,22 +94,51 @@ CREATE TRIGGER update_subjects_updated_at
     BEFORE UPDATE ON subjects
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+-- Professores (pertencem ao campus; busca rapida por nome)
+CREATE TABLE professors (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    campus_id UUID NOT NULL REFERENCES campuses(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(name, campus_id)
+);
+CREATE INDEX idx_professors_name ON professors (name);
+
 CREATE TABLE classes (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    code TEXT NOT NULL UNIQUE,             -- chave interna p/ seed (ex: 'prog1-A')
     subject_id UUID NOT NULL REFERENCES subjects(id) ON DELETE CASCADE,
-    professor_name TEXT,
     semester INTEGER,
-    schedule JSONB DEFAULT '{}',
     social_group_link TEXT,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW(),
-    UNIQUE(subject_id, professor_name, semester)  -- chave natural p/ seed idempotente
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TRIGGER update_classes_updated_at
     BEFORE UPDATE ON classes
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- N:N turma <-> professor (ex: "Weider/Marcelo" viram 2 vinculos)
+CREATE TABLE class_professors (
+    class_id UUID NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
+    professor_id UUID NOT NULL REFERENCES professors(id) ON DELETE CASCADE,
+    PRIMARY KEY (class_id, professor_id)
+);
+
+-- Horarios normalizados (fim do JSONB) - filtros por dia/hora sao baratos
+-- day_of_week: 0=domingo, 1=segunda ... 6=sabado
+CREATE TABLE class_schedules (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    class_id UUID NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
+    day_of_week INTEGER NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    room TEXT,
+    CHECK (start_time < end_time)
+);
+CREATE INDEX idx_class_schedules_day ON class_schedules (day_of_week);
+CREATE INDEX idx_class_schedules_start ON class_schedules (start_time);
 
 -- ---------------------------------------------------------------------------
 -- GRADES
@@ -212,6 +241,48 @@ CREATE TRIGGER trg_check_prerequisites
     BEFORE INSERT ON student_classes
     FOR EACH ROW EXECUTE FUNCTION public.check_prerequisites();
 
+-- ---------------------------------------------------------------------------
+-- TRAVA DE CHOQUE DE HORARIOS (banco impede aluno em 2 lugares ao mesmo tempo)
+-- Sobreposicao REAL: (novo_start < velho_end) AND (velho_start < novo_end)
+-- Sequencia exata (A termina 16:40, B comeca 16:40) NAO e conflito.
+-- ---------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.check_time_conflict()
+RETURNS TRIGGER AS $$
+DECLARE
+    v_student_id UUID;
+    v_conflict TEXT;
+BEGIN
+    IF NEW.status <> 'enrolled' THEN RETURN NEW; END IF;
+
+    SELECT student_id INTO v_student_id FROM grades WHERE id = NEW.grade_id;
+    IF v_student_id IS NULL THEN RETURN NEW; END IF;
+
+    SELECT os2.name INTO v_conflict
+    FROM class_schedules ns
+    JOIN class_schedules os ON os.day_of_week = ns.day_of_week
+        AND ns.start_time < os.end_time      -- novo comeca antes do velho acabar
+        AND os.start_time < ns.end_time      -- velho comeca antes do novo acabar
+    JOIN student_classes osc ON osc.class_id = os.class_id AND osc.status = 'enrolled'
+    JOIN grades og ON og.id = osc.grade_id AND og.student_id = v_student_id
+    JOIN classes oc ON oc.id = os.class_id
+    JOIN subjects os2 ON os2.id = oc.subject_id
+    WHERE ns.class_id = NEW.class_id
+      AND NOT (osc.grade_id = NEW.grade_id AND osc.class_id = NEW.class_id)
+    LIMIT 1;
+
+    IF FOUND THEN
+        RAISE EXCEPTION 'Choque de horario com a materia: %', v_conflict
+            USING ERRCODE = '23514';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER trg_check_time_conflict
+    BEFORE INSERT OR UPDATE ON student_classes
+    FOR EACH ROW EXECUTE FUNCTION public.check_time_conflict();
+
 -- Colegas de turma sem recursao de RLS
 CREATE OR REPLACE FUNCTION public.shares_class(p_class_id UUID)
 RETURNS BOOLEAN AS $$
@@ -231,7 +302,10 @@ ALTER TABLE campuses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE subjects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE professors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE classes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE class_professors ENABLE ROW LEVEL SECURITY;
+ALTER TABLE class_schedules ENABLE ROW LEVEL SECURITY;
 ALTER TABLE grades ENABLE ROW LEVEL SECURITY;
 ALTER TABLE grade_subjects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE student_classes ENABLE ROW LEVEL SECURITY;
@@ -254,6 +328,12 @@ CREATE POLICY "Materias publicas" ON subjects FOR SELECT USING (is_active = TRUE
 CREATE POLICY "Admin CRUD materias" ON subjects FOR ALL USING (public.is_admin());
 CREATE POLICY "Turmas publicas" ON classes FOR SELECT USING (is_active = TRUE OR public.is_admin());
 CREATE POLICY "Admin CRUD turmas" ON classes FOR ALL USING (public.is_admin());
+CREATE POLICY "Professores publicos" ON professors FOR SELECT USING (TRUE);
+CREATE POLICY "Admin CRUD professores" ON professors FOR ALL USING (public.is_admin());
+CREATE POLICY "Vinculos prof-turma publicos" ON class_professors FOR SELECT USING (TRUE);
+CREATE POLICY "Admin CRUD prof-turma" ON class_professors FOR ALL USING (public.is_admin());
+CREATE POLICY "Horarios publicos" ON class_schedules FOR SELECT USING (TRUE);
+CREATE POLICY "Admin CRUD horarios" ON class_schedules FOR ALL USING (public.is_admin());
 
 -- Grades: dono ou publica
 CREATE POLICY "Aluno ve grades" ON grades FOR SELECT USING (student_id = auth.uid() OR is_public = TRUE);
@@ -297,7 +377,10 @@ CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users FOR EACH ROW EXEC
 -- ---------------------------------------------------------------------------
 ALTER PUBLICATION supabase_realtime ADD TABLE profiles;
 ALTER PUBLICATION supabase_realtime ADD TABLE subjects;
+ALTER PUBLICATION supabase_realtime ADD TABLE professors;
 ALTER PUBLICATION supabase_realtime ADD TABLE classes;
+ALTER PUBLICATION supabase_realtime ADD TABLE class_professors;
+ALTER PUBLICATION supabase_realtime ADD TABLE class_schedules;
 ALTER PUBLICATION supabase_realtime ADD TABLE grades;
 ALTER PUBLICATION supabase_realtime ADD TABLE grade_subjects;
 ALTER PUBLICATION supabase_realtime ADD TABLE student_classes;

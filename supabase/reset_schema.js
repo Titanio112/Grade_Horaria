@@ -9,10 +9,11 @@ async function reset() {
         await client.connect();
         console.log('🧹 Limpando objetos antigos...');
         await client.query(`
-            DROP TABLE IF EXISTS grade_subjects, student_classes, student_subjects, grades, classes, subjects, profiles, courses, campuses, institutions CASCADE;
+            DROP TABLE IF EXISTS grade_subjects, student_classes, student_subjects, grades, class_schedules, class_professors, classes, professors, subjects, profiles, courses, campuses, institutions CASCADE;
             DROP FUNCTION IF EXISTS update_updated_at_column CASCADE;
             DROP FUNCTION IF EXISTS public.handle_new_user CASCADE;
             DROP FUNCTION IF EXISTS public.check_prerequisites CASCADE;
+            DROP FUNCTION IF EXISTS public.check_time_conflict CASCADE;
             DROP FUNCTION IF EXISTS public.shares_class CASCADE;
             DROP FUNCTION IF EXISTS public.is_admin CASCADE;
             DROP TYPE IF EXISTS user_role CASCADE;
