@@ -1,9 +1,6 @@
 // supabase-client.js - Cliente Supabase configurado
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-// Configuração - substitua pelas suas credenciais reais
-const SUPABASE_URL = 'https://SEU-PROJETO.supabase.co';
-const SUPABASE_ANON_KEY = 'sua-chave-anonima-aqui';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js';
 
 // Cliente Supabase singleton
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {

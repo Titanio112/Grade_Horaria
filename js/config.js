@@ -1,0 +1,3 @@
+// config.js - Configuracao publica do Supabase (anon key e segura para frontend; RLS protege os dados)
+export const SUPABASE_URL = 'https://zhcubvmismnmvtrbolbu.supabase.co';
+export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpoY3Vidm1pc21ubXZ0cmJvbGJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1NTM5MzMsImV4cCI6MjEwNTEyOTkzM30.MiP4K2GvO0BYeUe1opzOY4abf59vHJcXF1kJvQtGTS4';

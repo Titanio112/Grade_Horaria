@@ -26,6 +26,12 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Verifica admin sem disparar RLS (evita recursao infinita nas policies)
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS BOOLEAN AS $$
+    SELECT public.is_admin();
+$$ LANGUAGE sql SECURITY DEFINER STABLE;
+
 CREATE TRIGGER update_profiles_updated_at
     BEFORE UPDATE ON profiles
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -100,31 +106,30 @@ ALTER TABLE student_subjects ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Profiles visiveis" ON profiles FOR SELECT USING (TRUE);
 CREATE POLICY "Usuario atualiza perfil" ON profiles FOR UPDATE USING (auth.uid() = id);
-CREATE POLICY "Admin gerencia perfis" ON profiles FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admin gerencia perfis" ON profiles FOR ALL USING (public.is_admin());
 
 CREATE POLICY "Materias publicas" ON subjects FOR SELECT USING (is_active = TRUE);
-CREATE POLICY "Admin CRUD materias" ON subjects FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admin CRUD materias" ON subjects FOR ALL USING (public.is_admin());
 
 CREATE POLICY "Aluno ve grades" ON grades FOR SELECT USING (student_id = auth.uid() OR is_public = TRUE);
 CREATE POLICY "Aluno gerencia grades" ON grades FOR ALL USING (student_id = auth.uid());
-CREATE POLICY "Admin ve grades" ON grades FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admin ve grades" ON grades FOR ALL USING (public.is_admin());
 
 CREATE POLICY "Grade subjects seguem grade" ON grade_subjects FOR SELECT USING (EXISTS (SELECT 1 FROM grades WHERE grades.id = grade_subjects.grade_id AND (grades.student_id = auth.uid() OR grades.is_public = TRUE)));
 CREATE POLICY "Aluno gerencia grade_subjects" ON grade_subjects FOR ALL USING (EXISTS (SELECT 1 FROM grades WHERE grades.id = grade_subjects.grade_id AND grades.student_id = auth.uid()));
-CREATE POLICY "Admin gerencia grade_subjects" ON grade_subjects FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admin gerencia grade_subjects" ON grade_subjects FOR ALL USING (public.is_admin());
 
 CREATE POLICY "Ver matriculas e colegas" ON student_subjects FOR SELECT USING (student_id = auth.uid() OR subject_id IN (SELECT subject_id FROM student_subjects WHERE student_id = auth.uid()));
 CREATE POLICY "Aluno gerencia matriculas" ON student_subjects FOR ALL USING (student_id = auth.uid());
-CREATE POLICY "Admin gerencia matriculas" ON student_subjects FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admin gerencia matriculas" ON student_subjects FOR ALL USING (public.is_admin());
 
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO public.profiles (id, email, full_name, role)
-    VALUES (NEW.id, NEW.email, NEW.raw_user_meta_data->>'full_name', CASE WHEN NEW.email = 'aphmgbr@gmail.com' THEN 'admin' ELSE 'student' END)
+    VALUES (NEW.id, NEW.email, NEW.raw_user_meta_data->>'full_name', CASE WHEN NEW.email = 'aphmgbr@gmail.com' THEN 'admin'::user_role ELSE 'student'::user_role END)
     ON CONFLICT (id) DO NOTHING;
     RETURN NEW;
-EXCEPTION WHEN OTHERS THEN RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
