@@ -50,3 +50,7 @@ test-*.png
 .firecrawl/
 .mimocode/
 serve-log.txt
+
+.chrome-tmp/
+seed-log.txt
+seed-err.txt

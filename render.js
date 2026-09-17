@@ -3,8 +3,8 @@
 import {   
   findSubjectByName, timeToPixels, getUserColor,
   getActiveProfile, toggleSubject, toggleHistoryStatus, toggleDarkMode, toggleGroupMode,
-  saveAppState, loadAppState, resetAllData, processPastedJSON, processFileJSON,
-  getCorequisiteGroup, initCalendarGrid, setUpdateSchedule, exportJSON
+  saveAppState, loadAppState, resetAllData,
+  getCorequisiteGroup, initCalendarGrid, setUpdateSchedule
 } from './logica.js';
 
 import { appState, findSubjectById, subjectsData } from './dados.js';
@@ -15,13 +15,6 @@ setUpdateSchedule(updateSchedule);
 // --- Modal Management ---
 
 let pendingConfirmAction = null;
-
-// --- UI Helpers ---
-
-export function togglePasteArea() {
-  const container = document.getElementById('paste-area-container');
-  container.style.display = container.style.display === 'none' ? 'block' : 'none';
-}
 
 // --- Toast Notifications ---
 
@@ -50,20 +43,6 @@ function showToast(message, type = 'error') {
     toast.style.animation = 'slideIn 0.3s ease reverse';
     setTimeout(() => toast.remove(), 300);
   }, 4000);
-}
-
-// --- Export ---
-
-export function exportGradeJSON() {
-  const json = exportJSON();
-  const blob = new Blob([json], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  const profile = getActiveProfile();
-  a.download = `grade-${profile.name}-${new Date().toISOString().split('T')[0]}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
 }
 
 // --- Modal Management ---
@@ -525,17 +504,6 @@ export function init() {
     window.toggleDarkMode = toggleDarkMode;
     window.toggleGroupMode = toggleGroupMode;
     window.editCurrentProfile = editCurrentProfile;
-    window.togglePasteArea = togglePasteArea;
-    window.processPastedJSON = (textarea) => {
-      const result = processPastedJSON(textarea);
-      if (result.success) {
-        showToast('JSON carregado com sucesso!', 'success');
-        renderSubjectsList();
-        updateSchedule();
-      } else {
-        showToast(result.message, 'error');
-      }
-    };
     window.resetAllData = resetAllData;
     window.selectProfileType = selectProfileType;
     window.finishVeteranSetup = finishVeteranSetup;
@@ -544,7 +512,6 @@ export function init() {
     window.closeProfileModal = closeProfileModal;
     window.openConfirmModal = openConfirmModal;
     window.closeConfirmModal = closeConfirmModal;
-    window.exportGradeJSON = exportGradeJSON;
     
     if (appState.profiles.length === 0) {
       createNewProfile("Você");

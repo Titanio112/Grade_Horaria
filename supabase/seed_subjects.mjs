@@ -1,5 +1,5 @@
-// seed_subjects.mjs - Popula subjects com os dados reais do dados.js
-// Uso: node seed_subjects.mjs
+// seed_subjects.mjs - Popula hierarquia + subjects + classes com os dados reais do dados.js
+// Uso: node seed_subjects.mjs  (idempotente)
 import { createRequire } from 'module';
 import fs from 'fs';
 import path from 'path';
@@ -33,6 +33,26 @@ async function seed() {
     const client = getClient();
     await client.connect();
     try {
+        // 0) Hierarquia: CEFET-MG > Varginha > Sistemas de Informacao
+        await client.query(
+            `INSERT INTO institutions (name, acronym, state) VALUES ($1,$2,$3)
+             ON CONFLICT (acronym) DO NOTHING`,
+            ['Centro Federal de Educacao Tecnologica de Minas Gerais', 'CEFET-MG', 'MG']);
+        const inst = (await client.query(`SELECT id FROM institutions WHERE acronym='CEFET-MG'`)).rows[0].id;
+
+        await client.query(
+            `INSERT INTO campuses (institution_id, name, city) VALUES ($1,$2,$3)
+             ON CONFLICT (institution_id, name) DO NOTHING`,
+            [inst, 'Varginha', 'Varginha']);
+        const campus = (await client.query(`SELECT id FROM campuses WHERE institution_id=$1 AND name='Varginha'`, [inst])).rows[0].id;
+
+        await client.query(
+            `INSERT INTO courses (campus_id, name) VALUES ($1,$2)
+             ON CONFLICT (campus_id, name) DO NOTHING`,
+            [campus, 'Sistemas de Informacao']);
+        const course = (await client.query(`SELECT id FROM courses WHERE campus_id=$1 AND name='Sistemas de Informacao'`, [campus])).rows[0].id;
+        console.log('🏛️ Hierarquia ok: CEFET-MG > Varginha > Sistemas de Informacao');
+
         // 1) Flatten dados.js
         const all = [];
         defaultSubjectsData.forEach((sem, i) => {
@@ -48,24 +68,33 @@ async function seed() {
                 });
             }
         });
-        console.log(`📚 ${all.length} disciplinas extraídas do dados.js`);
+        console.log(`📚 ${all.length} disciplinas extraidas do dados.js`);
 
-        // 2) Insert (upsert por code)
+        // 2) Subjects (catalogo base)
         for (const s of all) {
             await client.query(
-                `INSERT INTO subjects (code, name, professor, semester, schedule, description, credits, workload)
-                 VALUES ($1,$2,$3,$4,$5,$6,4,60)
-                 ON CONFLICT (code) DO UPDATE SET
-                    name=EXCLUDED.name, professor=EXCLUDED.professor, semester=EXCLUDED.semester,
-                    schedule=EXCLUDED.schedule, description=EXCLUDED.description`,
-                [s.code, s.name, s.professor, s.semester, JSON.stringify(s.schedule), null]
+                `INSERT INTO subjects (code, course_id, name, workload_hours)
+                 VALUES ($1,$2,$3,60)
+                 ON CONFLICT (code) DO UPDATE SET name=EXCLUDED.name, course_id=EXCLUDED.course_id`,
+                [s.code, course, s.name]
             );
         }
-        console.log('✅ Matérias inseridas/atualizadas');
+        console.log('✅ Subjects inseridas/atualizadas');
 
-        // 3) Resolver pre/co-requisitos (string id -> uuid)
-        const { rows } = await client.query('SELECT id, code FROM subjects');
-        const uuidByCode = Object.fromEntries(rows.map(r => [r.code, r.id]));
+        // 3) Classes (turma com professor + horarios)
+        const { rows: subjRows } = await client.query('SELECT id, code FROM subjects');
+        const uuidByCode = Object.fromEntries(subjRows.map(r => [r.code, r.id]));
+        for (const s of all) {
+            await client.query(
+                `INSERT INTO classes (subject_id, professor_name, semester, schedule)
+                 VALUES ($1,$2,$3,$4)
+                 ON CONFLICT (subject_id, professor_name, semester) DO UPDATE SET schedule=EXCLUDED.schedule`,
+                [uuidByCode[s.code], s.professor, s.semester, JSON.stringify(s.schedule)]
+            );
+        }
+        console.log('✅ Classes inseridas/atualizadas');
+
+        // 4) Pre/co-requisitos (string id -> uuid)
         let reqCount = 0, coreqCount = 0;
         for (const s of all) {
             const pre = s.requisitos.map(c => uuidByCode[c]).filter(Boolean);
@@ -77,10 +106,10 @@ async function seed() {
                 [s.code, pre, co]
             );
         }
-        console.log(`✅ Pré-requisitos: ${reqCount} matérias | Co-requisitos: ${coreqCount} matérias`);
+        console.log(`✅ Pre-requisitos: ${reqCount} materias | Co-requisitos: ${coreqCount} materias`);
 
-        const total = await client.query('SELECT count(*) FROM subjects');
-        console.log(`📊 Total no banco: ${total.rows[0].count} matérias`);
+        const t = await client.query('SELECT (SELECT count(*) FROM subjects) AS subjects, (SELECT count(*) FROM classes) AS classes');
+        console.log(`📊 Banco: ${t.rows[0].subjects} subjects, ${t.rows[0].classes} classes`);
     } catch (e) {
         console.error('❌ Erro:', e.message);
         process.exitCode = 1;
@@ -89,3 +118,4 @@ async function seed() {
     }
 }
 seed();
+

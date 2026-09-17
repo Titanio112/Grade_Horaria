@@ -9,9 +9,12 @@ async function reset() {
         await client.connect();
         console.log('🧹 Limpando objetos antigos...');
         await client.query(`
-            DROP TABLE IF EXISTS grade_subjects, student_subjects, grades, subjects, profiles CASCADE;
+            DROP TABLE IF EXISTS grade_subjects, student_classes, student_subjects, grades, classes, subjects, profiles, courses, campuses, institutions CASCADE;
             DROP FUNCTION IF EXISTS update_updated_at_column CASCADE;
             DROP FUNCTION IF EXISTS public.handle_new_user CASCADE;
+            DROP FUNCTION IF EXISTS public.check_prerequisites CASCADE;
+            DROP FUNCTION IF EXISTS public.shares_class CASCADE;
+            DROP FUNCTION IF EXISTS public.is_admin CASCADE;
             DROP TYPE IF EXISTS user_role CASCADE;
             DROP TYPE IF EXISTS day_of_week CASCADE;
         `);
@@ -31,6 +34,12 @@ async function reset() {
         console.log('📚 Matérias seed:', subjects.rows.map(s => s.code).join(', '));
     } catch (e) {
         console.error('❌ Erro:', e.message);
+        if (e.position) {
+            const pos = Number(e.position);
+            const fs2 = require('fs');
+            const sql = fs2.readFileSync(require('path').join(__dirname, 'schema.sql'), 'utf8');
+            console.error('Contexto:', JSON.stringify(sql.slice(Math.max(0, pos - 120), pos + 60)));
+        }
         process.exitCode = 1;
     } finally {
         await client.end();

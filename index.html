@@ -203,10 +203,6 @@
         .btn-danger { background-color: var(--danger-color); color: white; }
         .btn-danger:hover { opacity: 0.9; }
 
-        #jsonInput, #paste-area-container { display: none; }
-        #paste-textarea { width: 100%; height: 100px; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); }
-        #paste-area-container { width: 100%; max-width: 600px; margin-top: 10px; }
-
         .main-grid { display: grid; grid-template-columns: 350px 1fr; gap: 2rem; align-items: start; margin-top: 10px; }
         @media (max-width: 1024px) { .main-grid { grid-template-columns: 1fr; } }
 
@@ -382,17 +378,7 @@
             <div class="tools-section">
                 <div class="tools-buttons">
                     <button class="btn btn-outline" onclick="editCurrentProfile()">👤 Editar Perfil Atual</button>
-                    <button class="btn btn-outline" onclick="exportGradeJSON()">📤 Exportar JSON</button>
-                    <div style="position: relative;">
-                        <label for="jsonInput" class="btn btn-primary">📂 Carregar JSON</label>
-                        <input type="file" id="jsonInput" accept=".json">
-                    </div>
-                    <button class="btn btn-secondary" onclick="togglePasteArea()">📝 Colar JSON</button>
                     <button class="btn btn-secondary" style="color:var(--danger-color);border-color:var(--danger-color);" onclick="resetAllData()">🗑️ Resetar Tudo</button>
-                </div>
-                <div id="paste-area-container">
-                    <textarea id="paste-textarea" placeholder='Cole seu JSON aqui...'></textarea>
-                    <button class="btn btn-primary" style="margin-top:5px; width:100%;" onclick="processPastedJSON()">Processar</button>
                 </div>
                 <div id="file-status"></div>
             </div>

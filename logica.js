@@ -169,61 +169,6 @@ export function resetAllData() {
   }
 }
 
-export function processPastedJSON(textarea) {
-  try {
-    const parsed = JSON.parse(textarea.value);
-    if (Array.isArray(parsed)) {
-      subjectsData.length = 0;
-      subjectsData.push(...parsed);
-      const profile = getActiveProfile();
-      profile.selected = [];
-      saveAppState();
-      return { success: true, message: 'JSON carregado com sucesso!' };
-    } else {
-      throw new Error('JSON deve ser um array de semestres');
-    }
-  } catch (e) {
-    return { success: false, message: 'Erro no JSON: ' + e.message };
-  }
-}
-
-export function processFileJSON(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const parsed = JSON.parse(e.target.result);
-        if (Array.isArray(parsed)) {
-          subjectsData.length = 0;
-          subjectsData.push(...parsed);
-          const profile = getActiveProfile();
-          profile.selected = [];
-          saveAppState();
-          resolve({ success: true, message: 'Arquivo carregado com sucesso!' });
-        } else {
-          throw new Error('JSON deve ser um array de semestres');
-        }
-      } catch (err) {
-        resolve({ success: false, message: 'Erro no arquivo: ' + err.message });
-      }
-    };
-    reader.readAsText(file);
-  });
-}
-
-// --- Export ---
-export function exportJSON() {
-  const profile = getActiveProfile();
-  const selectedSubjects = profile.selected;
-  const exportData = {
-    profile: profile.name,
-    timestamp: new Date().toISOString(),
-    selectedSubjects: selectedSubjects,
-    history: profile.history
-  };
-  return JSON.stringify(exportData, null, 2);
-}
-
 // --- Color helpers ---
 export function stringToColor(str) {
   let hash = 0;
