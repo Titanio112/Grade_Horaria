@@ -35,12 +35,19 @@ function check(name, ok, detail = '') {
     // Garantir profile
     await fetch(`${URL}/rest/v1/profiles`, { method: 'POST', headers: { ...h, 'Prefer': 'resolution=ignore-duplicates,return=representation' }, body: JSON.stringify({ id: uid, email: testEmail, full_name: 'Usuario Teste' }) });
 
-    // Grade de teste
-    const grade = await (await fetch(`${URL}/rest/v1/grades`, {
+    // Grade de teste (idempotente: reutiliza se ja existe)
+    let gradeId;
+    const gNew = await (await fetch(`${URL}/rest/v1/grades`, {
         method: 'POST', headers: h,
         body: JSON.stringify({ student_id: uid, semester: 2, year: 2026, name: 'Grade Teste Trigger' })
     })).json();
-    const gradeId = grade[0]?.id;
+    gradeId = Array.isArray(gNew) ? gNew[0]?.id : null;
+    if (!Array.isArray(gNew)) console.log('   [debug grade POST]', JSON.stringify(gNew).slice(0, 200));
+    if (!gradeId) {
+        const ex = await (await fetch(`${URL}/rest/v1/grades?student_id=eq.${uid}&semester=eq.2&year=eq.2026&select=id`, { headers: h })).json();
+        gradeId = ex[0]?.id;
+        if (gradeId) await fetch(`${URL}/rest/v1/student_classes?grade_id=eq.${gradeId}`, { method: 'DELETE', headers: h });
+    }
     check('Criar grade', !!gradeId);
 
     // IDs das turmas relevantes (via subjects.code)

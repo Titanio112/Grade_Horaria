@@ -32,6 +32,12 @@ function splitProfessores(str) {
     return (str || '').split('/').map(s => s.trim()).filter(Boolean);
 }
 
+function splitSalas(str) {
+    // "N/A" inteiro -> nada (NUNCA splittar em "N","A"); "S116/S114" -> 2 salas
+    if (/^\s*n\/a\s*$/i.test(str || '')) return [];
+    return (str || '').split('/').map(s => s.trim()).filter(Boolean);
+}
+
 async function seed() {
     const client = getClient();
     await client.connect();
@@ -89,29 +95,70 @@ async function seed() {
         const profId = Object.fromEntries(profRows.map(r => [r.name, r.id]));
         console.log(`✅ Professores: ${profRows.length} (normalizados, sem "A/B")`);
 
-        // 4) Classes + class_professors + class_schedules
+        // 3b) Rooms (catalogo anti-duplicata: busca -> so insere se nao existir)
+        const todasSalas = new Set();
+        defaultSubjectsData.forEach(sem => sem.disciplinas.forEach(d => splitSalas(d.sala).forEach(n => todasSalas.add(n))));
+        const roomId = {};
+        for (const name of [...todasSalas]) {
+            await client.query(
+                `INSERT INTO rooms (name, campus_id) VALUES ($1,$2) ON CONFLICT (name, campus_id) DO NOTHING`,
+                [name, campus]);
+        }
+        const { rows: roomRows } = await client.query('SELECT id, name FROM rooms WHERE campus_id=$1', [campus]);
+        for (const r of roomRows) roomId[r.name] = r.id;
+        console.log(`✅ Rooms: ${roomRows.length} salas unicas (anti-duplicata via UNIQUE+ON CONFLICT)`);
+
+        // 4) Classes + class_professors + class_schedules + schedule_rooms
+        // Tudo em lote com UUIDs pre-gerados (evita ping do pooler por linha)
+        const salaPorCode = {};
+        defaultSubjectsData.forEach(sem => sem.disciplinas.forEach(d => { salaPorCode[d.id] = d.sala; }));
+
+        const clsRows = [], cpRows = [], schRows = [], srRows = [];
         for (const s of all) {
-            const clsRes = await client.query(
-                `INSERT INTO classes (code, subject_id, semester) VALUES ($1,$2,$3)
-                 ON CONFLICT (code) DO UPDATE SET subject_id=EXCLUDED.subject_id, semester=EXCLUDED.semester
-                 RETURNING id`,
-                [s.code + '-A', subjId[s.code], s.semester]);
-            const classId = clsRes.rows[0].id;
-            for (const pn of s.professors) {
-                await client.query(
-                    `INSERT INTO class_professors (class_id, professor_id) VALUES ($1,$2) ON CONFLICT DO NOTHING`,
-                    [classId, profId[pn]]);
-            }
-            await client.query('DELETE FROM class_schedules WHERE class_id=$1', [classId]);
+            const classId = crypto.randomUUID();
+            clsRows.push({ id: classId, code: s.code + '-A', subject_id: subjId[s.code], semester: s.semester });
+            for (const pn of s.professors) cpRows.push([classId, profId[pn]]);
             for (const r of s.scheduleRows) {
-                await client.query(
-                    `INSERT INTO class_schedules (class_id, day_of_week, start_time, end_time, room) VALUES ($1,$2,$3,$4,$5)`,
-                    [classId, r.day, r.start, r.end, r.room]);
+                const schId = crypto.randomUUID();
+                schRows.push({ id: schId, class_id: classId, day: r.day, start: r.start, end: r.end });
+                for (const roomName of splitSalas(salaPorCode[s.code])) {
+                    if (roomId[roomName]) srRows.push([schId, roomId[roomName]]);
+                }
             }
         }
+
+        await client.query(
+            `INSERT INTO classes (id, code, subject_id, semester)
+             SELECT * FROM unnest($1::uuid[], $2::text[], $3::uuid[], $4::int[])
+             ON CONFLICT (code) DO UPDATE SET subject_id=EXCLUDED.subject_id, semester=EXCLUDED.semester`,
+            [clsRows.map(r => r.id), clsRows.map(r => r.code), clsRows.map(r => r.subject_id), clsRows.map(r => r.semester)]);
+
+        // re-mapear: em rerun, ON CONFLICT preserva o id antigo da classe
+        const { rows: realClasses } = await client.query('SELECT id, code FROM classes');
+        const realIdByClassCode = Object.fromEntries(realClasses.map(r => [r.code, r.id]));
+        const remap = (oldId) => realIdByClassCode[Object.fromEntries(clsRows.map(r => [r.id, r.code]))[oldId]] || oldId;
+        const realClassIds = clsRows.map(r => realIdByClassCode[r.code]);
+
+        // remover vinculos antigos das classes (rerun) e reinserir
+        await client.query('DELETE FROM class_professors WHERE class_id = ANY($1::uuid[])', [realClassIds]);
+        await client.query(
+            `INSERT INTO class_professors (class_id, professor_id) SELECT * FROM unnest($1::uuid[], $2::uuid[]) ON CONFLICT DO NOTHING`,
+            [cpRows.map(r => remap(r[0])), cpRows.map(r => r[1])]);
+
+        await client.query('DELETE FROM class_schedules WHERE class_id = ANY($1::uuid[])', [realClassIds]);
+        await client.query(
+            `INSERT INTO class_schedules (id, class_id, day_of_week, start_time, end_time)
+             SELECT * FROM unnest($1::uuid[], $2::uuid[], $3::int[], $4::time[], $5::time[])`,
+            [schRows.map(r => r.id), schRows.map(r => remap(r.class_id)), schRows.map(r => r.day), schRows.map(r => r.start), schRows.map(r => r.end)]);
+
+        await client.query(
+            `INSERT INTO schedule_rooms (schedule_id, room_id) SELECT * FROM unnest($1::uuid[], $2::uuid[]) ON CONFLICT DO NOTHING`,
+            [srRows.map(r => r[0]), srRows.map(r => r[1])]);
+
         const tot = await client.query(`SELECT (SELECT count(*) FROM classes) AS c,
-            (SELECT count(*) FROM class_professors) AS cp, (SELECT count(*) FROM class_schedules) AS cs`);
-        console.log(`✅ ${tot.rows[0].c} classes | ${tot.rows[0].cp} vinculos prof | ${tot.rows[0].cs} blocos de horario`);
+            (SELECT count(*) FROM class_professors) AS cp, (SELECT count(*) FROM class_schedules) AS cs,
+            (SELECT count(*) FROM schedule_rooms) AS sr`);
+        console.log(`✅ ${tot.rows[0].c} classes | ${tot.rows[0].cp} vinculos prof | ${tot.rows[0].cs} blocos de horario | ${tot.rows[0].sr} vinculos sala`);
 
         // 5) Pre/co-requisitos
         let reqCount = 0, coreqCount = 0;

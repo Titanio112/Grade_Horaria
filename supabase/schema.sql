@@ -134,11 +134,27 @@ CREATE TABLE class_schedules (
     day_of_week INTEGER NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
-    room TEXT,
     CHECK (start_time < end_time)
 );
 CREATE INDEX idx_class_schedules_day ON class_schedules (day_of_week);
 CREATE INDEX idx_class_schedules_start ON class_schedules (start_time);
+
+-- Catalogo de salas (anti-duplicata por campus) + vinculo N:N com horarios
+CREATE TABLE rooms (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    campus_id UUID NOT NULL REFERENCES campuses(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(name, campus_id)
+);
+CREATE INDEX idx_rooms_name ON rooms (name);
+
+-- N:N horario <-> sala ("S116/S114" viram 2 vinculos no mesmo bloco)
+CREATE TABLE schedule_rooms (
+    schedule_id UUID NOT NULL REFERENCES class_schedules(id) ON DELETE CASCADE,
+    room_id UUID NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
+    PRIMARY KEY (schedule_id, room_id)
+);
 
 -- ---------------------------------------------------------------------------
 -- GRADES
@@ -306,6 +322,8 @@ ALTER TABLE professors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE classes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE class_professors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE class_schedules ENABLE ROW LEVEL SECURITY;
+ALTER TABLE rooms ENABLE ROW LEVEL SECURITY;
+ALTER TABLE schedule_rooms ENABLE ROW LEVEL SECURITY;
 ALTER TABLE grades ENABLE ROW LEVEL SECURITY;
 ALTER TABLE grade_subjects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE student_classes ENABLE ROW LEVEL SECURITY;
@@ -320,6 +338,7 @@ CREATE POLICY "Admin gerencia cursos" ON courses FOR ALL USING (public.is_admin(
 
 -- Perfis: publicos visiveis; cada um edita o seu
 CREATE POLICY "Perfis visiveis" ON profiles FOR SELECT USING (is_public = TRUE OR id = auth.uid() OR public.is_admin());
+CREATE POLICY "Usuario insere proprio perfil" ON profiles FOR INSERT WITH CHECK (auth.uid() = id);
 CREATE POLICY "Usuario atualiza perfil" ON profiles FOR UPDATE USING (auth.uid() = id);
 CREATE POLICY "Admin gerencia perfis" ON profiles FOR ALL USING (public.is_admin());
 
@@ -334,6 +353,10 @@ CREATE POLICY "Vinculos prof-turma publicos" ON class_professors FOR SELECT USIN
 CREATE POLICY "Admin CRUD prof-turma" ON class_professors FOR ALL USING (public.is_admin());
 CREATE POLICY "Horarios publicos" ON class_schedules FOR SELECT USING (TRUE);
 CREATE POLICY "Admin CRUD horarios" ON class_schedules FOR ALL USING (public.is_admin());
+CREATE POLICY "Salas publicas" ON rooms FOR SELECT USING (TRUE);
+CREATE POLICY "Admin CRUD salas" ON rooms FOR ALL USING (public.is_admin());
+CREATE POLICY "Vinculos horario-sala publicos" ON schedule_rooms FOR SELECT USING (TRUE);
+CREATE POLICY "Admin CRUD horario-sala" ON schedule_rooms FOR ALL USING (public.is_admin());
 
 -- Grades: dono ou publica
 CREATE POLICY "Aluno ve grades" ON grades FOR SELECT USING (student_id = auth.uid() OR is_public = TRUE);
@@ -381,6 +404,8 @@ ALTER PUBLICATION supabase_realtime ADD TABLE professors;
 ALTER PUBLICATION supabase_realtime ADD TABLE classes;
 ALTER PUBLICATION supabase_realtime ADD TABLE class_professors;
 ALTER PUBLICATION supabase_realtime ADD TABLE class_schedules;
+ALTER PUBLICATION supabase_realtime ADD TABLE rooms;
+-- schedule_rooms sem realtime (linha tecnica, UI resolve via join)
 ALTER PUBLICATION supabase_realtime ADD TABLE grades;
 ALTER PUBLICATION supabase_realtime ADD TABLE grade_subjects;
 ALTER PUBLICATION supabase_realtime ADD TABLE student_classes;

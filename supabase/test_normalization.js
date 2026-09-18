@@ -28,10 +28,10 @@ async function api(path, { method = 'GET', token = null, body = null } = {}) {
     const tA = login.access_token, uid = login.user.id;
     check('Login Ana', !!tA);
 
-    // ---------- A) Busca cruzada: Materia + Professor + Dia ----------
-    console.log('\n== A) BUSCA CRUZADA (materia + professor + dia) ==');
+    // ---------- A) Busca cruzada: Materia + Professor + Dia + SALA ----------
+    console.log('\n== A) BUSCA CRUZADA (materia + professor + dia + sala) ==');
     // "Programação de Computadores I" (semestre 1) professores Weider/Marcelo, Qui (4)
-    const q = await api('/classes?select=id,subjects!inner(name),class_professors(professors!inner(name)),class_schedules!inner(day_of_week,start_time,end_time,room)'
+    const q = await api('/classes?select=id,subjects!inner(name),class_professors(professors!inner(name)),class_schedules!inner(day_of_week,start_time,end_time)'
         + '&subjects.name=ilike.*Computadores*'
         + '&class_professors.professors.name=ilike.*Weider*'
         + '&class_schedules.day_of_week=eq.4', { token: tA });
@@ -40,6 +40,30 @@ async function api(path, { method = 'GET', token = null, body = null } = {}) {
     if (Array.isArray(q.body) && q.body[0]) {
         const profs = q.body[0].class_professors?.flatMap(cp => cp.professors?.name) || [];
         check('Professor batido no filtro', profs.some(p => String(p).includes('Weider')), profs.join(', '));
+    }
+
+    // A2) filtro por SALA especifica usando schedule_rooms
+    const qRoom = await api('/class_schedules?select=id,day_of_week,start_time,schedule_rooms!inner(rooms!inner(name)),classes!inner(subjects!inner(name))'
+        + '&schedule_rooms.rooms.name=eq.S305', { token: tA });
+    const roomCount = Array.isArray(qRoom.body) ? qRoom.body.length : -1;
+    check('Filtro por sala S305 retorna blocos', roomCount > 0, `${roomCount} blocos em S305`);
+    const allS305 = Array.isArray(qRoom.body) && qRoom.body.every(b =>
+        (b.schedule_rooms || []).some(sr => sr.rooms?.name === 'S305'));
+    check('Todos os blocos realmente na S305', allS305);
+
+    // A3) blocos com 2 salas (split "S116/S114") viraram 2 vinculos
+    const sr = await api('/schedule_rooms?select=schedule_id,rooms(name)', { token: tA });
+    const porSch = {};
+    for (const l of sr.body || []) { (porSch[l.schedule_id] ||= []).push(l.rooms.name); }
+    const multi = Object.values(porSch).filter(arr => arr.length > 1);
+    check('Bloco com 2 salas ligadas (split "/")', multi.length > 0, multi[0]?.join(' + ') || '');
+
+    // A4) anti-duplicata: UNIQUE(name, campus_id) rejeita sala repetida
+    try {
+        await dbc.query(`INSERT INTO rooms (name, campus_id) SELECT name, campus_id FROM rooms LIMIT 1`);
+        check('UNIQUE rejeita sala duplicada', false, 'nao bloqueou!');
+    } catch (e) {
+        check('UNIQUE rejeita sala duplicada', e.code === '23505', e.code);
     }
 
     // ---------- B) 2 professores na mesma turma ----------
