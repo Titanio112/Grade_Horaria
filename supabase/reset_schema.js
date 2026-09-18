@@ -9,15 +9,28 @@ async function reset() {
         await client.connect();
         console.log('🧹 Limpando objetos antigos...');
         await client.query(`
-            DROP TABLE IF EXISTS schedule_rooms, grade_subjects, student_classes, student_subjects, grades, class_schedules, class_professors, classes, professors, rooms, subjects, profiles, courses, campuses, institutions CASCADE;
+            DROP TABLE IF EXISTS reports, notifications, schedule_rooms, grade_subjects, student_classes, student_subjects, grades, class_schedules, class_professors, classes, professors, rooms, subjects, profiles, friendships, group_members, groups, admin_grants, courses, campuses, institutions CASCADE;
             DROP FUNCTION IF EXISTS update_updated_at_column CASCADE;
             DROP FUNCTION IF EXISTS public.handle_new_user CASCADE;
             DROP FUNCTION IF EXISTS public.check_prerequisites CASCADE;
             DROP FUNCTION IF EXISTS public.check_time_conflict CASCADE;
             DROP FUNCTION IF EXISTS public.shares_class CASCADE;
             DROP FUNCTION IF EXISTS public.is_admin CASCADE;
+            DROP FUNCTION IF EXISTS public.is_friend CASCADE;
+            DROP FUNCTION IF EXISTS public.is_super_admin CASCADE;
+            DROP FUNCTION IF EXISTS public.is_institution_admin CASCADE;
+            DROP FUNCTION IF EXISTS public.is_course_admin CASCADE;
+            DROP FUNCTION IF EXISTS public.grant_admin CASCADE;
+            DROP FUNCTION IF EXISTS public.lookup_profile_by_code CASCADE;
+            DROP FUNCTION IF EXISTS public.notify_class_change CASCADE;
+            DROP FUNCTION IF EXISTS public.trg_class_changed CASCADE;
+            DROP FUNCTION IF EXISTS public.trg_schedule_changed CASCADE;
+            DROP FUNCTION IF EXISTS public.trg_room_changed CASCADE;
+            DROP FUNCTION IF EXISTS public.trg_friendship_notify CASCADE;
             DROP TYPE IF EXISTS user_role CASCADE;
             DROP TYPE IF EXISTS day_of_week CASCADE;
+            DROP TYPE IF EXISTS grade_visibility CASCADE;
+            DROP TYPE IF EXISTS admin_level CASCADE;
         `);
         console.log('✅ Reset ok. Aplicando schema...');
 

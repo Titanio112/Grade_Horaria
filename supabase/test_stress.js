@@ -55,7 +55,7 @@ async function api(path, { method = 'GET', token = null, body = null } = {}) {
     const subTmp = (await dbc.query(`INSERT INTO subjects (code, course_id, name) VALUES ('TMP_STRESS',$1,'Materia Stress') RETURNING id`, [course])).rows[0].id;
     const clsTmp = (await dbc.query(`INSERT INTO classes (code, subject_id, semester) VALUES ('TMP_STRESS-A',$1,9) RETURNING id`, [subTmp])).rows[0].id;
     const schTmp = (await dbc.query(`INSERT INTO class_schedules (class_id, day_of_week, start_time, end_time) VALUES ($1,6,'19:00','21:00') RETURNING id`, [clsTmp])).rows[0].id;
-    const g = await api('/grades', { method: 'POST', token: tA, body: { student_id: uid, semester: 9, year: 2099, name: 'Grade Stress', is_public: false } });
+    const g = await api('/grades', { method: 'POST', token: tA, body: { student_id: uid, semester: 9, year: 2099, name: 'Grade Stress', visibility: 'private' } });
     const gTmp = g.body?.[0]?.id;
     const enr = await api('/student_classes', { method: 'POST', token: tA, body: { grade_id: gTmp, class_id: clsTmp } });
     check('Setup cascata completo', !!gTmp && enr.status === 201);
@@ -69,8 +69,8 @@ async function api(path, { method = 'GET', token = null, body = null } = {}) {
 
     // == 3) CHOQUE CROSS-GRADE ==
     console.log('\n== 3) CHOQUE CROSS-GRADE ==');
-    const g1 = (await api('/grades', { method: 'POST', token: tA, body: { student_id: uid, semester: 3, year: 2099, name: 'G1 pub', is_public: true } })).body?.[0]?.id;
-    const g2 = (await api('/grades', { method: 'POST', token: tA, body: { student_id: uid, semester: 3, year: 2098, name: 'G2 priv', is_public: false } })).body?.[0]?.id;
+    const g1 = (await api('/grades', { method: 'POST', token: tA, body: { student_id: uid, semester: 3, year: 2099, name: 'G1 pub', visibility: 'public' } })).body?.[0]?.id;
+    const g2 = (await api('/grades', { method: 'POST', token: tA, body: { student_id: uid, semester: 3, year: 2098, name: 'G2 priv', visibility: 'private' } })).body?.[0]?.id;
     const classes = (await api('/classes?select=id,code')).body;
     const C = Object.fromEntries(classes.map(c => [c.code, c.id]));
 

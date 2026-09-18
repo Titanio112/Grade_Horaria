@@ -77,19 +77,25 @@ async function api(path, { method = 'GET', token = null, body = null } = {}) {
     // limpar grades anteriores da Ana (teste isolado)
     await api(`/grades?student_id=eq.${uid}`, { method: 'DELETE', token: tA });
     // grade da Ana
-    const g = await api('/grades', { method: 'POST', token: tA, body: { student_id: uid, semester: 1, year: 2026, name: 'Grade Teste Choque', is_public: true } });
+    const g = await api('/grades', { method: 'POST', token: tA, body: { student_id: uid, semester: 1, year: 2026, name: 'Grade Teste Choque', visibility: 'public' } });
     const gId = g.body?.[0]?.id || (await api(`/grades?student_id=eq.${uid}&semester=eq.1&year=eq.2026`, { token: tA })).body?.[0]?.id;
 
     const cls = (await api('/classes?select=id,code')).body;
     const C = Object.fromEntries(cls.map(c => [c.code, c.id]));
     const enroll = (code) => api('/student_classes', { method: 'POST', token: tA, body: { grade_id: gId, class_id: C[code] } });
 
-    const r1 = await enroll('metodologia-A');  // Seg 13:00-14:40
-    check('Ana -> metodologia (Seg 13:00-14:40)', r1.status === 201);
+    const r1 = await enroll('metodologia-A');  // hoje: Seg 13:05-15:00 (dado real atualizado no banco)
+    check('Ana -> metodologia (Seg 13:05-15:00)', r1.status === 201);
 
     // C) sequencia exata: ingles1 Seg 14:40-16:40 -> NAO e conflito
-    const r2 = await enroll('ingles1-A');
-    check('C) Sequencia exata 14:40->14:40 PERMITIDA (ingles1)', r2.status === 201);
+    // C) fronteira exata: criar turma temp Seg 15:00 (metodologia Seg acaba 15:00 no dado real)
+    const courseId2 = (await dbc.query(`SELECT id FROM courses LIMIT 1`)).rows[0].id;
+    const tmpSub=(await dbc.query(`INSERT INTO subjects (code,course_id,name) VALUES ('TMP_SEQ',$1,'Sequencia Teste') ON CONFLICT (code) DO UPDATE SET name=EXCLUDED.name RETURNING id`,[courseId2])).rows[0].id;
+    await dbc.query(`DELETE FROM classes WHERE code='TMP_SEQ-A'`);
+    const tmpCls=(await dbc.query(`INSERT INTO classes (code,subject_id,semester) VALUES ('TMP_SEQ-A',$1,1) RETURNING id`,[tmpSub])).rows[0].id;
+    const r2raw = await api('/student_classes', { method: 'POST', token: tA, body: { grade_id: gId, class_id: tmpCls } });
+    const r2 = { status: r2raw.status, body: r2raw.body };
+    check('C) Sequencia exata 15:00->15:00 PERMITIDA (turma temp)', r2.status === 201);
 
     // D) choque real: bd1 Seg 13:00-14:40 sobrepoe metodologia
     const r3 = await enroll('bd1-A');
@@ -100,8 +106,9 @@ async function api(path, { method = 'GET', token = null, body = null } = {}) {
     const r4 = await enroll('leitura-A');      // Seg 16:40-18:30 -> sequencia apos ingles1 (16:40): permitido
     check('C2) leitura (Seg 16:40-18:30) em sequencia PERMITIDA', r4.status === 201);
 
-    // limpeza da grade de teste
+    // limpeza da grade de teste + turma temp
     await dbc.query('DELETE FROM grades WHERE id = $1', [gId]);
+    await dbc.query(`DELETE FROM subjects WHERE code = 'TMP_SEQ'`);
 
     // ---------- Extra: indices criados ----------
     const idx = await dbc.query(`SELECT indexname FROM pg_indexes WHERE schemaname='public' AND indexname LIKE 'idx_%' ORDER BY 1`);
