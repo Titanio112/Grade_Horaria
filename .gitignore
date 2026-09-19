@@ -82,3 +82,5 @@ supabase/package.json
 supabase/package-lock.json
 supabase/node_modules/
 opencode.json
+
+supabase/signup_real_user.js
