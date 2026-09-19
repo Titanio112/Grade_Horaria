@@ -84,3 +84,6 @@ supabase/node_modules/
 opencode.json
 
 supabase/signup_real_user.js
+
+supabase/test_signup_email_flow.js
+supabase/check_admin_confirm.js
