@@ -1,53 +1,37 @@
-# Organizador de Grade Horária
+# 📅 Grade Horária
 
-Organizador de grade horária interativo com análise de grupo — HTML + Vanilla JS (ES Modules), sem build step.
+Organizador de grade horária com análise de grupo, pré-requisitos e trava de choque de horários. Planeje sua grade aqui antes de fazer a matrícula oficial no sistema da sua faculdade.
+
+> ⚠️ **Aviso:** esta ferramenta é um planejador — a fonte oficial de horários e matrícula é o sistema da sua instituição (ex.: SIGAA).
 
 ## Stack
 
-- **Frontend:** HTML + CSS + Vanilla JS (ES Modules nativos)
-- **Dados locais:** `localStorage` (perfis./matérias/histórico)
-- **Backend (em integração):** Supabase (Auth + Postgres + Realtime) — ver `js/` e `supabase/`
-- **Deploy:** GitHub Pages (branch `main`, sem pipeline de build)
+- **Frontend:** HTML + Vanilla JS (ES Modules), sem build step
+- **Backend:** Supabase (Auth, Postgres, RLS, Realtime)
+- **Deploy:** GitHub Pages (estático)
 
 ## Estrutura
 
 ```
-grade-horaria/
-├── index.html        # Interface principal (carrega 3 módulos ES + init inline)
-├── dados.js          # Dados das matérias + estado mutável + helpers puros
-├── logica.js         # Regras de negócio (conflitos, pré/co-requisitos, perfis)
-├── render.js         # Renderização / manipulação do DOM
-├── js/               # Integração Supabase (auth, admin, student) — em andamento
-│   ├── supabase-client.js  # ⚠️ precisa de credenciais reais
-│   ├── auth.js
-│   ├── admin.js
-│   └── student.js
-├── supabase/
-│   └── schema.sql    # Schema completo (RLS + realtime + seed)
-└── check.ps1 / fix.ps1  # Scripts de verificação locais
+├── index.html              # Interface principal
+├── dados.js / logica.js / render.js   # Camadas (dados / regras / UI)
+├── js/                     # Integração Supabase (auth, admin, student)
+└── supabase/
+    ├── schema.sql          # Schema v4 (catálogo normalizado, triggers, RLS)
+    └── migrations/         # v5.sql (social/admin/notificações) + v5_down.sql (rollback) + hotfixes
 ```
 
-## Como rodar
+## Rodar localmente
 
 ```powershell
-npx serve .        # ou qualquer servidor estático na porta 3000
+npx serve .
 ```
 
-Abra `http://localhost:3000`. (ES Modules exigem servidor HTTP — não funciona via `file://`.)
+## Créditos / Legado
 
-## Regras do projeto
+Este repositório é a continuação do projeto original:
+[Organizador-de-Grade-Hor-ria-com-An-lise-de-Grupo](https://github.com/Titanio112/Organizador-de-Grade-Hor-ria-com-An-lise-de-Grupo) (branch `main` = versão estática legada).
 
-1. **Não alterar dados** de matéria/sala/professor/horário durante refatorações.
-2. **Sem build step** nesta fase (sem Vite/npm/TypeScript no frontend).
-3. Etapas pequenas, testadas antes de cada commit.
-4. `PROJECT_MEMORY.md` é a fonte de verdade do progresso — ler antes de trabalhar e atualizar ao final.
+## Licença
 
-## Roadmap
-
-- [x] Modularização (dados/logica/render)
-- [x] Bateria de testes funcionais (Playwright)
-- [x] Schema Supabase (auth, admin/aluno, realtime)
-- [ ] Integração Supabase ↔ UI atual
-- [ ] Deploy GitHub Pages
-- [ ] Importação de dados do SIGAA
-- [ ] Otimizador automático de grade
+Em definição.
