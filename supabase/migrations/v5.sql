@@ -260,7 +260,7 @@ BEGIN
         BEGIN
             INSERT INTO public.profiles (id, email, full_name, role, friend_code)
             VALUES (NEW.id, NEW.email, NEW.raw_user_meta_data->>'full_name',
-                    CASE WHEN NEW.email = 'aphmgbr@gmail.com' THEN 'admin'::user_role ELSE 'student'::user_role END,
+                    CASE WHEN NEW.email = 'aphmgbr@gmail.com' THEN 'admin'::public.user_role ELSE 'student'::public.user_role END,
                     v_code);
             EXIT; -- sucesso
         EXCEPTION WHEN unique_violation THEN
