@@ -1,5 +1,6 @@
 // auth.js - Gerenciamento de autenticação e sessão
-import { supabase, getCurrentUser, getCurrentProfile, isAdmin, onAuthStateChange, signIn, signUp, signOut } from './supabase-client.js';
+// ⚠️ LEGADO: mantido apenas para referência histórica. O código novo usa js/services/auth.service.js.
+import { supabase, getCurrentUser, getCurrentProfile, isAdmin, onAuthStateChange, signIn, signUp, signOut } from '../core/supabase-client.js';
 
 let currentProfile = null;
 let authListeners = [];

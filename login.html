@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar — Grade Horária</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-page">
+  <main class="auth-wrap">
+    <header class="wordmark">
+      <span class="glyph" aria-hidden="true"><i></i><i class="hl"></i><i></i><i></i><i></i><i></i></span>
+      Grade Horária
+    </header>
+
+    <section class="card">
+      <h1>Entrar</h1>
+      <p class="card-subtitle">Acesse sua grade e o planejamento do semestre.</p>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" inputmode="email"
+                 autocomplete="email" required aria-describedby="email-error">
+          <p class="field-error" id="email-error" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="password">Senha</label>
+          <input id="password" name="password" type="password"
+                 autocomplete="current-password" required aria-describedby="password-error">
+          <p class="field-error" id="password-error" hidden></p>
+        </div>
+
+        <div class="form-error" id="form-error" role="alert" hidden></div>
+
+        <button class="btn btn-primary" type="submit">Entrar</button>
+      </form>
+
+      <p class="auth-switch">Ainda não tem conta? <a href="cadastro.html">Criar conta</a></p>
+    </section>
+  </main>
+
+  <script type="module" src="js/pages/login.page.js"></script>
+</body>
+</html>

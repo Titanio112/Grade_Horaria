@@ -87,3 +87,19 @@ supabase/signup_real_user.js
 
 supabase/test_signup_email_flow.js
 supabase/check_admin_confirm.js
+supabase/set_mock_course.js
+supabase/tmp_*.js
+supabase/check_backfill.js
+
+# Testes visuais/E2E locais das telas de auth (Playwright)
+test-auth-*.cjs
+serve-err.txt
+
+
+# Scripts e evidencias locais da fase auth (nao versionar)
+# (test-auth-*.png ja coberto por test-*.png acima)
+test-auth-*.cjs
+serve-err.txt
+supabase/set_mock_course.js
+supabase/check_backfill.js
+supabase/tmp_backfill_test.js

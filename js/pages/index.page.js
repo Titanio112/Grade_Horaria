@@ -1,0 +1,14 @@
+/**
+ * index.page.js — Landing/roteador da raiz (index.html, exigido pelo GitHub Pages).
+ *
+ * O que faz: checa se existe sessão ativa e redireciona — logado vai
+ * para conta.html, deslogado vai para login.html. Não renderiza UI
+ * além do estado "carregando" que já está no HTML.
+ * O que NÃO faz: não é uma landing de marketing, não tem formulários.
+ * Depende de: js/services/auth.service.js.
+ */
+
+import { getSession } from '../services/auth.service.js';
+
+const session = await getSession();
+window.location.replace(session ? 'conta.html' : 'login.html');

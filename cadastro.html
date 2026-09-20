@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar conta — Grade Horária</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-page">
+  <main class="auth-wrap">
+    <header class="wordmark">
+      <span class="glyph" aria-hidden="true"><i></i><i class="hl"></i><i></i><i></i><i></i><i></i></span>
+      Grade Horária
+    </header>
+
+    <section class="card">
+      <h1>Criar conta</h1>
+      <p class="card-subtitle">Escolha sua instituição e monte sua grade em minutos.</p>
+
+      <form id="cadastro-form" novalidate>
+        <div class="field">
+          <label for="name">Nome completo</label>
+          <input id="name" name="name" type="text" autocomplete="name"
+                 required aria-describedby="name-error">
+          <p class="field-error" id="name-error" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" inputmode="email"
+                 autocomplete="email" required aria-describedby="email-error">
+          <p class="field-error" id="email-error" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="password">Senha</label>
+          <input id="password" name="password" type="password"
+                 autocomplete="new-password" required minlength="6"
+                 aria-describedby="password-hint password-error">
+          <p class="field-hint" id="password-hint">Mínimo de 6 caracteres.</p>
+          <p class="field-error" id="password-error" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="institution">Instituição</label>
+          <select id="institution" name="institution" required aria-describedby="course-error">
+            <option value="">Carregando…</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="campus">Campus</label>
+          <select id="campus" name="campus" required disabled aria-describedby="course-error">
+            <option value="">Selecione a instituição primeiro</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="course">Curso</label>
+          <select id="course" name="course" required disabled aria-describedby="course-error">
+            <option value="">Selecione o campus primeiro</option>
+          </select>
+          <p class="field-error" id="course-error" hidden></p>
+        </div>
+
+        <div class="form-error" id="form-error" role="alert" hidden></div>
+
+        <button class="btn btn-primary" type="submit">Criar conta</button>
+      </form>
+
+      <!-- Estado de sucesso: a confirmação de e-mail está ligada no backend -->
+      <div id="signup-success" hidden>
+        <p class="state-message success" role="status">
+          Conta criada! Enviamos um link de confirmação para
+          <strong id="signup-success-email"></strong>.
+          Confirme o e-mail e depois entre na sua conta.
+        </p>
+        <a class="btn btn-primary" href="login.html">Ir para o login</a>
+      </div>
+
+      <p class="auth-switch">Já tem conta? <a href="login.html">Entrar</a></p>
+    </section>
+  </main>
+
+  <script type="module" src="js/pages/cadastro.page.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sua conta — Grade Horária</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-page">
+  <main class="auth-wrap">
+    <header class="wordmark">
+      <span class="glyph" aria-hidden="true"><i></i><i class="hl"></i><i></i><i></i><i></i><i></i></span>
+      Grade Horária
+    </header>
+
+    <section class="card">
+      <h1>Sua conta</h1>
+      <p class="card-subtitle">Login realizado com sucesso.</p>
+
+      <div class="account-head">
+        <span class="avatar" id="account-avatar" aria-hidden="true">…</span>
+        <div class="who">
+          <div class="label">Logado como</div>
+          <div class="name" id="account-name">Carregando…</div>
+        </div>
+      </div>
+
+      <ul class="account-meta">
+        <li>
+          <strong>E-mail</strong>
+          <span id="account-email">—</span>
+        </li>
+        <li>
+          <strong>Curso</strong>
+          <span id="account-course">—</span>
+        </li>
+      </ul>
+
+      <button class="btn btn-secondary" id="logout-button" type="button">Sair</button>
+    </section>
+  </main>
+
+  <script type="module" src="js/pages/conta.page.js"></script>
+</body>
+</html>
