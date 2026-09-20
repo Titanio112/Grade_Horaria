@@ -90,6 +90,7 @@ supabase/check_admin_confirm.js
 supabase/set_mock_course.js
 supabase/tmp_*.js
 supabase/check_backfill.js
+supabase/tmp_v6_check.js
 
 # Testes visuais/E2E locais das telas de auth (Playwright)
 test-auth-*.cjs

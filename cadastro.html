@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Criar conta — Grade Horária</title>
+  <!-- Bootstrap do tema (antes do CSS = sem flash; espelha o toggle) -->
+  <script>
+    (function(){var t=null;try{t=localStorage.getItem('gh-theme');}catch(e){}
+    if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+    document.documentElement.dataset.theme=t;})();
+  </script>
+  <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/auth.css">
 </head>
@@ -39,6 +46,7 @@
                  autocomplete="new-password" required minlength="6"
                  aria-describedby="password-hint password-error">
           <p class="field-hint" id="password-hint">Mínimo de 6 caracteres.</p>
+          <p class="field-warning" id="password-warning" hidden></p>
           <p class="field-error" id="password-error" hidden></p>
         </div>
 
@@ -71,6 +79,9 @@
 
       <!-- Estado de sucesso: a confirmação de e-mail está ligada no backend -->
       <div id="signup-success" hidden>
+        <img class="state-icon"
+             src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Incoming%20envelope/3D/incoming_envelope_3d.png"
+             alt="">
         <p class="state-message success" role="status">
           Conta criada! Enviamos um link de confirmação para
           <strong id="signup-success-email"></strong>.
@@ -78,6 +89,39 @@
         </p>
         <a class="btn btn-primary" href="login.html">Ir para o login</a>
       </div>
+
+      <!-- Solicitação de instituição não cadastrada (tabela institution_requests, v6) -->
+      <details class="request-block" id="request-block">
+        <summary>Não encontrou sua instituição? Solicite aqui</summary>
+
+        <form id="institution-request-form" novalidate>
+          <div class="field">
+            <label for="request-institution">Nome da instituição</label>
+            <input id="request-institution" name="request-institution" type="text"
+                   required aria-describedby="request-institution-error">
+            <p class="field-error" id="request-institution-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="request-email">Seu e-mail de contato</label>
+            <input id="request-email" name="request-email" type="email" inputmode="email"
+                   autocomplete="email" required aria-describedby="request-email-error">
+            <p class="field-error" id="request-email-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="request-message">Mensagem</label>
+            <textarea id="request-message" name="request-message" required
+                      placeholder="Ex.: campus, curso que você procura, quantas pessoas usariam…"
+                      aria-describedby="request-message-error"></textarea>
+            <p class="field-error" id="request-message-error" hidden></p>
+          </div>
+          <div class="form-error" id="request-form-error" role="alert" hidden></div>
+          <button class="btn btn-secondary" type="submit">Enviar solicitação</button>
+        </form>
+
+        <p class="state-message success" id="request-success" role="status" hidden>
+          Solicitação enviada! A gente analisa manualmente e entra em contato pelo e-mail.
+        </p>
+      </details>
 
       <p class="auth-switch">Já tem conta? <a href="login.html">Entrar</a></p>
     </section>

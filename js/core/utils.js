@@ -27,6 +27,28 @@ export function validatePassword(password) {
 }
 
 /**
+ * Aviso NÃO bloqueante de senha fraca (o cadastro segue mesmo assim).
+ * Ordem das checagens: padrões óbvios → tamanho → pouca variedade.
+ * @param {string} password - senha digitada.
+ * @returns {string|null} aviso em pt-BR, ou null se a senha é razoável.
+ */
+export function weakPasswordWarning(password) {
+  if (!password) return null;
+  const obvious = /^(0123|1234|abcd|qwer|asdf|senha|password|ilove)/i;
+  const repeated = /^(.)\1{3,}$/;
+  if (obvious.test(password) || repeated.test(password)) {
+    return 'Senha fraca: evite sequências óbvias (123456…) ou repetições (aaaaaa…).';
+  }
+  if (password.length < 8) {
+    return 'Senha fraca: recomendamos pelo menos 8 caracteres.';
+  }
+  if (/^\d+$/.test(password) || /^[a-z]+$/i.test(password)) {
+    return 'Senha ok, mas fraca: misture letras, números e símbolos.';
+  }
+  return null;
+}
+
+/**
  * Extrai a inicial do nome para o avatar circular.
  * @param {string} fullName - nome completo do perfil.
  * @returns {string} primeira letra maiúscula ('?' se vazio).

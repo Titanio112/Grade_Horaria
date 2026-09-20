@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Definir nova senha — Grade Horária</title>
+  <!-- Bootstrap do tema (antes do CSS = sem flash; espelha o toggle) -->
+  <script>
+    (function(){var t=null;try{t=localStorage.getItem('gh-theme');}catch(e){}
+    if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+    document.documentElement.dataset.theme=t;})();
+  </script>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-page">
+  <main class="auth-wrap">
+    <header class="wordmark">
+      <span class="glyph" aria-hidden="true"><i></i><i class="hl"></i><i></i><i></i><i></i><i></i></span>
+      Grade Horária
+    </header>
+
+    <section class="card">
+      <h1>Definir nova senha</h1>
+      <p class="card-subtitle">Escolha uma senha nova para a sua conta.</p>
+
+      <form id="redefinir-form" novalidate hidden>
+        <div class="field">
+          <label for="password">Nova senha</label>
+          <input id="password" name="password" type="password"
+                 autocomplete="new-password" required minlength="6"
+                 aria-describedby="password-hint password-warning password-error">
+          <p class="field-hint" id="password-hint">Mínimo de 6 caracteres.</p>
+          <p class="field-warning" id="password-warning" hidden></p>
+          <p class="field-error" id="password-error" hidden></p>
+        </div>
+
+        <div class="form-error" id="form-error" role="alert" hidden></div>
+
+        <button class="btn btn-primary" type="submit">Definir nova senha</button>
+      </form>
+
+      <div id="reset-invalid" hidden>
+        <p class="state-message" role="alert">
+          Este link é inválido ou expirou. Peça um novo link de recuperação.
+        </p>
+        <a class="btn btn-primary" href="recuperar.html">Pedir novo link</a>
+      </div>
+
+      <div id="reset-success" hidden>
+        <p class="state-message success" role="status">
+          Senha atualizada! Você já está autenticado com a nova senha.
+        </p>
+        <a class="btn btn-primary" href="conta.html">Ir para minha conta</a>
+      </div>
+
+      <p class="auth-switch"><a href="login.html">Voltar para o login</a></p>
+    </section>
+  </main>
+
+  <script type="module" src="js/pages/redefinir.page.js"></script>
+</body>
+</html>

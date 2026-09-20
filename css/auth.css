@@ -20,16 +20,27 @@
   place-items: center;
   padding: clamp(1.5rem, 6vh, 3rem) clamp(1rem, 5vw, 1.25rem);
   background-color: var(--bg);
-  /* Grid de hairlines: uma folha de horários atrás do cartão */
+  position: relative;
+}
+
+/* Grid de hairlines ("folha de horários") num pseudo-elemento para
+   poder receber o glow sutil no modo escuro (--grid-glow). */
+.auth-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
   background-image:
-    linear-gradient(to right,  rgb(29 29 31 / 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(29 29 31 / 0.045) 1px, transparent 1px);
+    linear-gradient(to right,  var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: 4rem 4rem;
   background-position: center;
+  filter: var(--grid-glow);
 }
 
 .auth-wrap {
   width: min(25rem, 100%);
+  position: relative; /* acima do ::before do grid */
 }
 
 /* ---------- Wordmark (nome + glifo de grade) ---------- */
@@ -98,7 +109,8 @@
 }
 
 .field input,
-.field select {
+.field select,
+.field textarea {
   width: 100%;
   min-height: 2.75rem;
   padding: 0.625rem 0.75rem;
@@ -108,11 +120,25 @@
   transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
+.field textarea {
+  resize: vertical;
+  min-height: 5rem;
+  line-height: 1.45;
+}
+
+/* Aviso NÃO bloqueante (ex: senha fraca) — âmbar, nunca vermelho */
+.field-warning {
+  margin: 0.375rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--warning);
+}
+
 .field input:focus,
-.field select:focus {
+.field select:focus,
+.field textarea:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgb(0 113 227 / 0.22);
+  box-shadow: 0 0 0 3px var(--focus-halo);
 }
 
 .field input[aria-invalid="true"],
@@ -180,7 +206,7 @@
   border-color: var(--line);
   color: var(--ink);
 }
-.btn-secondary:hover { background: #EBEBEF; }
+.btn-secondary:hover { background: var(--neutral-hover); }
 
 .btn[disabled] {
   opacity: 0.55;
@@ -260,12 +286,44 @@
   color: var(--ink);
 }
 .state-message.success {
-  background: rgb(36 138 61 / 0.07);
-  border-color: rgb(36 138 61 / 0.3);
+  background: var(--success-bg);
+  border-color: var(--success-border);
   color: var(--success);
 }
 
 .muted { color: var(--ink-2); font-size: 0.875rem; }
+
+/* ---------- Solicitação de instituição (cadastro) ---------- */
+
+.request-block {
+  margin: 1.25rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.request-block summary {
+  font-size: 0.875rem;
+  color: var(--accent);
+  cursor: pointer;
+  list-style: none;
+  text-align: center;
+}
+.request-block summary::after {
+  content: " ▾";
+  display: inline-block;
+  transition: transform 150ms ease;
+}
+.request-block[open] summary::after { transform: rotate(180deg); }
+.request-block summary:hover { text-decoration: underline; }
+
+.request-block form { margin-top: 1.25rem; }
+
+/* Ícone 3D (Fluent Emoji) em estados de sucesso */
+.state-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0 auto 0.75rem;
+}
 
 /* Larguras pequenas: só o que não dá para resolver com fluidez.
    Cartão muito estreito respira melhor com padding um pouco menor. */
@@ -280,7 +338,7 @@
   padding: 0.625rem 0.75rem;
   font-size: 0.875rem;
   color: var(--danger);
-  background: rgb(200 30 30 / 0.06);
-  border: 1px solid rgb(200 30 30 / 0.25);
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
   border-radius: var(--radius-field);
 }

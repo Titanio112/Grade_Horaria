@@ -56,6 +56,30 @@ export async function getSession() {
 }
 
 /**
+ * Pede link de recuperação de senha por e-mail. O redirectTo aponta
+ * para redefinir.html (URL resolvida a partir deste módulo, então
+ * funciona tanto em localhost quanto no GitHub Pages).
+ * @param {string} email
+ * @returns {Promise<{data: object|null, error: object|null}>}
+ */
+export async function requestPasswordReset(email) {
+  const redirectTo = new URL('../../redefinir.html', import.meta.url).href;
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+  return { data, error };
+}
+
+/**
+ * Define a nova senha (exige a sessão de recuperação criada quando o
+ * usuário abre o link do e-mail — detectSessionInUrl já está ligado).
+ * @param {string} newPassword
+ * @returns {Promise<{data: object|null, error: object|null}>}
+ */
+export async function updatePassword(newPassword) {
+  const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+  return { data, error };
+}
+
+/**
  * Observa mudanças de autenticação (SIGNED_IN, SIGNED_OUT...).
  * @param {(event: string, session: object|null) => void} callback
  * @returns {() => void} função para cancelar a inscrição.
