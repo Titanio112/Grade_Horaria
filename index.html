@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Grade Horária</title>
+  <!-- Bootstrap do tema (antes do CSS = sem flash; espelha o toggle) -->
+  <script>
+    (function(){var t=null;try{t=localStorage.getItem('gh-theme');}catch(e){}
+    if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+    document.documentElement.dataset.theme=t;})();
+  </script>
+  <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/auth.css">
 </head>

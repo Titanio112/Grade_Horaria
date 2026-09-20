@@ -1,24 +1,13 @@
 /* ============================================================
-   base.css — Tokens de design + reset mínimo
-   O que faz: define a paleta, tipografia e resets globais do
-   projeto (.fonte única de verdade visual).
-   O que NÃO faz: não define layout de nenhuma tela específica
-   (isso fica em auth.css e futuros <contexto>.css).
-   Depende de: nada.
+   base.css — Reset mínimo + forma/tipografia + chrome global
+   O que faz: resets, tokens de FORMA e TIPOGRAFIA, scrollbar
+   tematizada e o estilo do toggle de tema (vidro).
+   O que NÃO faz: NÃO declara nenhuma cor — cores vêm de
+   css/tokens.css (carregar tokens.css ANTES deste arquivo).
+   Depende de: css/tokens.css.
    ============================================================ */
 
 :root {
-  /* Paleta (aprovada no plano de design — não alterar sem decisão) */
-  --ink: #1D1D1F;        /* texto principal */
-  --ink-2: #6E6E73;      /* texto secundário / hints */
-  --bg: #F5F5F7;         /* fundo da página */
-  --surface: #FFFFFF;    /* cartões */
-  --line: #D2D2D7;       /* bordas hairline */
-  --accent: #0071E3;     /* única cor de ação */
-  --accent-hover: #0066C7; /* hover do acento (escurece ~6%) */
-  --danger: #C81E1E;     /* erros (apenas texto/anel) */
-  --success: #248A3D;    /* confirmações */
-
   /* Formas (rem: escalam com a fonte raiz, sem breakpoint) */
   --radius-card: 1.125rem;  /* 18px */
   --radius-field: 0.625rem; /* 10px */
@@ -26,8 +15,6 @@
   /* Tipografia: stack de sistema (SF Pro onde houver) */
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text",
           "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-
-  color-scheme: light;
 }
 
 /* ---------- Reset mínimo ---------- */
@@ -71,4 +58,54 @@ a:hover { text-decoration: underline; }
     transition: none !important;
     animation: none !important;
   }
+}
+
+/* ---------- Scrollbar tematizada (claro/escuro) ---------- */
+
+/* Firefox */
+html { scrollbar-color: var(--scroll-thumb) var(--scroll-track); }
+
+/* Chrome/Safari/Edge */
+::-webkit-scrollbar { width: 0.75rem; height: 0.75rem; }
+::-webkit-scrollbar-track { background: var(--scroll-track); }
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 999px;
+  border: 3px solid var(--scroll-track);
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink-2); background-clip: content-box; }
+
+/* Toggle do fundo p/ conteúdo: transição suave de cor ao trocar o tema
+   (resposta a ação do usuário — permitida no plano) */
+body { transition: background-color 200ms ease, color 200ms ease; }
+
+/* ---------- Chrome global: toggle de tema (Liquid Glass) ---------- */
+
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 50;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow:
+    0 0.5rem 1.5rem var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight);
+  cursor: pointer;
+  transition: transform 80ms ease, background-color 200ms ease;
+}
+.theme-toggle:active { transform: scale(0.94); }
+
+.theme-toggle img {
+  width: 1.375rem;
+  height: 1.375rem;
+  pointer-events: none;
 }

@@ -15,6 +15,7 @@ import { getSession, signOut } from '../services/auth.service.js';
 import { getMyProfile, ensureProfileCourse } from '../services/profiles.service.js';
 import { getCoursePath } from '../services/institutions.service.js';
 import { initialOf } from '../core/utils.js';
+import { mountThemeToggle } from '../components/theme-toggle.component.js';
 
 const avatar = document.getElementById('account-avatar');
 const nameEl = document.getElementById('account-name');
@@ -66,3 +67,4 @@ logoutButton.addEventListener('click', async () => {
 });
 
 init();
+mountThemeToggle();

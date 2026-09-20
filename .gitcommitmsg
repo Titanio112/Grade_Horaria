@@ -1,0 +1,14 @@
+feat(auth): Fase 1.5 — dark mode, password warning, reset password, institution requests
+
+- css/tokens.css: fonte única de cor (claro/escuro) — base.css/auth.css consomem variáveis
+- js/components/theme-toggle.component.js: Liquid Glass toggle (Fluent Emoji 3D via CDN), prefers-color-scheme + localStorage, sem flash
+- js/core/utils.js: weakPasswordWarning() (não bloqueante, aviso âmbar)
+- js/services/auth.service.js: requestPasswordReset() + updatePassword() (reset por e-mail)
+- js/services/institution-requests.service.js: submitInstitutionRequest() (anon INSERT na tabela v6)
+- recuperar.html + redefinir.html: fluxo completo de recuperação
+- cadastro.html: detalhes + form de solicitação (details/summary)
+- CSS fluido mantido: rem/clamp/min, grid com glow no dark, scrollbar tematizada
+- Migração v6: institution_requests + RLS (anon INSERT, super admin SELECT/UPDATE)
+
+Testado: 5 telas × 4 larguras (375/768/1280/1600) = zero scroll horizontal, zero erros console
+E2E: toggle persiste, senha fraca avisa sem bloquear, solicitação anon grava no banco, recuperar/redefinir fluem.

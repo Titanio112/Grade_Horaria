@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Entrar — Grade Horária</title>
+  <title>Recuperar senha — Grade Horária</title>
   <!-- Bootstrap do tema (antes do CSS = sem flash; espelha o toggle) -->
   <script>
     (function(){var t=null;try{t=localStorage.getItem('gh-theme');}catch(e){}
@@ -22,10 +22,10 @@
     </header>
 
     <section class="card">
-      <h1>Entrar</h1>
-      <p class="card-subtitle">Acesse sua grade e o planejamento do semestre.</p>
+      <h1>Recuperar senha</h1>
+      <p class="card-subtitle">Enviaremos um link de redefinição para o seu e-mail.</p>
 
-      <form id="login-form" novalidate>
+      <form id="recuperar-form" novalidate>
         <div class="field">
           <label for="email">E-mail</label>
           <input id="email" name="email" type="email" inputmode="email"
@@ -33,23 +33,23 @@
           <p class="field-error" id="email-error" hidden></p>
         </div>
 
-        <div class="field">
-          <label for="password">Senha</label>
-          <input id="password" name="password" type="password"
-                 autocomplete="current-password" required aria-describedby="password-error">
-          <p class="field-error" id="password-error" hidden></p>
-        </div>
-
-        <div class="form-error" id="form-error" role="alert" hidden></div>
-
-        <button class="btn btn-primary" type="submit">Entrar</button>
+        <button class="btn btn-primary" type="submit">Enviar link de recuperação</button>
       </form>
 
-      <p class="auth-switch"><a href="recuperar.html">Esqueci minha senha</a></p>
-      <p class="auth-switch" style="margin-top: 0.5rem;">Ainda não tem conta? <a href="cadastro.html">Criar conta</a></p>
+      <div id="recover-success" hidden>
+        <img class="state-icon"
+             src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Incoming%20envelope/3D/incoming_envelope_3d.png"
+             alt="">
+        <p class="state-message success" role="status">
+          Se <strong id="recover-success-email"></strong> estiver cadastrado,
+          você vai receber um link para redefinir a senha. Confira também o spam.
+        </p>
+      </div>
+
+      <p class="auth-switch"><a href="login.html">Voltar para o login</a></p>
     </section>
   </main>
 
-  <script type="module" src="js/pages/login.page.js"></script>
+  <script type="module" src="js/pages/recuperar.page.js"></script>
 </body>
 </html>

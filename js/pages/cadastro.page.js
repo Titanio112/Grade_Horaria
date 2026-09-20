@@ -15,8 +15,10 @@
 
 import { signUp } from '../services/auth.service.js';
 import { listInstitutions, listCampuses, listCourses } from '../services/institutions.service.js';
+import { submitInstitutionRequest } from '../services/institution-requests.service.js';
 import { createSelectCascade } from '../components/select-cascade.component.js';
-import { isValidEmail, validatePassword, friendlyAuthError } from '../core/utils.js';
+import { mountThemeToggle } from '../components/theme-toggle.component.js';
+import { isValidEmail, validatePassword, weakPasswordWarning, friendlyAuthError } from '../core/utils.js';
 
 const form = document.getElementById('cadastro-form');
 const nameInput = document.getElementById('name');
@@ -126,3 +128,78 @@ async function handleSubmit(event) {
 }
 
 form.addEventListener('submit', handleSubmit);
+
+/* ---------- Aviso de senha fraca (NÃO bloqueia o cadastro) ---------- */
+
+const passwordWarning = document.getElementById('password-warning');
+
+passwordInput.addEventListener('input', () => {
+  const warning = weakPasswordWarning(passwordInput.value);
+  passwordWarning.textContent = warning || '';
+  passwordWarning.hidden = !warning;
+});
+
+/* ---------- Solicitação de instituição não cadastrada ---------- */
+
+const requestForm = document.getElementById('institution-request-form');
+const requestSuccess = document.getElementById('request-success');
+const requestFormError = document.getElementById('request-form-error');
+
+/** Erro inline de um campo do formulário de solicitação. */
+function showRequestError(input, message) {
+  const errorEl = document.getElementById(`${input.id}-error`);
+  input.setAttribute('aria-invalid', message ? 'true' : 'false');
+  if (errorEl) {
+    errorEl.textContent = message || '';
+    errorEl.hidden = !message;
+  }
+}
+
+async function handleRequestSubmit(event) {
+  event.preventDefault();
+  requestFormError.hidden = true;
+
+  const institutionInput = document.getElementById('request-institution');
+  const contactInput = document.getElementById('request-email');
+  const messageInput = document.getElementById('request-message');
+
+  let valid = true;
+  if (institutionInput.value.trim().length < 3) {
+    showRequestError(institutionInput, 'Informe o nome da instituição.');
+    valid = false;
+  } else showRequestError(institutionInput, '');
+  if (!isValidEmail(contactInput.value)) {
+    showRequestError(contactInput, 'Informe um e-mail válido.');
+    valid = false;
+  } else showRequestError(contactInput, '');
+  if (messageInput.value.trim().length < 10) {
+    showRequestError(messageInput, 'Conte em uma frase o que você precisa (mín. 10 caracteres).');
+    valid = false;
+  } else showRequestError(messageInput, '');
+  if (!valid) return;
+
+  const button = requestForm.querySelector('button[type="submit"]');
+  button.disabled = true;
+  button.textContent = 'Enviando…';
+
+  const { error } = await submitInstitutionRequest({
+    institutionName: institutionInput.value,
+    contactEmail: contactInput.value,
+    message: messageInput.value,
+  });
+
+  button.disabled = false;
+  button.textContent = 'Enviar solicitação';
+
+  if (error) {
+    requestFormError.textContent = 'Não foi possível enviar agora. Tente de novo em instantes.';
+    requestFormError.hidden = false;
+    return;
+  }
+  requestForm.hidden = true;
+  requestSuccess.hidden = false;
+}
+
+requestForm.addEventListener('submit', handleRequestSubmit);
+
+mountThemeToggle();

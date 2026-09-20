@@ -12,6 +12,7 @@
 
 import { signIn, getSession } from '../services/auth.service.js';
 import { isValidEmail, friendlyAuthError } from '../core/utils.js';
+import { mountThemeToggle } from '../components/theme-toggle.component.js';
 
 const form = document.getElementById('login-form');
 const emailInput = document.getElementById('email');
@@ -81,3 +82,4 @@ async function handleSubmit(event) {
 
 form.addEventListener('submit', handleSubmit);
 redirectIfLoggedIn();
+mountThemeToggle();
