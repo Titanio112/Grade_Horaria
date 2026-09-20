@@ -1,0 +1,74 @@
+/* ============================================================
+   base.css — Tokens de design + reset mínimo
+   O que faz: define a paleta, tipografia e resets globais do
+   projeto (.fonte única de verdade visual).
+   O que NÃO faz: não define layout de nenhuma tela específica
+   (isso fica em auth.css e futuros <contexto>.css).
+   Depende de: nada.
+   ============================================================ */
+
+:root {
+  /* Paleta (aprovada no plano de design — não alterar sem decisão) */
+  --ink: #1D1D1F;        /* texto principal */
+  --ink-2: #6E6E73;      /* texto secundário / hints */
+  --bg: #F5F5F7;         /* fundo da página */
+  --surface: #FFFFFF;    /* cartões */
+  --line: #D2D2D7;       /* bordas hairline */
+  --accent: #0071E3;     /* única cor de ação */
+  --accent-hover: #0066C7; /* hover do acento (escurece ~6%) */
+  --danger: #C81E1E;     /* erros (apenas texto/anel) */
+  --success: #248A3D;    /* confirmações */
+
+  /* Formas (rem: escalam com a fonte raiz, sem breakpoint) */
+  --radius-card: 1.125rem;  /* 18px */
+  --radius-field: 0.625rem; /* 10px */
+
+  /* Tipografia: stack de sistema (SF Pro onde houver) */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  color-scheme: light;
+}
+
+/* ---------- Reset mínimo ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 1rem; /* 16px: base relativa, tudo abaixo escala em rem */
+  line-height: 1.45;
+  color: var(--ink);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg { display: block; max-width: 100%; }
+
+input, select, button, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Foco de teclado sempre visível (AA) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Números tabulares = assinatura "grade horária" em dados/horários */
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* Movimento só como resposta a ação; respeita reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
