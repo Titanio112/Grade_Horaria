@@ -52,23 +52,20 @@
 
         <div class="field">
           <label for="institution">Instituição</label>
-          <select id="institution" name="institution" required aria-describedby="course-error">
-            <option value="">Carregando…</option>
-          </select>
+          <button id="institution" name="institution" type="button" required aria-describedby="course-error"></button>
+          <input type="hidden" name="institution-value" id="institution-value">
         </div>
 
         <div class="field">
           <label for="campus">Campus</label>
-          <select id="campus" name="campus" required disabled aria-describedby="course-error">
-            <option value="">Selecione a instituição primeiro</option>
-          </select>
+          <button id="campus" name="campus" type="button" required aria-describedby="course-error"></button>
+          <input type="hidden" name="campus-value" id="campus-value">
         </div>
 
         <div class="field">
           <label for="course">Curso</label>
-          <select id="course" name="course" required disabled aria-describedby="course-error">
-            <option value="">Selecione o campus primeiro</option>
-          </select>
+          <button id="course" name="course" type="button" required aria-describedby="course-error"></button>
+          <input type="hidden" name="course-value" id="course-value">
           <p class="field-error" id="course-error" hidden></p>
         </div>
 

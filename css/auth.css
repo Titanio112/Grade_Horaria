@@ -17,6 +17,9 @@
 .auth-page {
   min-height: 100dvh;
   display: grid;
+  /* minmax(0, 1fr) impede que conteúdo longo (rótulo nowrap do dropdown)
+     expanda a trilha além da viewport — sem isso, overflow horizontal em telas < 25rem */
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   padding: clamp(1.5rem, 6vh, 3rem) clamp(1rem, 5vw, 1.25rem);
   background-color: var(--bg);

@@ -2,10 +2,11 @@
  * cadastro.page.js — Orquestração da tela de cadastro (cadastro.html).
  *
  * O que faz: monta a cascata instituição → campus → curso (via o
- * componente injetando os loaders de institutions.service), valida o
- * formulário, cria a conta via auth.service e exibe o estado de
- * "confira seu e-mail" (confirmação de e-mail está LIGADA no backend,
- * então não há sessão imediata após o signUp).
+ * componente dropdown customizado injetando os loaders de
+ * institutions.service), valida o formulário, cria a conta via
+ * auth.service e exibe o estado de "confirme seu e-mail"
+ * (confirmação de e-mail está LIGADA no backend, então não há
+ * sessão imediata após o signUp).
  * O que NÃO faz: não fala com o Supabase diretamente, não contém CSS,
  * não redireciona para o app (o usuário precisa confirmar o e-mail).
  * Depende de: js/services/auth.service.js, js/services/institutions.service.js,
@@ -29,7 +30,12 @@ const submitButton = form.querySelector('button[type="submit"]');
 const successBlock = document.getElementById('signup-success');
 const successEmail = document.getElementById('signup-success-email');
 
-/** Loader adaptado: services devolvem {data, error}; o componente espera
+/* Inputs ocultos para enviar os valores selecionados no submit. */
+const instValue = document.getElementById('institution-value');
+const campValue = document.getElementById('campus-value');
+const courValue = document.getElementById('course-value');
+
+/* Loader adaptado: services devolvem {data, error}; o componente espera
  *  uma Promise que resolve com o array ou rejeita em caso de erro. */
 const asLoader = (serviceCall) => async (...args) => {
   const { data, error } = await serviceCall(...args);
@@ -38,7 +44,7 @@ const asLoader = (serviceCall) => async (...args) => {
 };
 
 const cascade = createSelectCascade({
-  selects: {
+  triggers: {
     institution: document.getElementById('institution'),
     campus: document.getElementById('campus'),
     course: document.getElementById('course'),
@@ -49,7 +55,6 @@ const cascade = createSelectCascade({
     courses: asLoader(listCourses),
   },
 });
-
 /** Exibe erro inline num campo e marca para leitores de tela. */
 function showFieldError(input, message) {
   const errorEl = document.getElementById(`${input.id}-error`);
@@ -88,7 +93,8 @@ function validateForm() {
   showFieldError(passwordInput, passwordError || '');
   if (passwordError) valid = false;
 
-  if (!cascade.getCourseId()) {
+  const courseId = cascade.getCourseId();
+  if (!courseId) {
     showFieldError(document.getElementById('course'), 'Escolha instituição, campus e curso.');
     valid = false;
   } else {
@@ -101,16 +107,27 @@ function validateForm() {
 async function handleSubmit(event) {
   event.preventDefault();
   showFormError('');
+
+  const fullName = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+  const courseId = cascade.getCourseId();
+
   if (!validateForm()) return;
+
+  // Sincroniza hidden inputs para o submit do formulário
+  instValue.value = document.getElementById('institution').dataset.value || '';
+  campValue.value = document.getElementById('campus').dataset.value || '';
+  courValue.value = courseId;
 
   submitButton.disabled = true;
   submitButton.textContent = 'Criando conta…';
 
   const { error } = await signUp({
-    email: emailInput.value.trim(),
-    password: passwordInput.value,
-    fullName: nameInput.value.trim(),
-    courseId: cascade.getCourseId(),
+    email,
+    password,
+    fullName,
+    courseId,
   });
 
   submitButton.disabled = false;
@@ -121,22 +138,20 @@ async function handleSubmit(event) {
     return;
   }
 
-  // Confirmação de e-mail LIGADA: não há sessão ainda. Mostra o próximo passo.
   form.hidden = true;
-  successEmail.textContent = emailInput.value.trim();
+  successEmail.textContent = email;
   successBlock.hidden = false;
 }
 
 form.addEventListener('submit', handleSubmit);
-
-/* ---------- Aviso de senha fraca (NÃO bloqueia o cadastro) ---------- */
+/* ---------- Aviso de senha fraca (NAO bloqueia o cadastro) ---------- */
 
 const passwordWarning = document.getElementById('password-warning');
 
 passwordInput.addEventListener('input', () => {
-  const warning = weakPasswordWarning(passwordInput.value);
-  passwordWarning.textContent = warning || '';
-  passwordWarning.hidden = !warning;
+  const warningMsg = weakPasswordWarning(passwordInput.value);
+  passwordWarning.textContent = warningMsg || '';
+  passwordWarning.hidden = !warningMsg;
 });
 
 /* ---------- Solicitação de instituição não cadastrada ---------- */
