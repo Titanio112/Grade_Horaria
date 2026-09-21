@@ -39,7 +39,7 @@ function showFormError(message) {
 /** Se já existe sessão, a tela de login nem precisa ser usada. */
 async function redirectIfLoggedIn() {
   const session = await getSession();
-  if (session) window.location.replace('conta.html');
+  if (session) window.location.replace('grade.html');
 }
 
 async function handleSubmit(event) {
@@ -77,7 +77,7 @@ async function handleSubmit(event) {
     showFormError(friendlyAuthError(error));
     return;
   }
-  window.location.assign('conta.html');
+  window.location.assign('grade.html');
 }
 
 form.addEventListener('submit', handleSubmit);

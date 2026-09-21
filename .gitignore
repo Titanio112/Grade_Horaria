@@ -105,3 +105,4 @@ supabase/set_mock_course.js
 supabase/check_backfill.js
 supabase/tmp_backfill_test.js
 test-dropdown-*.cjs
+test-grade-*.cjs

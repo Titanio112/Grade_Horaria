@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha grade — Grade Horária</title>
+  <!-- Bootstrap do tema (antes do CSS = sem flash; espelha o toggle) -->
+  <script>
+    (function(){var t=null;try{t=localStorage.getItem('gh-theme');}catch(e){}
+    if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+    document.documentElement.dataset.theme=t;})();
+  </script>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="app-header">
+    <a class="brand" href="grade.html">
+      <span class="glyph" aria-hidden="true"><i></i><i class="hl"></i><i></i><i></i><i></i><i></i></span>
+      Grade Horária
+    </a>
+    <nav class="app-nav" aria-label="Navegação principal">
+      <a href="grade.html" aria-current="page">Minha grade</a>
+      <a href="conta.html">Conta</a>
+      <button id="logout-button" type="button">Sair</button>
+    </nav>
+  </header>
+
+  <main class="app-main">
+    <aside class="catalog" aria-label="Catálogo de matérias">
+      <h2>Matérias</h2>
+      <div id="class-picker"></div>
+    </aside>
+
+    <section class="grade-panel" aria-label="Minha grade">
+      <div class="grade-toolbar">
+        <h1>Minha grade</h1>
+        <p class="grade-summary" id="grade-summary" aria-live="polite"></p>
+        <div class="grade-visibility" id="visibility-slot">
+          <button id="visibility-trigger" type="button" aria-label="Visibilidade da grade"></button>
+        </div>
+      </div>
+
+      <div id="grade-status" class="page-status page-status--error" role="alert" hidden></div>
+      <div id="weekly-grid"></div>
+
+      <p class="empty-state" id="grade-disclaimer">
+        Ferramenta de planejamento — a fonte oficial de horários e matrícula é o sistema da sua instituição (ex.: SIGAA).
+      </p>
+    </section>
+  </main>
+
+  <script type="module" src="js/pages/grade.page.js"></script>
+</body>
+</html>

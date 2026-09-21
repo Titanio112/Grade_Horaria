@@ -47,6 +47,16 @@
   --glass-highlight: rgb(255 255 255 / 0.6);
   --glass-shadow: rgb(31 35 40 / 0.12);
 
+  /* Blocos da grade semanal (uma cor por matéria) — claro */
+  --block-1-bg: #DBEAFE; --block-1-border: #2563EB; --block-1-text: #1E40AF;
+  --block-2-bg: #FEF3C7; --block-2-border: #D97706; --block-2-text: #92400E;
+  --block-3-bg: #DCFCE7; --block-3-border: #16A34A; --block-3-text: #166534;
+  --block-4-bg: #FCE7F3; --block-4-border: #DB2777; --block-4-text: #9D174D;
+  --block-5-bg: #E0E7FF; --block-5-border: #4F46E5; --block-5-text: #312E81;
+  --block-6-bg: #FEF9C3; --block-6-border: #CA8A04; --block-6-text: #854D0E;
+  --block-7-bg: #FEF2F2; --block-7-border: #DC2626; --block-7-text: #991B1B;
+  --block-8-bg: #ECFDF5; --block-8-border: #059669; --block-8-text: #065F46;
+
   color-scheme: light;
 }
 
@@ -81,6 +91,16 @@
   --glass-border: rgb(255 255 255 / 0.12);
   --glass-highlight: rgb(255 255 255 / 0.15);
   --glass-shadow: rgb(0 0 0 / 0.45);
+
+  /* Blocos da grade semanal — escuro (fundo translúcido, borda/texto claros) */
+  --block-1-bg: rgb(37 99 235 / 0.22); --block-1-border: #60A5FA; --block-1-text: #BFDBFE;
+  --block-2-bg: rgb(217 119 6 / 0.22); --block-2-border: #FBBF24; --block-2-text: #FDE68A;
+  --block-3-bg: rgb(22 163 74 / 0.22); --block-3-border: #4ADE80; --block-3-text: #BBF7D0;
+  --block-4-bg: rgb(219 39 119 / 0.22); --block-4-border: #F472B6; --block-4-text: #FBCFE8;
+  --block-5-bg: rgb(79 70 229 / 0.24); --block-5-border: #818CF8; --block-5-text: #C7D2FE;
+  --block-6-bg: rgb(202 138 4 / 0.22); --block-6-border: #FACC15; --block-6-text: #FEF08A;
+  --block-7-bg: rgb(220 38 38 / 0.22); --block-7-border: #F87171; --block-7-text: #FECACA;
+  --block-8-bg: rgb(5 150 105 / 0.22); --block-8-border: #34D399; --block-8-text: #A7F3D0;
 
   color-scheme: dark;
 }

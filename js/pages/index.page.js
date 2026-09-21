@@ -11,4 +11,4 @@
 import { getSession } from '../services/auth.service.js';
 
 const session = await getSession();
-window.location.replace(session ? 'conta.html' : 'login.html');
+window.location.replace(session ? 'grade.html' : 'login.html');
