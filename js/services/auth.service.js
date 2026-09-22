@@ -63,7 +63,7 @@ export async function getSession() {
  * @returns {Promise<{data: object|null, error: object|null}>}
  */
 export async function requestPasswordReset(email) {
-  const redirectTo = new URL('../../redefinir.html', import.meta.url).href;
+  const redirectTo = new URL('../../pages/redefinir.html', import.meta.url).href;
   const { data, error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
   return { data, error };
 }

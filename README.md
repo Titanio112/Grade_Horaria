@@ -13,15 +13,17 @@ Organizador de grade horária com análise de grupo, pré-requisitos e trava de 
 ## Estrutura
 
 ```
-├── index.html … redefinir.html, grade.html   # Páginas (auth + app)
-├── css/                 # tokens.css (cores) · base.css · auth.css · app.css
+├── index.html           # Raiz (GitHub Pages) — só roteia por sessão
+├── pages/               # Todas as telas: login, cadastro, conta, recuperar,
+│                        # redefinir, grade (+ grade-legado.html de referência)
+├── css/                 # tokens.css (cores) · base.css · auth.css · app.css · legado.css
 ├── js/
 │   ├── core/            # config, supabase-client, utils
 │   ├── services/        # Única camada que fala com o Supabase
 │   ├── components/      # UI pura (dropdown, cascata, grade semanal, catálogo)
 │   ├── pages/           # Orquestração de cada página (.page.js)
 │   └── legado/          # Referência histórica (não usar)
-├── grade-legado.html + dados/logica/render.js   # App vanilla original (referência)
+├── dados/logica/render.js   # App vanilla original (referência)
 └── supabase/
     ├── schema.sql       # Schema base
     └── migrations/      # v5 (social/admin/notificações) + v6 (institution_requests) + hotfixes
