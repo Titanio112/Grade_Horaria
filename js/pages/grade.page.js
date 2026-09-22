@@ -94,6 +94,8 @@ function renderAll() {
         endMin: sc.endMin,
         title: entry.subject.name,
         subtitle: entry.cls.code,
+        room: (sc.rooms || []).join(', '),
+        professors: entry.cls.professors || [],
         colorIndex: Math.max(0, subjectIndex),
       });
     }

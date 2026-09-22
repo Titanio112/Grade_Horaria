@@ -35,6 +35,11 @@
 }
 .app-header .brand:hover { text-decoration: none; }
 
+/* O theme-toggle (position: fixed, vive fora do header) é alinhado ao
+   centro vertical do header quando a página tem .app-header — senão o
+   ícone do sol ficava desalinhado da linha "Minha grade / Conta / Sair". */
+.app-header ~ .theme-toggle { top: 0.5rem; right: 1rem; }
+
 .app-nav {
   margin-left: auto;
   display: flex;

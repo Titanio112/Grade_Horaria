@@ -106,3 +106,6 @@ supabase/check_backfill.js
 supabase/tmp_backfill_test.js
 test-dropdown-*.cjs
 test-grade-*.cjs
+test-cadastro-*.cjs
+test-utils.mjs
+*.err

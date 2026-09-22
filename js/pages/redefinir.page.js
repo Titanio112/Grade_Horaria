@@ -14,9 +14,13 @@
 import { getSession, updatePassword, onAuthChange } from '../services/auth.service.js';
 import { validatePassword, weakPasswordWarning, friendlyAuthError } from '../core/utils.js';
 import { mountThemeToggle } from '../components/theme-toggle.component.js';
+import { attachPasswordField } from '../components/password-field.component.js';
 
 const form = document.getElementById('redefinir-form');
 const passwordInput = document.getElementById('password');
+
+/* Olho de mostrar/esconder + espaço bloqueado (regra nova de senha) */
+attachPasswordField(passwordInput);
 const passwordError = document.getElementById('password-error');
 const passwordWarning = document.getElementById('password-warning');
 const formError = document.getElementById('form-error');

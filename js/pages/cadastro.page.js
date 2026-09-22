@@ -19,7 +19,12 @@ import { listInstitutions, listCampuses, listCourses } from '../services/institu
 import { submitInstitutionRequest } from '../services/institution-requests.service.js';
 import { createSelectCascade } from '../components/select-cascade.component.js';
 import { mountThemeToggle } from '../components/theme-toggle.component.js';
-import { isValidEmail, validatePassword, weakPasswordWarning, friendlyAuthError } from '../core/utils.js';
+import { attachPasswordField } from '../components/password-field.component.js';
+import { createFormDraft } from '../components/form-draft.component.js';
+import {
+  isValidEmail, validatePassword, weakPasswordWarning, friendlyAuthError,
+  cleanNameInput, titleCaseName, validateFullName,
+} from '../core/utils.js';
 
 const form = document.getElementById('cadastro-form');
 const nameInput = document.getElementById('name');
@@ -29,6 +34,19 @@ const formError = document.getElementById('form-error');
 const submitButton = form.querySelector('button[type="submit"]');
 const successBlock = document.getElementById('signup-success');
 const successEmail = document.getElementById('signup-success-email');
+
+/* Senha: olho de mostrar/esconder + espaço bloqueado */
+attachPasswordField(passwordInput);
+
+/* Nome: só letras (números/símbolos são removidos na hora) e cada
+   palavra nasce com inicial maiúscula. */
+nameInput.addEventListener('input', () => {
+  nameInput.value = titleCaseName(cleanNameInput(nameInput.value));
+});
+
+/* Rascunho automático (sessionStorage): nome + e-mail.
+   Senha NUNCA é persistida. */
+const draft = createFormDraft({ storageKey: 'cadastro', fields: [nameInput, emailInput] });
 
 /* Inputs ocultos para enviar os valores selecionados no submit. */
 const instValue = document.getElementById('institution-value');
@@ -75,12 +93,9 @@ function showFormError(message) {
 function validateForm() {
   let valid = true;
 
-  if (!nameInput.value.trim()) {
-    showFieldError(nameInput, 'Informe seu nome completo.');
-    valid = false;
-  } else {
-    showFieldError(nameInput, '');
-  }
+  const nameError = validateFullName(nameInput.value);
+  showFieldError(nameInput, nameError || '');
+  if (nameError) valid = false;
 
   if (!isValidEmail(emailInput.value)) {
     showFieldError(emailInput, 'Informe um e-mail válido.');
@@ -138,6 +153,7 @@ async function handleSubmit(event) {
     return;
   }
 
+  draft.clear(); // conta criada: apaga o rascunho
   form.hidden = true;
   successEmail.textContent = email;
   successBlock.hidden = false;
@@ -159,6 +175,16 @@ passwordInput.addEventListener('input', () => {
 const requestForm = document.getElementById('institution-request-form');
 const requestSuccess = document.getElementById('request-success');
 const requestFormError = document.getElementById('request-form-error');
+
+/* Rascunho do formulário de solicitação (instituição, e-mail, mensagem) */
+const requestDraft = createFormDraft({
+  storageKey: 'institution-request',
+  fields: [
+    document.getElementById('request-institution'),
+    document.getElementById('request-email'),
+    document.getElementById('request-message'),
+  ],
+});
 
 /** Erro inline de um campo do formulário de solicitação. */
 function showRequestError(input, message) {
@@ -211,6 +237,7 @@ async function handleRequestSubmit(event) {
     requestFormError.hidden = false;
     return;
   }
+  requestDraft.clear(); // solicitação enviada: apaga o rascunho
   requestForm.hidden = true;
   requestSuccess.hidden = false;
 }

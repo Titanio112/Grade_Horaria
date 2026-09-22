@@ -179,6 +179,25 @@
 }
 
 
+/* Campo de senha com botão "olho" (js/components/password-field.component.js) */
+.password-wrap { position: relative; }
+.password-wrap input { padding-right: 2.75rem; }
+.password-eye {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 2.75rem;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  color: var(--ink-2);
+  cursor: pointer;
+  border-radius: 0 var(--radius-field) var(--radius-field) 0;
+}
+.password-eye:hover { color: var(--ink); background: var(--neutral-hover); }
+
 /* ---------- Botões ---------- */
 
 .btn {
