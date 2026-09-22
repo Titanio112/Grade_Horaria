@@ -34,7 +34,8 @@ export async function listCatalog(courseId) {
     .from('subjects')
     .select(`id, code, name, workload_hours, prerequisites, corequisites,
              classes!inner(id, code, semester, social_group_link,
-               class_schedules(id, day_of_week, start_time, end_time),
+               class_schedules(id, day_of_week, start_time, end_time,
+                 schedule_rooms(rooms(name))),
                class_professors(professors(name)))`)
     .eq('course_id', courseId)
     .eq('is_active', true)
@@ -60,6 +61,9 @@ export async function listCatalog(courseId) {
           day: sc.day_of_week,
           startMin: toMinutes(sc.start_time),
           endMin: toMinutes(sc.end_time),
+          rooms: (sc.schedule_rooms || [])
+            .map((sr) => sr.rooms?.name)
+            .filter(Boolean),
         }))
         .sort((a, b) => a.day - b.day || a.startMin - b.startMin),
       professors: (c.class_professors || [])

@@ -13,12 +13,20 @@
 import { signIn, getSession } from '../services/auth.service.js';
 import { isValidEmail, friendlyAuthError } from '../core/utils.js';
 import { mountThemeToggle } from '../components/theme-toggle.component.js';
+import { attachPasswordField } from '../components/password-field.component.js';
+import { createFormDraft } from '../components/form-draft.component.js';
 
 const form = document.getElementById('login-form');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const formError = document.getElementById('form-error');
 const submitButton = form.querySelector('button[type="submit"]');
+
+/* Olho de mostrar senha + espaço bloqueado no campo de senha */
+attachPasswordField(passwordInput);
+
+/* Rascunho: só o e-mail (senha NUNCA vai pro storage) */
+const draft = createFormDraft({ storageKey: 'login', fields: [emailInput] });
 
 /** Exibe erro inline num campo e marca o input para leitores de tela. */
 function showFieldError(input, message) {
@@ -77,6 +85,7 @@ async function handleSubmit(event) {
     showFormError(friendlyAuthError(error));
     return;
   }
+  draft.clear(); // login feito: rascunho do e-mail não precisa ficar
   window.location.assign('grade.html');
 }
 

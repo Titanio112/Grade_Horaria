@@ -120,9 +120,27 @@ export function createWeeklyGrid({ container, onRemove = () => {} }) {
       const title = document.createElement('span');
       title.className = 'b-title';
       title.textContent = b.title;
+
+      /* Linha 1: horário + sala (a sala mora em schedule_rooms no banco) */
       const sub = document.createElement('span');
       sub.className = 'b-sub';
-      sub.textContent = b.subtitle || `${fmt(b.startMin)}–${fmt(b.endMin)}`;
+      const when = `${fmt(b.startMin)}–${fmt(b.endMin)}`;
+      sub.textContent = b.room ? `${when} · ${b.room}` : (b.subtitle || when);
+
+      block.append(title, sub);
+
+      /* Linha 2: professor(es), quando existir */
+      const profs = (b.professors || []).filter(Boolean).join(', ');
+      if (profs) {
+        const profLine = document.createElement('span');
+        profLine.className = 'b-sub';
+        profLine.textContent = profs;
+        block.appendChild(profLine);
+      }
+
+      /* Tooltip com a ficha completa (útil quando o bloco é estreito/baixo) */
+      const tipParts = [b.title, b.subtitle, when, b.room, profs].filter(Boolean);
+      block.title = tipParts.join(' · ');
 
       const rm = document.createElement('button');
       rm.className = 'b-remove';
@@ -132,7 +150,7 @@ export function createWeeklyGrid({ container, onRemove = () => {} }) {
       rm.textContent = '×';
       rm.addEventListener('click', () => onRemove(b.classId));
 
-      block.append(title, sub, rm);
+      block.appendChild(rm);
       col.appendChild(block);
     }
   }
