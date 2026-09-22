@@ -1,0 +1,45 @@
+/* ============================================================
+   motion.css — SISTEMA DE MOVIMENTO do site (fonte única)
+   O que faz: declara as durações e curvas de easing usadas por
+   TODO o site, inspiradas nas "Fluid Interfaces" (Apple): física
+   de mola, sem cortes bruscos, e transições que podem reverter
+   no meio se o usuário mudar de ideia (por isso preferimos
+   `transition` a `@keyframes` longas).
+   Como usar:
+     transição rápida: transition: … var(--dur-fast) var(--ease-standard);
+     painel/popover:   transition: … var(--dur-base) var(--ease-spring);
+     gaveta/accordion: transition: … var(--dur-slow) var(--ease-spring-soft);
+   O que NÃO faz: não declara cor (tokens.css) nem layout.
+   Regra: NÃO crie duração/easing hardcoded em outro arquivo CSS —
+   se precisar de um movimento novo, crie a variável AQUI.
+   ============================================================ */
+
+:root {
+  /* Durações */
+  --dur-instant: 80ms;   /* feedback tátil imediato (:active, scale 0.98) */
+  --dur-fast: 160ms;     /* hover, troca de cor, fade simples */
+  --dur-base: 280ms;     /* dropdowns, popovers, tooltips */
+  --dur-slow: 420ms;     /* gavetas grandes (accordion de semestre) */
+
+  /* Curvas */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);          /* ease-out suave */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);     /* mola c/ leve overshoot */
+  --ease-spring-soft: cubic-bezier(0.22, 1.2, 0.36, 1); /* mola contida (gavetas) */
+
+  /* Atalho completo para "aparecer com mola" */
+  --spring-in: var(--dur-base) var(--ease-spring);
+}
+
+/* Entrada de elementos flutuantes (dropdown, menu do header):
+   sobe 6px + scale mínimo + fade, com a mola padrão. */
+@keyframes gh-pop-in {
+  from { opacity: 0; transform: translateY(0.375rem) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Utilitário: aplica a entrada com mola uma única vez. */
+.animate-pop {
+  animation: gh-pop-in var(--dur-base) var(--ease-spring);
+}
+
+/* Em telas com "reduzir movimento", base.css já zera tudo — nada a fazer. */

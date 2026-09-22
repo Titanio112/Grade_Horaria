@@ -4,16 +4,28 @@
    suas turmas (horário resumido, professor) e o botão de
    adicionar/remover. Marca matérias bloqueadas por pré-requisito
    e turmas já matriculadas. Filtra por texto localmente.
+   Agrupa por semestre em gavetas (accordion, animação de mola) e
+   oferece ordenação: 1º→último semestre (padrão), último→1º,
+   alfabética (lista plana, comportamento antigo).
    O que NÃO faz: NÃO fala com o Supabase (dados prontos via
    setData), NÃO decide conflito/choque — onToggle devolve a turma
    para a página decidir e persistir.
    API:
      createClassPicker({ container, onToggle })
      → { setData({ subjects, subjectById, enrolledIds, completedIds }) }
-   Depende de: css/app.css (estilos) e nada mais.
+   Depende de: css/app.css, css/components.css, css/motion.css e
+   js/components/dropdown.component.js (seletor de ordenação).
    ============================================================ */
 
+import { createDropdown } from './dropdown.component.js';
+
 const DAY_SHORT = { 1: 'Seg', 2: 'Ter', 3: 'Qua', 4: 'Qui', 5: 'Sex', 6: 'Sáb' };
+
+const SORT_OPTIONS = [
+  { value: 'semester-asc', label: 'Semestre: 1º → último' },
+  { value: 'semester-desc', label: 'Semestre: último → 1º' },
+  { value: 'alpha', label: 'Ordem alfabética' },
+];
 
 function fmt(min) {
   const h = Math.floor(min / 60);
@@ -28,6 +40,14 @@ function scheduleSummary(schedules) {
     .join(' · ');
 }
 
+/** Semestre da matéria = menor semestre entre suas turmas (ou null). */
+function semesterOf(subject) {
+  const semesters = subject.classes
+    .map((c) => c.semester)
+    .filter((s) => Number.isFinite(s));
+  return semesters.length ? Math.min(...semesters) : null;
+}
+
 /**
  * @param {{container: HTMLElement, onToggle: (cls: object, subject: object, isEnrolled: boolean) => void}} config
  */
@@ -38,6 +58,14 @@ export function createClassPicker({ container, onToggle }) {
   search.placeholder = 'Buscar matéria…';
   search.setAttribute('aria-label', 'Buscar matéria');
 
+  /* Seletor de ordenação (dropdown customizado, padrão do site) */
+  const sortTrigger = document.createElement('button');
+  sortTrigger.type = 'button';
+  sortTrigger.className = 'sort-trigger';
+  const sortWrap = document.createElement('div');
+  sortWrap.className = 'sort-wrap';
+  sortWrap.appendChild(sortTrigger);
+
   const list = document.createElement('div');
   list.className = 'subject-list';
 
@@ -45,7 +73,7 @@ export function createClassPicker({ container, onToggle }) {
   empty.className = 'empty-state';
   empty.hidden = true;
 
-  container.append(search, list, empty);
+  container.append(search, sortWrap, list, empty);
 
   let state = {
     subjects: [],
@@ -53,6 +81,20 @@ export function createClassPicker({ container, onToggle }) {
     enrolledIds: new Set(),
     completedIds: new Set(),
   };
+  let sortMode = 'semester-asc';
+  /* Gavetas RECOLHIDAS pelo usuário (chave = número ou 'none').
+     Padrão: tudo começa ABERTO; o usuário pode recolher. */
+  const closedSemesters = new Set();
+
+  const sortDD = createDropdown({
+    trigger: sortTrigger,
+    placeholder: 'Ordenar por…',
+    options: SORT_OPTIONS,
+    onChange: (value) => {
+      if (value) { sortMode = value; render(); }
+    },
+  });
+  sortDD.setValue('semester-asc');
 
   /** Lista de nomes dos pré-requisitos pendentes de uma matéria. */
   function missingPrereqs(subject) {
@@ -61,15 +103,8 @@ export function createClassPicker({ container, onToggle }) {
       .map((id) => state.subjectById.get(id)?.name || id);
   }
 
-  function render() {
-    const query = search.value.trim().toLowerCase();
-    list.innerHTML = '';
-    let visible = 0;
-
-    for (const subject of state.subjects) {
-      if (query && !`${subject.name} ${subject.code}`.toLowerCase().includes(query)) continue;
-      visible++;
-
+  /** Monta o cartão de uma matéria (inalterado em relação à lista plana). */
+  function buildCard(subject) {
       const card = document.createElement('article');
       card.className = 'subject-card';
 
@@ -127,10 +162,86 @@ export function createClassPicker({ container, onToggle }) {
         card.appendChild(row);
       }
 
-      list.appendChild(card);
+      return card;
+  }
+
+  /** Cria o cabeçalho+gaveta de um semestre (accordion acessível). */
+  function buildSemesterGroup(semester, cards, forceOpen) {
+    const key = semester === null ? 'none' : String(semester);
+    const isOpen = forceOpen || !closedSemesters.has(key);
+
+    const groupEl = document.createElement('section');
+    groupEl.className = 'semester-group' + (isOpen ? ' is-open' : '');
+
+    const headerBtn = document.createElement('button');
+    headerBtn.type = 'button';
+    headerBtn.className = 'semester-header';
+    headerBtn.setAttribute('aria-expanded', String(isOpen));
+
+    const title = document.createElement('span');
+    title.textContent = semester === null ? 'Sem semestre definido' : `${semester}º semestre`;
+
+    const right = document.createElement('span');
+    right.className = 'semester-right';
+    const count = document.createElement('span');
+    count.className = 'semester-count';
+    count.textContent = `${cards.length} matéria${cards.length === 1 ? '' : 's'}`;
+    const chevron = document.createElement('span');
+    chevron.className = 'semester-chevron';
+    chevron.setAttribute('aria-hidden', 'true');
+    chevron.innerHTML = '<svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    right.append(count, chevron);
+    headerBtn.append(title, right);
+
+    headerBtn.addEventListener('click', () => {
+      const nowOpen = groupEl.classList.toggle('is-open');
+      headerBtn.setAttribute('aria-expanded', String(nowOpen));
+      if (nowOpen) closedSemesters.delete(key);
+      else closedSemesters.add(key);
+    });
+
+    const panel = document.createElement('div');
+    panel.className = 'semester-panel';
+    const bodyInner = document.createElement('div');
+    bodyInner.className = 'semester-body';
+    for (const card of cards) bodyInner.appendChild(card);
+    panel.appendChild(bodyInner);
+
+    groupEl.append(headerBtn, panel);
+    return groupEl;
+  }
+
+  function render() {
+    const query = search.value.trim().toLowerCase();
+    list.innerHTML = '';
+
+    const visibleSubjects = state.subjects.filter(
+      (subject) => !query || `${subject.name} ${subject.code}`.toLowerCase().includes(query));
+
+    if (sortMode === 'alpha') {
+      /* Lista plana (comportamento original), ordem alfabética */
+      for (const subject of visibleSubjects) list.appendChild(buildCard(subject));
+    } else {
+      /* Agrupa por semestre em gavetas; dentro da gaveta, alfabética */
+      const groups = new Map();
+      for (const subject of visibleSubjects) {
+        const sem = semesterOf(subject);
+        if (!groups.has(sem)) groups.set(sem, []);
+        groups.get(sem).push(subject);
+      }
+      const semesters = [...groups.keys()].sort((a, b) => {
+        if (a === null) return 1;
+        if (b === null) return -1;
+        return sortMode === 'semester-desc' ? b - a : a - b;
+      });
+      for (const sem of semesters) {
+        const cards = groups.get(sem).map(buildCard);
+        /* Com busca ativa, abre todas as gavetas com resultado */
+        list.appendChild(buildSemesterGroup(sem, cards, query !== ''));
+      }
     }
 
-    empty.hidden = visible > 0;
+    empty.hidden = visibleSubjects.length > 0;
     empty.textContent = query
       ? `Nenhuma matéria encontrada para “${query}”.`
       : 'Nenhuma matéria com turmas ativas neste curso.';

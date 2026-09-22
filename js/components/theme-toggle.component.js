@@ -36,13 +36,16 @@ function apply(theme, button, img) {
 }
 
 /**
- * Cria e monta o botão de alternância de tema no <body>.
+ * Cria e monta o botão de alternância de tema.
+ * @param {HTMLElement|null} [mountPoint] - se omitido, vai para o <body>
+ *   (position: fixed, canto superior direito). Se informado, entra no
+ *   fluxo do elemento (variante .theme-toggle--inline — ex.: header do app).
  * @returns {HTMLButtonElement} o botão criado.
  */
-export function mountThemeToggle() {
+export function mountThemeToggle(mountPoint = null) {
   const button = document.createElement('button');
   button.type = 'button';
-  button.className = 'theme-toggle';
+  button.className = mountPoint ? 'theme-toggle theme-toggle--inline' : 'theme-toggle';
 
   const img = document.createElement('img');
   img.width = 22;
@@ -55,6 +58,6 @@ export function mountThemeToggle() {
     apply(currentTheme() === 'dark' ? 'light' : 'dark', button, img);
   });
 
-  document.body.appendChild(button);
+  (mountPoint || document.body).appendChild(button);
   return button;
 }
