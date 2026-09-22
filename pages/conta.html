@@ -10,9 +10,9 @@
     if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
     document.documentElement.dataset.theme=t;})();
   </script>
-  <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/auth.css">
 </head>
 <body class="auth-page">
   <main class="auth-wrap">
@@ -44,11 +44,11 @@
         </li>
       </ul>
 
-      <a class="btn btn-primary" href="grade.html" style="display:block; text-align:center; margin-bottom: 0.5rem;">Ir para minha grade</a>
+      <a class="btn btn-primary btn-block account-cta" href="grade.html">Ir para minha grade</a>
       <button class="btn btn-secondary" id="logout-button" type="button">Sair</button>
     </section>
   </main>
 
-  <script type="module" src="js/pages/conta.page.js"></script>
+  <script type="module" src="../js/pages/conta.page.js"></script>
 </body>
 </html>

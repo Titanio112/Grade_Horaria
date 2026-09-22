@@ -225,6 +225,14 @@
   text-align: center;
 }
 
+/* Segundo link em sequência (login: "Criar conta" logo abaixo de
+   "Esqueci minha senha") — respiro menor entre eles. */
+.auth-switch--tight { margin-top: 0.5rem; }
+
+/* Botão em formato de bloco (CTA full-width da tela de conta) */
+.btn-block { display: block; text-align: center; width: 100%; }
+.account-cta { margin-bottom: 0.5rem; }
+
 /* ---------- Tela de conta (pós-login mínimo) ---------- */
 
 .account-head {

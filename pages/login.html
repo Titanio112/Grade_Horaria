@@ -10,9 +10,9 @@
     if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
     document.documentElement.dataset.theme=t;})();
   </script>
-  <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/auth.css">
 </head>
 <body class="auth-page">
   <main class="auth-wrap">
@@ -46,10 +46,10 @@
       </form>
 
       <p class="auth-switch"><a href="recuperar.html">Esqueci minha senha</a></p>
-      <p class="auth-switch" style="margin-top: 0.5rem;">Ainda não tem conta? <a href="cadastro.html">Criar conta</a></p>
+      <p class="auth-switch auth-switch--tight">Ainda não tem conta? <a href="cadastro.html">Criar conta</a></p>
     </section>
   </main>
 
-  <script type="module" src="js/pages/login.page.js"></script>
+  <script type="module" src="../js/pages/login.page.js"></script>
 </body>
 </html>

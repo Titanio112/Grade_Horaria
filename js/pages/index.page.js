@@ -11,4 +11,5 @@
 import { getSession } from '../services/auth.service.js';
 
 const session = await getSession();
-window.location.replace(session ? 'grade.html' : 'login.html');
+/* index.html fica na raiz (GitHub Pages); as telas vivem em pages/ */
+window.location.replace(session ? 'pages/grade.html' : 'pages/login.html');

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizador de Grade Horária - BSI</title>
+    <link rel="stylesheet" href="../css/legado.css">
+</head>
+<body>
+
+    <!-- MODAL PRINCIPAL (Boas-vindas / Perfil / Adicionar Amigo) -->
+    <div id="welcome-modal" class="modal-overlay">
+        <div class="modal-content">
+            
+            <!-- Etapa 0: Nome (Novo Amigo) -->
+            <div id="modal-step-0" hidden>
+                <div class="modal-title">Novo Perfil</div>
+                <p>Qual é o nome do seu amigo(a)?</p>
+                <div class="lg-spacer">
+                    <input type="text" id="new-friend-name" class="modal-input" placeholder="Ex: João Silva" onkeypress="if(event.key === 'Enter') confirmFriendName()">
+                </div>
+                <div class="lg-actions">
+                    <button class="btn btn-secondary" onclick="closeProfileModal()">Cancelar</button>
+                    <button class="btn btn-primary" onclick="confirmFriendName()">Continuar</button>
+                </div>
+            </div>
+
+            <!-- Etapa 1: Seleção de Perfil -->
+            <div id="modal-step-1">
+                <div class="modal-title">👋 Bem-vindo <span id="modal-user-name"></span></div>
+                <p>Para começarmos, qual é o seu perfil atual?</p>
+                <div class="modal-options">
+                    <div class="profile-card" onclick="selectProfileType('calouro')">
+                        <span class="profile-icon">👶</span>
+                        <span class="profile-title">Sou Calouro</span>
+                        <span class="profile-desc">Vou cursar o 1º período agora. Quero minha grade pronta.</span>
+                    </div>
+                    <div class="profile-card" onclick="selectProfileType('veterano')">
+                        <span class="profile-icon">🎓</span>
+                        <span class="profile-title">Sou Veterano</span>
+                        <span class="profile-desc">Já cursei algumas matérias. Quero marcar o que já fiz.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Etapa 2: Histórico (Veterano) -->
+            <div id="modal-step-2" hidden>
+                <div class="modal-title">🎓 Histórico Escolar</div>
+                <p>Clique nas matérias para mudar o status:</p>
+                <div class="lg-history-legend">
+                    ⚪ Não cursei &nbsp;&nbsp; 🟢 Aprovado &nbsp;&nbsp; 🔴 Reprovado
+                </div>
+                <div id="history-container"></div>
+                <div class="lg-mt-2">
+                    <button class="btn btn-primary" onclick="finishVeteranSetup()">✅ Confirmar Histórico</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO (Novo!) -->
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="modal-content modal-content--narrow">
+            <div class="modal-title modal-title--lg">⚠️ Confirmação</div>
+            <p id="confirm-text">Tem certeza?</p>
+            <div class="lg-actions lg-mt-125">
+                <button class="btn btn-secondary" onclick="closeConfirmModal()">Cancelar</button>
+                <button id="confirm-yes-btn" class="btn btn-danger">Sim, Remover</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>📅 Organizador de Grade BSI</h1>
+            
+            <div class="top-controls">
+                <label class="toggle-label">
+                    <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                    <span>🌙 Modo Escuro</span>
+                </label>
+                <label class="toggle-label">
+                    <input type="checkbox" id="group-mode-toggle" onchange="toggleGroupMode()">
+                    <span>👥 Comparar Horários (Todos)</span>
+                </label>
+            </div>
+
+            <div class="tools-section">
+                <div class="tools-buttons">
+                    <button class="btn btn-outline" onclick="editCurrentProfile()">👤 Editar Perfil Atual</button>
+                    <button class="btn btn-secondary btn--danger-outline" onclick="resetAllData()">🗑️ Resetar Tudo</button>
+                </div>
+                <div id="file-status"></div>
+            </div>
+        </header>
+
+        <!-- ABAS DE PERFIS -->
+        <div class="tabs-container" id="tabs-container">
+            <!-- Gerado via JS -->
+        </div>
+
+        <div id="conflict-alert" class="conflict-alert">
+            <strong>⚠️ Conflito Detectado!</strong> Verifique os blocos vermelhos na grade.
+        </div>
+
+        <div class="main-grid">
+            <div class="selection-panel" id="subjects-list"></div>
+            <div class="calendar-container">
+                <div class="time-labels" id="time-labels"></div>
+                <div class="days-grid" id="days-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ES Modules -->
+    <script type="module" src="../dados.js"></script>
+    <script type="module" src="../logica.js"></script>
+    <script type="module" src="../render.js"></script>
+    <script type="module">
+        import { init } from '../render.js';
+        init();
+    </script>
+</body>
+</html>
