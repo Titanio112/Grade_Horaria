@@ -26,13 +26,13 @@ import {
 import { createClassPicker } from '../components/class-picker.component.js';
 import { createWeeklyGrid } from '../components/weekly-grid.component.js';
 import { createDropdown } from '../components/dropdown.component.js';
+import { createHeaderMenu } from '../components/header-menu.component.js';
 import { mountThemeToggle } from '../components/theme-toggle.component.js';
 
 const pickerSlot = document.getElementById('class-picker');
 const gridSlot = document.getElementById('weekly-grid');
 const summaryEl = document.getElementById('grade-summary');
 const statusEl = document.getElementById('grade-status');
-const logoutButton = document.getElementById('logout-button');
 
 /** Estado da tela (só a página conhece). */
 const state = {
@@ -226,11 +226,19 @@ async function init() {
   });
   visibilityDD.setValue(state.grade.visibility || 'private');
 
-  logoutButton.addEventListener('click', async () => {
-    logoutButton.disabled = true;
-    logoutButton.textContent = 'Saindo…';
-    await signOut();
-    window.location.replace('login.html');
+  /* Header: menu ⋯ (Minha grade / Conta / Sair) + toggle de tema inline */
+  const menu = createHeaderMenu({
+    container: document.getElementById('header-menu-slot'),
+    links: [
+      { href: 'grade.html', label: 'Minha grade', current: true },
+      { href: 'conta.html', label: 'Conta' },
+    ],
+    onLogout: async () => {
+      menu.logoutButton.disabled = true;
+      menu.logoutButton.textContent = 'Saindo…';
+      await signOut();
+      window.location.replace('login.html');
+    },
   });
 
   /* Aviso não-obstrutivo quando a grade é recém-criada e vazia */
@@ -240,5 +248,5 @@ async function init() {
 }
 
 init();
-mountThemeToggle();
+mountThemeToggle(document.getElementById('theme-toggle-slot'));
 

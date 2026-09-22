@@ -16,12 +16,19 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  /* + 3.5rem à direita: espaço reservado para o theme-toggle fixo (2.75rem + margem) */
-  padding: 0.625rem calc(clamp(1rem, 4vw, 2rem) + 3.5rem) 0.625rem clamp(1rem, 4vw, 2rem);
+  padding: 0.625rem clamp(1rem, 4vw, 2rem);
   background: var(--glass-bg);
   -webkit-backdrop-filter: blur(14px) saturate(1.4);
   backdrop-filter: blur(14px) saturate(1.4);
   border-bottom: 1px solid var(--glass-border);
+}
+
+/* Lado direito do header: toggle de tema + menu ⋯, alinhados e na mesma linha */
+.app-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .app-header .brand {
@@ -34,41 +41,6 @@
   text-decoration: none;
 }
 .app-header .brand:hover { text-decoration: none; }
-
-/* O theme-toggle (position: fixed, vive fora do header) é alinhado ao
-   centro vertical do header quando a página tem .app-header — senão o
-   ícone do sol ficava desalinhado da linha "Minha grade / Conta / Sair". */
-.app-header ~ .theme-toggle { top: 0.5rem; right: 1rem; }
-
-.app-nav {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-.app-nav a {
-  padding: 0.375rem 0.75rem;
-  border-radius: var(--radius-field);
-  color: var(--ink-2);
-  font-size: 0.9375rem;
-  text-decoration: none;
-  transition: background-color 120ms ease, color 120ms ease;
-}
-.app-nav a:hover { background: var(--neutral-hover); color: var(--ink); text-decoration: none; }
-.app-nav a[aria-current="page"] { color: var(--accent); font-weight: 600; }
-
-.app-nav button {
-  background: none;
-  border: none;
-  font: inherit;
-  padding: 0.375rem 0.75rem;
-  border-radius: var(--radius-field);
-  color: var(--ink-2);
-  font-size: 0.9375rem;
-  cursor: pointer;
-  transition: background-color 120ms ease, color 120ms ease;
-}
-.app-nav button:hover { background: var(--neutral-hover); color: var(--ink); }
 
 /* Glifo 3x2 da marca (mesmo desenho do wordmark das telas de auth) */
 .brand .glyph {
@@ -150,7 +122,28 @@
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
+  /* Vidro sutil reagindo à interação (efeito 3D de carta fica pra depois) */
+  transition: box-shadow var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard);
 }
+.subject-card:hover {
+  border-color: var(--glass-border);
+  box-shadow:
+    0 0.375rem 1rem var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight);
+}
+
+/* Seletor de ordenação do catálogo (usa o dropdown padrão, mais compacto) */
+.sort-wrap .dropdown-trigger { min-height: 2.25rem; font-size: 0.8125rem; }
+
+/* Accordion de semestre: vidro sutil no grupo */
+.semester-group {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(8px) saturate(1.2);
+  backdrop-filter: blur(8px) saturate(1.2);
+  border-color: var(--glass-border);
+}
+.semester-right { display: flex; align-items: center; gap: 0.5rem; }
 .subject-head {
   display: flex;
   align-items: baseline;
@@ -325,6 +318,20 @@
   text-overflow: ellipsis;
   font-size: 0.6875rem;
 }
+/* Vidro reagindo ao hover/toque: blur + sombra (sem efeito 3D — esse vem depois) */
+.wg-block {
+  transition: box-shadow var(--dur-fast) var(--ease-standard),
+              transform var(--dur-fast) var(--ease-spring-soft);
+}
+.wg-block:hover {
+  -webkit-backdrop-filter: blur(6px) saturate(1.2);
+  backdrop-filter: blur(6px) saturate(1.2);
+  box-shadow:
+    0 0.375rem 1rem var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight);
+  transform: translateY(-1px);
+}
+
 .wg-block .b-remove {
   position: absolute;
   top: 0.125rem;
@@ -370,5 +377,4 @@
 @media (max-width: 60rem) {
   .app-main { grid-template-columns: minmax(0, 1fr); }
   .subject-list { max-height: 20rem; }
-  .app-nav a:not([aria-current="page"]) { padding: 0.375rem 0.5rem; }
 }

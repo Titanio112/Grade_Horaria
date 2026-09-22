@@ -8,7 +8,9 @@
      createDropdown({ trigger, options, placeholder, name, required, onChange })
    Retorna: { setOptions, setValue, setPlaceholder, disable, enable,
               destroy, getValue, element, open, close }
-   Depende de: css/tokens.css (cores), css/base.css (estilos).
+   Estilos: css/components.css (.dropdown-* + vidro). Movimento:
+   css/motion.css (.animate-pop na abertura).
+   Depende de: css/tokens.css, css/components.css, css/motion.css.
    ============================================================ */
 
 function createDropdown({
@@ -31,8 +33,7 @@ function createDropdown({
   const originalParent = trigger.parentNode;
   const originalNextSibling = trigger.nextSibling;
   const wrapper = document.createElement('div');
-  wrapper.className = 'dropdown-wrapper';
-  wrapper.style.cssText = 'position: relative; width: 100%; min-width: 0;';
+  wrapper.className = 'dropdown-wrap';
   originalParent.insertBefore(wrapper, trigger);
   wrapper.appendChild(trigger);
 
@@ -41,33 +42,22 @@ function createDropdown({
   const labelSpan = document.createElement('span');
   labelSpan.className = 'dropdown-label';
   labelSpan.textContent = currentPlaceholder;
-  labelSpan.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;';
 
   const listbox = document.createElement('div');
   listbox.id = listboxId;
+  listbox.className = 'dropdown-listbox';
   listbox.setAttribute('role', 'listbox');
   listbox.setAttribute('aria-label', currentPlaceholder);
-  listbox.style.cssText = `
-    position: absolute; top: 100%; left: 0; right: 0; z-index: 100;
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: var(--radius-field); margin-top: 0.25rem;
-    max-height: 16rem; overflow-y: auto; display: none;
-    box-shadow: 0 0.5rem 1.5rem var(--glass-shadow);
-  `;
-
-  function baseOptionStyle() {
-    return 'padding: 0.5rem 0.75rem; cursor: pointer;';
-  }
 
   function renderOptions() {
     listbox.innerHTML = '';
     if (selectedValue === '' && currentPlaceholder) {
       const ph = document.createElement('div');
       ph.setAttribute('role', 'option');
+      ph.className = 'dropdown-option dropdown-option--placeholder';
       ph.id = listboxId + '-option-placeholder';
       ph.dataset.value = '';
       ph.textContent = currentPlaceholder;
-      ph.style.cssText = baseOptionStyle() + ' color: var(--ink-2);';
       ph.addEventListener('click', () => selectOption(''));
       ph.addEventListener('mouseenter', () => highlightIndex(0));
       listbox.appendChild(ph);
@@ -75,11 +65,11 @@ function createDropdown({
     options.forEach((opt) => {
       const option = document.createElement('div');
       option.setAttribute('role', 'option');
+      option.className = 'dropdown-option';
       option.id = listboxId + '-option-' + opt.value;
       option.dataset.value = opt.value;
       option.textContent = opt.label;
       const selected = opt.value === selectedValue;
-      option.style.cssText = baseOptionStyle() + (selected ? ' background: var(--focus-halo);' : '');
       if (selected) option.setAttribute('aria-selected', 'true');
       option.addEventListener('click', () => selectOption(opt.value));
       option.addEventListener('mouseenter', () => {
@@ -93,12 +83,8 @@ function createDropdown({
   function highlightIndex(idx) {
     const items = listbox.querySelectorAll('[role="option"]');
     items.forEach((el, i) => {
-      if (i === idx) {
-        el.style.background = 'var(--focus-halo)';
-        el.scrollIntoView({ block: 'nearest' });
-      } else if (el.dataset.value !== selectedValue) {
-        el.style.background = '';
-      }
+      el.classList.toggle('is-highlighted', i === idx);
+      if (i === idx) el.scrollIntoView({ block: 'nearest' });
     });
     highlightedIndex = idx;
   }
@@ -119,7 +105,8 @@ function createDropdown({
   function open() {
     if (trigger.disabled) return;
     isOpen = true;
-    listbox.style.display = 'block';
+    /* is-open exibe; animate-pop = entrada com mola (css/motion.css) */
+    listbox.classList.add('is-open', 'animate-pop');
     trigger.setAttribute('aria-expanded', 'true');
     trigger.setAttribute('aria-controls', listboxId);
     wrapper.appendChild(listbox);
@@ -133,7 +120,7 @@ function createDropdown({
   function close() {
     if (!isOpen) return;
     isOpen = false;
-    listbox.style.display = 'none';
+    listbox.classList.remove('is-open');
     trigger.setAttribute('aria-expanded', 'false');
     if (listbox.parentNode) listbox.parentNode.removeChild(listbox);
     document.removeEventListener('click', outsideClick);
@@ -189,17 +176,7 @@ function createDropdown({
     /* Abre para cima quando não há espaço embaixo (viewport). */
     const rect = trigger.getBoundingClientRect();
     const spaceBelow = window.innerHeight - rect.bottom;
-    if (spaceBelow < 200 && rect.top > spaceBelow) {
-      listbox.style.top = 'auto';
-      listbox.style.bottom = '100%';
-      listbox.style.marginTop = '0';
-      listbox.style.marginBottom = '0.25rem';
-    } else {
-      listbox.style.top = '100%';
-      listbox.style.bottom = 'auto';
-      listbox.style.marginTop = '0.25rem';
-      listbox.style.marginBottom = '0';
-    }
+    listbox.classList.toggle('opens-up', spaceBelow < 200 && rect.top > spaceBelow);
   }
 
   /* Handlers nomeados para que destroy() consiga removê-los de verdade
@@ -208,16 +185,9 @@ function createDropdown({
     e.stopPropagation();
     isOpen ? close() : open();
   }
-  function handleTriggerFocus() {
-    trigger.style.borderColor = 'var(--accent)';
-    trigger.style.boxShadow = '0 0 0 3px var(--focus-halo)';
-  }
-  function handleTriggerBlur() {
-    trigger.style.borderColor = '';
-    trigger.style.boxShadow = '';
-  }
 
   trigger.type = 'button';
+  trigger.classList.add('dropdown-trigger');
   trigger.setAttribute('role', 'combobox');
   trigger.setAttribute('aria-haspopup', 'listbox');
   trigger.setAttribute('aria-expanded', 'false');
@@ -225,24 +195,14 @@ function createDropdown({
   trigger.setAttribute('aria-controls', listboxId);
   if (required) trigger.setAttribute('aria-required', 'true');
   if (name) trigger.dataset.name = name;
-  trigger.style.cssText = `
-    width: 100%; min-width: 0; min-height: 2.75rem; padding: 0.625rem 0.75rem;
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: var(--radius-field); text-align: left;
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 0.5rem; cursor: pointer; color: var(--ink); font: inherit;
-    transition: border-color 120ms ease, box-shadow 120ms ease;
-  `;
   trigger.textContent = '';
   trigger.appendChild(labelSpan);
   const chevron = document.createElement('span');
   chevron.setAttribute('aria-hidden', 'true');
+  chevron.className = 'dropdown-chevron';
   chevron.innerHTML = '<svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  chevron.style.cssText = 'flex-shrink: 0; color: var(--ink-2); transition: transform 150ms ease;';
   trigger.appendChild(chevron);
   trigger.addEventListener('click', handleTriggerClick);
-  trigger.addEventListener('focus', handleTriggerFocus);
-  trigger.addEventListener('blur', handleTriggerBlur);
   /* keydown fica permanente (a guarda de foco em onKeydown impede
      disparo quando o trigger não está focado); destroy() remove. */
   document.addEventListener('keydown', onKeydown);
@@ -265,25 +225,17 @@ function createDropdown({
 
   function disable() {
     trigger.disabled = true;
-    trigger.style.opacity = '0.55';
-    trigger.style.cursor = 'not-allowed';
-    labelSpan.style.color = 'var(--ink-2)';
     close();
   }
 
   function enable() {
     trigger.disabled = false;
-    trigger.style.opacity = '';
-    trigger.style.cursor = 'pointer';
-    labelSpan.style.color = '';
   }
 
   function destroy() {
     close();
     document.removeEventListener('keydown', onKeydown);
     trigger.removeEventListener('click', handleTriggerClick);
-    trigger.removeEventListener('focus', handleTriggerFocus);
-    trigger.removeEventListener('blur', handleTriggerBlur);
     /* Desfaz o wrapper: devolve o trigger ao pai original. */
     if (wrapper.parentNode) {
       wrapper.parentNode.insertBefore(trigger, wrapper);

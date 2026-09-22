@@ -12,6 +12,8 @@
   </script>
   <link rel="stylesheet" href="../css/tokens.css">
   <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/motion.css">
+  <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/app.css">
 </head>
 <body>
@@ -20,11 +22,10 @@
       <span class="glyph" aria-hidden="true"><i></i><i class="hl"></i><i></i><i></i><i></i><i></i></span>
       Grade Horária
     </a>
-    <nav class="app-nav" aria-label="Navegação principal">
-      <a href="grade.html" aria-current="page">Minha grade</a>
-      <a href="conta.html">Conta</a>
-      <button id="logout-button" type="button">Sair</button>
-    </nav>
+    <div class="app-actions">
+      <div id="theme-toggle-slot"></div>
+      <div id="header-menu-slot"></div>
+    </div>
   </header>
 
   <main class="app-main">
