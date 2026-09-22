@@ -107,14 +107,23 @@ export function createWeeklyGrid({ container, onRemove = () => {} }) {
       const end = Math.min(b.endMin, gridEnd);
       if (end <= start) continue;
 
-      const n = (b.colorIndex % 8) + 1;
       const block = document.createElement('div');
       block.className = 'wg-block';
       block.style.top = `${((start - gridStart) / (totalHours * 60)) * 100}%`;
       block.style.height = `${((end - start) / (totalHours * 60)) * 100}%`;
-      block.style.background = `var(--block-${n}-bg)`;
-      block.style.borderColor = `var(--block-${n}-border)`;
-      block.style.color = `var(--block-${n}-text)`;
+      if (b.subjectColor) {
+        /* Cor algorítmica da matéria (subjects.color, gerada por curso):
+           fundo = tint suave, borda/texto = a cor misturada ao tema. */
+        block.style.background = `color-mix(in srgb, ${b.subjectColor} 16%, var(--surface))`;
+        block.style.borderColor = b.subjectColor;
+        block.style.color = `color-mix(in srgb, ${b.subjectColor} 72%, var(--ink))`;
+      } else {
+        /* Fallback: paleta fixa --block-N (matéria sem cor gerada) */
+        const n = (b.colorIndex % 8) + 1;
+        block.style.background = `var(--block-${n}-bg)`;
+        block.style.borderColor = `var(--block-${n}-border)`;
+        block.style.color = `var(--block-${n}-text)`;
+      }
       block.dataset.classId = b.classId;
 
       const title = document.createElement('span');

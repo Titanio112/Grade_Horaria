@@ -96,6 +96,7 @@ function renderAll() {
         subtitle: entry.cls.code,
         room: (sc.rooms || []).join(', '),
         professors: entry.cls.professors || [],
+        subjectColor: entry.subject.color || null,
         colorIndex: Math.max(0, subjectIndex),
       });
     }

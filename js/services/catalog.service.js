@@ -32,7 +32,7 @@ function toMinutes(timeStr) {
 export async function listCatalog(courseId) {
   const { data, error } = await supabase
     .from('subjects')
-    .select(`id, code, name, workload_hours, prerequisites, corequisites,
+    .select(`id, code, name, workload_hours, prerequisites, corequisites, color,
              classes!inner(id, code, semester, social_group_link,
                class_schedules(id, day_of_week, start_time, end_time,
                  schedule_rooms(rooms(name))),
@@ -49,6 +49,7 @@ export async function listCatalog(courseId) {
     code: s.code,
     name: s.name,
     workloadHours: s.workload_hours,
+    color: s.color || null,
     prerequisites: s.prerequisites || [],
     corequisites: s.corequisites || [],
     classes: (s.classes || []).map((c) => ({
