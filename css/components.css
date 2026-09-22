@@ -167,7 +167,10 @@
   border: 1px solid var(--line);
   border-radius: var(--radius-field);
   overflow: hidden;
-  background: var(--surface);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(8px) saturate(1.2);
+  backdrop-filter: blur(8px) saturate(1.2);
+  border-color: var(--glass-border);
 }
 
 .semester-header {
@@ -200,16 +203,15 @@
 }
 .semester-group.is-open .semester-chevron { transform: rotate(180deg); }
 
-/* Gaveta animada com grid-rows (redireciona suave se clicar no meio) */
+/* Gaveta animada com max-height (confiável: gap/padding não vazam).
+   O valor "grande" cobre o conteúdo real; a transição usa a mola suave. */
 .semester-panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--dur-slow) var(--ease-spring-soft);
-}
-.semester-group.is-open .semester-panel { grid-template-rows: 1fr; }
-.semester-body {
-  min-height: 0;
+  max-height: 0;
   overflow: hidden;
+  transition: max-height var(--dur-slow) var(--ease-spring-soft);
+}
+.semester-group.is-open .semester-panel { max-height: 500px; }
+.semester-body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
