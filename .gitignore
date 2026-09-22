@@ -91,6 +91,7 @@ supabase/set_mock_course.js
 supabase/tmp_*.js
 supabase/check_backfill.js
 supabase/tmp_v6_check.js
+supabase/clean_mock_ana.js
 
 # Testes visuais/E2E locais das telas de auth (Playwright)
 test-auth-*.cjs
