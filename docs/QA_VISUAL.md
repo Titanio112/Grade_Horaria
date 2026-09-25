@@ -141,6 +141,18 @@ Função `checkBlockVisuals` no teste foi alterada para não exigir `backdrop-fi
 - Removidos 31 arquivos de debug à solta (`check_*.py`, `fix_*.cjs/py`, `parse_*.js`, `probe-sanfona.*`, etc.) + `package.json`/`package-lock.json`/`node_modules` de um `npm install acorn` acidental.
 - `.gitignore` ampliado: `.cjs` de QA/debug, `check_/fix_/make_/show_/build_/write_/parse_*`, `/package.json`, `/package-lock.json`.
 
+## Bateria E2E pós-correções (23/09/2026) — 5/5 verdes
+
+| Teste | Resultado |
+|-------|-----------|
+| `test-grade-flow.cjs` (22 checks) | ✅ 0 erros de JS |
+| `test-auth-login-flow.cjs` | ✅ exit 0 (após fix do achado 006) |
+| `test-dropdown-cascade.cjs` (16 checks) | ✅ |
+| `test-cadastro-validacao.cjs` (13 checks) | ✅ |
+| `test-utils.mjs` (18 checks) | ✅ |
+
+**Achado extra durante a bateria (006):** `test-auth-login-flow.cjs` falhava com falso positivo — o 400 proposital do Supabase no passo de senha errada era contado como console-error. Bug no script, corrigido com filtro; documentado em `docs/qa-issues/006`.
+
 ## Nova diretriz permanente (registrada em 23/09/2026)
 
 Todo erro encontrado (visual, lógica, dados) é documentado **nos dois lugares** antes de seguir:
