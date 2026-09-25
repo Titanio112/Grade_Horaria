@@ -33,11 +33,12 @@ function fmt(min) {
   return `${h}:${m}`;
 }
 
-/** "Seg 07:30–09:10 · Qui 07:30–09:10" */
+/** "Seg 07:30–09:10 · Qui 07:30–09:10" — o separador usa NBSP antes do "·"
+ *  para que a quebra de linha nunca deixe o ponto no início da linha. */
 function scheduleSummary(schedules) {
   return schedules
-    .map((s) => `${DAY_SHORT[s.day] || s.day} ${fmt(s.startMin)}–${fmt(s.endMin)}`)
-    .join(' · ');
+    .map((s) => `${DAY_SHORT[s.day] || s.day}\u00A0${fmt(s.startMin)}–${fmt(s.endMin)}`)
+    .join('\u00A0· ');
 }
 
 /** Semestre da matéria = menor semestre entre suas turmas (ou null). */
@@ -46,6 +47,14 @@ function semesterOf(subject) {
     .map((c) => c.semester)
     .filter((s) => Number.isFinite(s));
   return semesters.length ? Math.min(...semesters) : null;
+}
+
+/** Texto curto do chip de pré-requisito (o completo vai pro title/tooltip). */
+function prereqChipText(missing) {
+  const full = `Falta concluir: ${missing.join(', ')}`;
+  if (full.length <= 56 && missing.length <= 2) return full;
+  const rest = missing.length - 1;
+  return `Falta concluir: ${missing[0]}${rest > 0 ? ` +${rest}` : ''}`;
 }
 
 /**
@@ -126,7 +135,7 @@ export function createClassPicker({ container, onToggle }) {
         const chip = document.createElement('span');
         chip.className = 'chip chip--blocked';
         chip.title = `Falta concluir: ${missing.join(', ')}`;
-        chip.textContent = `Pré-requisito: ${missing.join(', ')}`;
+        chip.textContent = prereqChipText(missing);
         card.appendChild(chip);
       } else if (hasEnrolled) {
         const chip = document.createElement('span');

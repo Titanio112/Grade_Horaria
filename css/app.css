@@ -112,7 +112,17 @@
   gap: 0.5rem;
   overflow-y: auto;
   max-height: 65vh;
-  padding-right: 0.25rem;
+  padding-right: 0.375rem;
+  /* Scrollbar sempre fina/visível — sem ela, cards cortados no meio
+     pareciam fim da lista (bug visual da Rodada 3) */
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+.subject-list::-webkit-scrollbar { width: 6px; }
+.subject-list::-webkit-scrollbar-track { background: transparent; }
+.subject-list::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 3px;
 }
 
 .subject-card {
@@ -163,9 +173,14 @@
   color: var(--ink-2);
 }
 .chip--blocked {
+  display: block;               /* aviso em faixa, não pílula (vaza multilinha feio) */
   color: var(--warning);
   border-color: var(--warning);
   background: transparent;
+  border-radius: var(--radius-field);
+  padding: 0.375rem 0.5rem;
+  line-height: 1.35;
+  white-space: normal;          /* pode quebrar, mas com radius de card fica legível */
 }
 .chip--enrolled {
   color: var(--success);
