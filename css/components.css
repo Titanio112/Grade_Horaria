@@ -171,6 +171,10 @@
   -webkit-backdrop-filter: blur(8px) saturate(1.2);
   backdrop-filter: blur(8px) saturate(1.2);
   border-color: var(--glass-border);
+  /* A lista do catálogo é um flex-column com max-height (rolando). Sem isto,
+     o flex ENCOLHE os grupos (min-height vira 0 por causa do overflow:hidden)
+     e as matérias ficam cortadas — bug real da Rodada 2 de QA. */
+  flex-shrink: 0;
 }
 
 .semester-header {
@@ -203,20 +207,25 @@
 }
 .semester-group.is-open .semester-chevron { transform: rotate(180deg); }
 
-/* Gaveta animada com max-height (confiável: gap/padding não vazam).
-   O valor "grande" cobre o conteúdo real; a transição usa a mola suave. */
+/* Gaveta animada com grid-rows 0fr→1fr: colapsa de verdade a 0 E abre com a
+   altura natural completa (sem teto de max-height escondendo matérias).
+   O padding inferior fica no margin do último filho para não "vazar" 8px
+   quando a linha está em 0fr (bug corrigido na Rodada 2). */
 .semester-panel {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height var(--dur-slow) var(--ease-spring-soft);
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-slow) var(--ease-spring-soft);
 }
-.semester-group.is-open .semester-panel { max-height: 500px; }
+.semester-group.is-open .semester-panel { grid-template-rows: 1fr; }
 .semester-body {
+  min-height: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 0 0.5rem 0.5rem;
+  padding: 0 0.5rem;
 }
+.semester-body > :last-child { margin-bottom: 0.5rem; }
 
 
 .dropdown-option { padding: 0.5rem 0.75rem; cursor: pointer; }

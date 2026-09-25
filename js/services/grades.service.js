@@ -112,13 +112,19 @@ export async function setGradeVisibility(gradeId, visibility) {
   return { error };
 }
 
-/** Traduz erros conhecidos dos triggers do banco para pt-BR. */
+/** Traduz erros conhecidos dos triggers do banco para pt-BR.
+ *  O banco responde mensagens sem acento e com maiúscula inicial
+ *  (ex.: "Choque de horario com a materia: X", "Pre-requisitos nao
+ *  cumpridos: Y") — por isso normalizamos caixa E acentos antes de casar. */
 function friendlyGradeError(error) {
-  const msg = String(error?.message || '');
-  if (msg.includes('prerequisite') || msg.includes('pré-requisito') || msg.includes('prerequisito')) {
+  const msg = String(error?.message || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, ''); // remove acentos
+  if (msg.includes('pre-requisito') || msg.includes('prerequisito') || msg.includes('requisito')) {
     return 'Pré-requisito pendente: conclua a matéria exigida antes de se matricular nesta turma.';
   }
-  if (msg.includes('conflict') || msg.includes('choque') || msg.includes('overlap')) {
+  if (msg.includes('choque') || msg.includes('conflict') || msg.includes('overlap')) {
     return 'Choque de horário: esta turma colide com outra já na sua grade.';
   }
   return 'Não foi possível adicionar a turma. Tente de novo.';

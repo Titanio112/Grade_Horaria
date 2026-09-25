@@ -110,3 +110,32 @@ test-grade-*.cjs
 test-cadastro-*.cjs
 test-utils.mjs
 *.err
+
+# Scripts de QA/debug locais (rodadas de QA visual, probes, fixes pontuais)
+test-qa-*.cjs
+qa-*.cjs
+probe-*.cjs
+probe-*.png
+debug-*.cjs
+check_*.py
+fix_*.cjs
+fix_*.py
+make_*.py
+show_*.py
+rewrite_*.py
+to_ascii.py
+build_*.py
+write_*.py
+parse_*.js
+acorn_parse.js
+test_last_fn.js
+test_part.cjs
+test_ascii.cjs
+test_copy.cjs
+original_test.cjs
+
+# Nota: este projeto eh Vanilla JS sem build — NAO tem package.json na raiz.
+# Se aparecer package.json/package-lock.json/node_modules aqui, foi install
+# acidental de ferramenta de debug (ex.: acorn) — nao commitar.
+/package.json
+/package-lock.json

@@ -104,3 +104,45 @@ Função `checkBlockVisuals` no teste foi alterada para não exigir `backdrop-fi
 2. Popular banco de teste com mais turmas livres para permitir cenário “grade cheia” sem timeout.  
 3. Rodar bateria E2E completa novamente para garantir regressões zero.  
 4. Commit das correções (CSS hover, teste atualizado) e atualização deste documento.
+
+---
+
+# QA Visual — Rodada 3 (Catálogo/Sanfona micro-auditoria) — 23/09/2026
+
+> Auditoria visual focada nos cards do catálogo (`pages/grade.html`).
+> Prints em `docs/qa-prints/rodada-3-catalogo/`. Issues prontas em `docs/qa-issues/` (001–005).
+
+## Resumo de achados — 5 bugs (todos corrigidos)
+
+| # | Área | Bug | Tipo |
+|---|------|-----|------|
+| 001 | card `.class-when` | Separador `·` iniciava linha quando o texto quebrava | visual |
+| 002 | `.chip--blocked` | Texto longo de pré-req virava pílula multilinha feia | visual |
+| 003 | `.subject-list` | Scrollbar invisível → card cortado parecia fim da lista | visual/UX |
+| 004 | `.semester-panel` | Teto fixo `max-height: 500px` escondia matérias + grupos encolhiam sem `flex-shrink: 0` | visual/layout |
+| 005 | `friendlyGradeError()` | Tradução pt-BR de erros do banco **nunca casava** (match case-sensitive + esperava acento; banco manda "Choque…"/"Pre-requisitos" sem acento) | lógica |
+
+## Correções aplicadas
+
+- `js/components/class-picker.component.js`: NBSP antes do `·` e entre dia/horário em `scheduleSummary()`; novo helper `prereqChipText()` (`Falta concluir: X +N`, completo no `title`).
+- `css/app.css`: `.chip--blocked` virou faixa (`display:block`, `white-space:normal`, raio de campo); `.subject-list` com scrollbar fina sempre visível (`scrollbar-width: thin` + `::-webkit-scrollbar` 6px).
+- `css/components.css`: gaveta migrada para `grid-template-rows: 0fr→1fr` (altura natural sem teto); `.semester-body` com `min-height:0`+`overflow:hidden`, padding inferior virou `margin` do último filho; `.semester-group` com `flex-shrink: 0`.
+- `js/services/grades.service.js`: match normalizando caixa + diacríticos (`toLowerCase().normalize('NFD')` + strip `[\u0300-\u036f]`).
+
+## Validação
+
+- `20-card-multiple-times.png` ✅ — `·` nunca inicia linha.
+- `21-card-prereq-compacto.png` ✅ — chip compacto "+1", faixa legível.
+- `22-fullpage-sem5-pos-fix.png` ✅ — chip em faixa, scrollbar visível, semestre 5 rola todas as matérias.
+
+## Higiene de repositório (mesma sessão)
+
+- `git rm --cached` de `test-qa-grade-intensive.cjs` e `test-qa-visual.cjs` (não devem trackear).
+- Removidos 31 arquivos de debug à solta (`check_*.py`, `fix_*.cjs/py`, `parse_*.js`, `probe-sanfona.*`, etc.) + `package.json`/`package-lock.json`/`node_modules` de um `npm install acorn` acidental.
+- `.gitignore` ampliado: `.cjs` de QA/debug, `check_/fix_/make_/show_/build_/write_/parse_*`, `/package.json`, `/package-lock.json`.
+
+## Nova diretriz permanente (registrada em 23/09/2026)
+
+Todo erro encontrado (visual, lógica, dados) é documentado **nos dois lugares** antes de seguir:
+1. memória local do projeto (aqui + `PROJECT_MEMORY.md`);
+2. GitHub Issues do repositório — arquivos prontos em `docs/qa-issues/` quando o `gh` CLI não estiver disponível.
