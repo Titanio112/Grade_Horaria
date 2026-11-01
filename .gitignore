@@ -139,3 +139,15 @@ original_test.cjs
 # acidental de ferramenta de debug (ex.: acorn) — nao commitar.
 /package.json
 /package-lock.json
+
+# ---- Memoria/config de IA: NUNCA subir ----
+AGENTS.md
+CLAUDE.md
+CLAUDE.local.md
+.claude/
+.clinerules
+.cursor/
+.opencode/
+memory/
+memory-bank/
+PROJECT_MEMORY.md
